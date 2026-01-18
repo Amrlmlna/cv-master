@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/common/profile_list_item.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -29,32 +30,36 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             
-            _buildProfileItem(Icons.person_outline, 'Personal Information'),
-            _buildProfileItem(Icons.work_outline, 'Experience'),
-            _buildProfileItem(Icons.school_outlined, 'Education'),
-            _buildProfileItem(Icons.code, 'Skills'),
+            ProfileListItem(
+              icon: Icons.person_outline,
+              title: 'Personal Information',
+              onTap: () {},
+            ),
+            ProfileListItem(
+              icon: Icons.work_outline,
+              title: 'Experience',
+              onTap: () {},
+            ),
+            ProfileListItem(
+              icon: Icons.school_outlined,
+              title: 'Education',
+              onTap: () {},
+            ),
+            ProfileListItem(
+              icon: Icons.code,
+              title: 'Skills',
+              onTap: () {},
+            ),
             const Divider(height: 48),
-            _buildProfileItem(Icons.logout, 'Log Out', isDestructive: true),
+            ProfileListItem(
+              icon: Icons.logout,
+              title: 'Log Out',
+              isDestructive: true,
+              onTap: () {},
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildProfileItem(IconData icon, String title, {bool isDestructive = false}) {
-    return ListTile(
-      leading: Icon(icon, color: isDestructive ? Colors.red : Colors.black),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: isDestructive ? Colors.red : Colors.black,
-          fontWeight: isDestructive ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
-      trailing: isDestructive ? null : const Icon(Icons.chevron_right),
-      onTap: () {
-        // TODO: Navigate to detail
-      },
     );
   }
 }
