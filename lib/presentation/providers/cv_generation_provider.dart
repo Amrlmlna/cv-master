@@ -13,9 +13,9 @@ final cvRepositoryProvider = Provider<CVRepository>((ref) {
   return CVRepositoryImpl(mockAIService: aiService);
 });
 
-final generatedCVProvider = AsyncNotifierProvider.autoDispose<CVDisplayNotifier, CVData>(CVDisplayNotifier.new);
+final generatedCVProvider = AsyncNotifierProvider<CVDisplayNotifier, CVData>(CVDisplayNotifier.new);
 
-class CVDisplayNotifier extends AutoDisposeAsyncNotifier<CVData> {
+class CVDisplayNotifier extends AsyncNotifier<CVData> {
   @override
   Future<CVData> build() async {
     // Accessing ref via property

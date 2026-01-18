@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/utils/pdf_generator.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
@@ -13,6 +14,10 @@ class CVPreviewPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         title: const Text('Your CV Preview'),
         actions: [
           IconButton(

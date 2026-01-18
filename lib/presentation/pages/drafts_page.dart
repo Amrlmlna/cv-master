@@ -118,7 +118,7 @@ class DraftsPage extends ConsumerWidget {
           ),
           onTap: () {
             ref.read(generatedCVProvider.notifier).loadCV(draft);
-            context.push('/preview');
+            context.push('/drafts/preview');
           },
         ),
       ),

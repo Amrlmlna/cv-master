@@ -29,6 +29,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/',
                 builder: (context, state) => const HomePage(),
+                routes: [
+                  GoRoute(
+                    path: 'preview',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const CVPreviewPage(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -37,6 +44,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/drafts',
                 builder: (context, state) => const DraftsPage(),
+                routes: [
+                  GoRoute(
+                    path: 'preview',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const CVPreviewPage(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -63,7 +77,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const StyleSelectionPage(),
       ),
       GoRoute(
-        path: '/preview',
+        path: '/create/preview',
         builder: (context, state) => const CVPreviewPage(),
       ),
       GoRoute(

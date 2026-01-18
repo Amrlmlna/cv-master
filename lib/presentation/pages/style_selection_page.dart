@@ -37,7 +37,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   void _generateCV() {
     ref.read(cvCreationProvider.notifier).setStyle(_selectedStyle);
     // TODO: Trigger AI Generation / Navigation to Preview
-    context.go('/preview'); // Using go to clear stack or push to separate flow
+    context.push('/create/preview'); // Changed to push to preserve navigation stack
   }
 
   @override
