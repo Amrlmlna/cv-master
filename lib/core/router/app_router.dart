@@ -10,15 +10,39 @@ import '../../presentation/pages/job_input_page.dart';
 import '../../presentation/pages/user_data_form_page.dart';
 import '../../presentation/pages/style_selection_page.dart';
 import '../../presentation/pages/cv_preview_page.dart';
+import '../../presentation/pages/template_gallery_page.dart';
+import '../../presentation/pages/onboarding_page.dart';
+import '../../presentation/providers/onboarding_provider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 // final _shellNavigatorKey = GlobalKey<NavigatorState>(); // Unused
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final onboardingCompleted = ref.watch(onboardingProvider);
+  
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
+    redirect: (context, state) {
+      // If onboarding is NOT completed, redirect to /onboarding
+      // Prevent infinite loop if already on /onboarding
+      if (!onboardingCompleted) {
+        if (state.uri.toString() != '/onboarding') {
+          return '/onboarding';
+        }
+      } else {
+        // If onboarding IS completed, but user tries to go to /onboarding, send them home
+        if (state.uri.toString() == '/onboarding') {
+          return '/';
+        }
+      }
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainWrapperPage(navigationShell: navigationShell);
@@ -83,6 +107,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/profile',
         builder: (context, state) => const ProfilePage(),
+      ),
+      GoRoute(
+        path: '/templates',
+        builder: (context, state) => const TemplateGalleryPage(),
       ),
     ],
   );

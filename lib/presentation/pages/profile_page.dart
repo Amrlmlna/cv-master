@@ -1,64 +1,226 @@
 import 'package:flutter/material.dart';
-import '../widgets/common/profile_list_item.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../domain/entities/user_profile.dart';
+import '../providers/profile_provider.dart';
+import '../widgets/form/personal_info_form.dart';
+import '../widgets/form/experience_list_form.dart';
+import '../widgets/form/education_list_form.dart';
+import '../widgets/form/skills_input_form.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  // Local controllers for immediate editing, synced with provider on Save
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _locationController = TextEditingController();
+  
+  List<Experience> _experience = [];
+  List<Education> _education = [];
+  List<String> _skills = [];
+  
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      final masterProfile = ref.read(masterProfileProvider);
+      if (masterProfile != null) {
+        _nameController.text = masterProfile.fullName;
+        _emailController.text = masterProfile.email;
+        _phoneController.text = masterProfile.phoneNumber ?? '';
+        _locationController.text = masterProfile.location ?? '';
+        _experience = List.from(masterProfile.experience);
+        _education = List.from(masterProfile.education);
+        _skills = List.from(masterProfile.skills);
+      }
+      _isInit = false;
+    }
+  }
+
+  void _saveProfile() {
+    // Validate?
+    if (_nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your name')),
+      );
+      return;
+    }
+
+    final newProfile = UserProfile(
+      // id: 'master', // Removed
+      fullName: _nameController.text, // 59
+      email: _emailController.text, // 60
+      phoneNumber: _phoneController.text,
+      location: _locationController.text,
+      experience: _experience,
+      education: _education,
+      skills: _skills,
+    );
+
+    ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile Saved! It will be used for new CVs.')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: const Text('My Master Profile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: _saveProfile,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.black,
-              child: Icon(Icons.person, size: 50, color: Colors.white),
+            const Center(
+               child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.black,
+                child: Icon(Icons.person, size: 40, color: Colors.white),
+              ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'User Name', // Placeholder
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            const SizedBox(height: 8),
             const Text(
-              'user@example.com', // Placeholder
-              style: TextStyle(color: Colors.grey),
+              'Edit once, reuse everywhere.',
+               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             const SizedBox(height: 32),
-            
-            ProfileListItem(
+
+            // 1. Personal Info
+            _SectionCard(
+              title: 'Personal Info',
               icon: Icons.person_outline,
-              title: 'Personal Information',
-              onTap: () {},
+              child: PersonalInfoForm(
+                nameController: _nameController,
+                emailController: _emailController,
+                phoneController: _phoneController,
+                locationController: _locationController,
+              ),
             ),
-            ProfileListItem(
-              icon: Icons.work_outline,
+            
+            const SizedBox(height: 24),
+
+            // 2. Experience
+            _SectionCard(
               title: 'Experience',
-              onTap: () {},
+              icon: Icons.work_outline,
+              child: ExperienceListForm(
+                experiences: _experience,
+                onChanged: (val) {
+                  setState(() {
+                    _experience = val;
+                  });
+                },
+              ),
             ),
-            ProfileListItem(
-              icon: Icons.school_outlined,
+
+            const SizedBox(height: 24),
+
+            // 3. Education
+            _SectionCard(
               title: 'Education',
-              onTap: () {},
+              icon: Icons.school_outlined,
+              child: EducationListForm(
+                education: _education,
+                onChanged: (val) {
+                  setState(() {
+                    _education = val;
+                  });
+                },
+              ),
             ),
-            ProfileListItem(
-              icon: Icons.code,
+
+            const SizedBox(height: 24),
+
+             // 4. Skills
+            _SectionCard(
               title: 'Skills',
-              onTap: () {},
+              icon: Icons.code,
+              child: SkillsInputForm(
+                skills: _skills,
+                onChanged: (val) {
+                  setState(() {
+                    _skills = val;
+                  });
+                },
+              ),
             ),
-            const Divider(height: 48),
-            ProfileListItem(
-              icon: Icons.logout,
-              title: 'Log Out',
-              isDestructive: true,
-              onTap: () {},
+
+            const SizedBox(height: 48),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _saveProfile,
+                icon: const Icon(Icons.check),
+                label: const Text('Save Master Profile'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
             ),
+            const SizedBox(height: 24),
+            Center(
+              child: TextButton(
+                onPressed: () async {
+                   // Reset logic for testing
+                   final prefs = await SharedPreferences.getInstance();
+                   await prefs.setBool('onboarding_completed', false);
+                   
+                   if (context.mounted) {
+                     ScaffoldMessenger.of(context).showSnackBar(
+                       const SnackBar(content: Text('Onboarding Reset! Restart app to see it again.')),
+                     );
+                   }
+                },
+                child: const Text('Reset Onboarding (Debug)', style: TextStyle(color: Colors.red)),
+              ),
+            ),
+            const SizedBox(height: 48),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget child;
+
+  const _SectionCard({required this.title, required this.icon, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: ExpansionTile(
+        leading: Icon(icon, color: Colors.black),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        shape: const Border(), // Remove default border
+        childrenPadding: const EdgeInsets.all(16),
+        children: [child],
       ),
     );
   }

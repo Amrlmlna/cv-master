@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/home/hero_section.dart';
 import '../widgets/home/recent_drafts_list.dart';
-import '../widgets/home/career_tip_card.dart';
+import '../widgets/home/template_gallery_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -39,10 +39,8 @@ class HomePage extends StatelessWidget {
             const RecentDraftsList(),
             const SizedBox(height: 32),
 
-            // AI Career Tip
-            _buildSectionHeader(context, 'Daily AI Tip'),
-            const SizedBox(height: 16),
-            const CareerTipCard(),
+            // Template Gallery
+            const TemplateGalleryCard(),
           ],
         ),
       ),

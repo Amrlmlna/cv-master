@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../data/repositories/template_repository.dart';
 import '../providers/cv_creation_provider.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
@@ -13,26 +14,8 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   String _selectedStyle = 'Modern';
 
-  final List<Map<String, String>> _styles = [
-    {
-      'id': 'ATS',
-      'name': 'ATS-Friendly',
-      'desc': 'Simple, clean, and optimized for Applicant Tracking Systems.',
-      'icon': 'text_snippet_outlined', 
-    },
-    {
-      'id': 'Modern',
-      'name': 'Modern',
-      'desc': 'Sleek design with subtle accents, great for tech and startups.',
-      'icon': 'design_services_outlined',
-    },
-    {
-      'id': 'Creative',
-      'name': 'Creative',
-      'desc': 'Bold layout and typography for design-focused roles.',
-      'icon': 'brush_outlined',
-    },
-  ];
+  // Styles loaded from repository
+
 
   void _generateCV() {
     ref.read(cvCreationProvider.notifier).setStyle(_selectedStyle);
@@ -42,6 +25,8 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final templates = TemplateRepository.getAllTemplates();
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose a Style'),
@@ -59,16 +44,28 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
-              itemCount: _styles.length,
+              itemCount: templates.length,
               separatorBuilder: (context, index) => const SizedBox(height: 16),
               itemBuilder: (context, index) {
-                final style = _styles[index];
-                final isSelected = style['id'] == _selectedStyle;
+                final template = templates[index];
+                final isSelected = template.id == _selectedStyle;
+                
+                 // Determine icon based on tag/id just for visual variety
+                IconData icon;
+                if (template.id == 'ATS') {
+                   icon = Icons.text_snippet_outlined;
+                } else if (template.id == 'Modern') {
+                   icon = Icons.design_services_outlined;
+                } else if (template.id == 'Creative') {
+                   icon = Icons.brush_outlined;
+                } else {
+                   icon = Icons.article_outlined; // Default
+                }
 
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      _selectedStyle = style['id']!;
+                      _selectedStyle = template.id;
                     });
                   },
                   child: AnimatedContainer(
@@ -94,12 +91,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
                     child: Row(
                       children: [
                         Icon(
-                          // Mapping string to IconData roughly
-                          style['id'] == 'ATS'
-                              ? Icons.text_snippet_outlined
-                              : style['id'] == 'Modern'
-                                  ? Icons.design_services_outlined
-                                  : Icons.brush_outlined,
+                          icon,
                           size: 32,
                           color: isSelected ? Colors.white : Colors.black,
                         ),
@@ -109,7 +101,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                style['name']!,
+                                template.name,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -118,7 +110,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                style['desc']!,
+                                template.description,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: isSelected
@@ -126,6 +118,24 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
                                       : Colors.grey[600],
                                 ),
                               ),
+                              if (template.isPremium) ...[
+                                const SizedBox(height: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: isSelected ? Colors.amber : Colors.amber[100],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    'PREMIUM',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: isSelected ? Colors.black : Colors.amber[900],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         ),

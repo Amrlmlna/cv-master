@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../domain/entities/cv_data.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
+import '../widgets/ads/draft_banner_carousel.dart';
 
 class DraftsPage extends ConsumerStatefulWidget {
   const DraftsPage({super.key});
@@ -23,7 +24,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
 
     return PopScope(
       canPop: _selectedFolder == null,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
          if (didPop) return;
          if (_selectedFolder != null) {
           setState(() {
@@ -62,6 +63,9 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
                   });
                 },
               ),
+              const SizedBox(height: 24),
+              // Ad Banner
+              const DraftsBannerCarousel(),
             ] else ...[
               Row(
                 children: [
@@ -198,7 +202,7 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
 
     return ListView.separated(
       itemCount: sorted.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final draft = sorted[index];
         return Dismissible(

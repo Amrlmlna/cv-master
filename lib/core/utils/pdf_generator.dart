@@ -60,16 +60,61 @@ class PDFGenerator {
               pw.SizedBox(height: 16),
               
               // Experience (Mocked for now in PDF too)
+              // Experience
               _buildSectionHeader('EXPERIENCE'),
               if (cvData.userProfile.experience.isEmpty)
-                 pw.Text('No experience listed.', style: const pw.TextStyle(fontSize: 12)),
+                 pw.Text('No experience listed.', style: const pw.TextStyle(fontSize: 12))
+              else
+                 ...cvData.userProfile.experience.map((exp) => pw.Padding(
+                   padding: const pw.EdgeInsets.only(bottom: 12.0),
+                   child: pw.Column(
+                     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                     children: [
+                       pw.Row(
+                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                         children: [
+                            pw.Text(
+                              '${exp.jobTitle} at ${exp.companyName}',
+                              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+                            ),
+                            pw.Text(
+                              '${exp.startDate} - ${exp.endDate ?? "Present"}',
+                              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+                            ),
+                         ],
+                       ),
+                       pw.SizedBox(height: 2),
+                       pw.Text(
+                         exp.description,
+                         style: const pw.TextStyle(fontSize: 10),
+                       ),
+                     ],
+                   ),
+                 )),
                  
               pw.SizedBox(height: 16),
 
                // Education
               _buildSectionHeader('EDUCATION'),
               if (cvData.userProfile.education.isEmpty)
-                 pw.Text('No education listed.', style: const pw.TextStyle(fontSize: 12)),
+                 pw.Text('No education listed.', style: const pw.TextStyle(fontSize: 12))
+              else
+                 ...cvData.userProfile.education.map((edu) => pw.Padding(
+                   padding: const pw.EdgeInsets.only(bottom: 8.0),
+                   child: pw.Column(
+                     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                     children: [
+                       pw.Text(
+                         edu.schoolName, 
+                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+                       ),
+                       pw.Text(
+                         '${edu.degree} (${edu.startDate} - ${edu.endDate ?? "Present"})',
+                         style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+                       ),
+                     ],
+                   ),
+                 )),
             ],
           );
         },

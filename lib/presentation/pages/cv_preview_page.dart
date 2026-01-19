@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/utils/pdf_generator.dart';
+import '../../core/services/mock_ad_service.dart';
 import '../providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
 import '../widgets/common/ai_editable_text.dart';
@@ -93,7 +94,11 @@ class CVPreviewPage extends ConsumerWidget {
               child: const Text('Save'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                 // Trigger Interstitial Ad
+                 await MockAdService.showInterstitialAd(context);
+                 
+                 // Proceed to Export
                  final currentData = ref.read(generatedCVProvider).asData?.value;
                  if (currentData != null) {
                    PDFGenerator.generateAndPrint(currentData);

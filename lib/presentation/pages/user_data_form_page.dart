@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/user_profile.dart';
 import '../providers/cv_creation_provider.dart';
+import '../providers/profile_provider.dart';
 import '../widgets/form/education_list_form.dart';
 import '../widgets/form/experience_list_form.dart';
 import '../widgets/form/skills_input_form.dart';
@@ -29,6 +30,55 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-fill from Master Profile if available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final masterProfile = ref.read(masterProfileProvider);
+      
+      // If we have a master profile AND the current form is empty (fresh start)
+      if (masterProfile != null && _nameController.text.isEmpty) {
+        setState(() {
+          _nameController.text = masterProfile.fullName;
+          _emailController.text = masterProfile.email;
+          _phoneController.text = masterProfile.phoneNumber ?? '';
+          _locationController.text = masterProfile.location ?? '';
+          
+          // Deep copy lists to prevent reference issues
+          _experience = List<Experience>.from(masterProfile.experience);
+          _education = List<Education>.from(masterProfile.education);
+          _skills = List<String>.from(masterProfile.skills);
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Data auto-filled from your Master Profile! ⚡'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Theme.of(context).primaryColor,
+            action: SnackBarAction(
+              label: 'Undo',
+              textColor: Colors.white,
+              onPressed: () {
+                 // Logic to clear if user didn't want this? 
+                 // For now, simple clear.
+                 setState(() {
+                    _nameController.clear();
+                    _emailController.clear();
+                    _phoneController.clear();
+                    _locationController.clear();
+                    _experience.clear();
+                    _education.clear();
+                    _skills.clear();
+                 });
+              },
+            ),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
