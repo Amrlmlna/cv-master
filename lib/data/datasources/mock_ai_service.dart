@@ -12,6 +12,10 @@ class MockAIService {
     // Simulate network delay
     await Future.delayed(const Duration(seconds: 2));
 
+    print('DEBUG: MockAIService received profile');
+    print('DEBUG: Experience: ${profile.experience.length}');
+    print('DEBUG: Education: ${profile.education.length}');
+
     final title = jobInput.jobTitle.toLowerCase();
     
     // Deterministic "AI" Logic
@@ -38,7 +42,11 @@ class MockAIService {
 
     return CVData(
       id: const Uuid().v4(),
-      userProfile: profile.copyWith(skills: finalSkills),
+      userProfile: profile.copyWith(
+        skills: finalSkills,
+        experience: profile.experience,
+        education: profile.education,
+      ),
       generatedSummary: summary,
       tailoredSkills: finalSkills,
       styleId: styleId,

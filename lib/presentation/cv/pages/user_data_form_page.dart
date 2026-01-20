@@ -128,6 +128,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], // Fallback if empty, or just empty
       );
 
+      print('DEBUG: Submitting Profile');
+      print('Experience Count: ${_experience.length}');
+      print('Education Count: ${_education.length}');
+
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
       context.push('/create/style-selection');
     }
@@ -183,12 +187,18 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                 children: [
                   ExperienceListForm(
                     experiences: _experience,
-                    onChanged: (val) => setState(() => _experience = val),
+                    onChanged: (val) {
+                      print('DEBUG: Experience list updated. Count: ${val.length}');
+                      setState(() => _experience = val);
+                    },
                   ),
                   const Divider(height: 32),
                   EducationListForm(
                     education: _education,
-                    onChanged: (val) => setState(() => _education = val),
+                    onChanged: (val) {
+                      print('DEBUG: Education list updated. Count: ${val.length}');
+                      setState(() => _education = val);
+                    },
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/user_profile.dart';
+import '../../common/widgets/custom_text_form_field.dart';
 
 class ExperienceDialog extends StatefulWidget {
   final Experience? existing;
@@ -48,43 +49,41 @@ class _ExperienceDialogState extends State<ExperienceDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
+
+              CustomTextFormField(
                 controller: _titleCtrl,
-                decoration: const InputDecoration(labelText: 'Job Title'),
+                labelText: 'Job Title',
                 validator: (v) => v!.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 12),
-              TextFormField(
+              CustomTextFormField(
                 controller: _companyCtrl,
-                decoration: const InputDecoration(labelText: 'Company'),
+                labelText: 'Company',
                 validator: (v) => v!.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
-                    child: TextFormField(
+                    child: CustomTextFormField(
                       controller: _startCtrl,
-                      decoration: const InputDecoration(labelText: 'Start (MM/YYYY)'),
+                      labelText: 'Start (MM/YYYY)',
                       validator: (v) => v!.isEmpty ? 'Required' : null,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: TextFormField(
+                    child: CustomTextFormField(
                       controller: _endCtrl,
-                      decoration: const InputDecoration(labelText: 'End (Optional)'),
+                      labelText: 'End (Optional)',
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              TextFormField(
+              CustomTextFormField(
                 controller: _descCtrl,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  alignLabelWithHint: true,
-                ),
+                labelText: 'Description',
                 maxLines: 4,
                 validator: (v) => v!.isEmpty ? 'Required' : null,
               ),

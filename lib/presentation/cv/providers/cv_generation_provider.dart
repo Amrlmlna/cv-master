@@ -1,16 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../data/datasources/mock_ai_service.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/repositories/cv_repository.dart';
 import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
 
-final mockAIServiceProvider = Provider<MockAIService>((ref) => MockAIService());
+final remoteAIServiceProvider = Provider<RemoteAIService>((ref) => RemoteAIService());
 
 final cvRepositoryProvider = Provider<CVRepository>((ref) {
-  final aiService = ref.watch(mockAIServiceProvider);
-  return CVRepositoryImpl(mockAIService: aiService);
+  final aiService = ref.watch(remoteAIServiceProvider);
+  return CVRepositoryImpl(aiService: aiService);
 });
 
 final generatedCVProvider = AsyncNotifierProvider<CVDisplayNotifier, CVData>(() {
@@ -35,6 +34,9 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
       throw Exception('Incomplete Data'); 
     }
 
+    print('DEBUG: Generating CV');
+    print('Profile Experience: ${creationState.userProfile?.experience.length}');
+    
     return repository.generateCV(
       profile: creationState.userProfile!,
       jobInput: creationState.jobInput!,

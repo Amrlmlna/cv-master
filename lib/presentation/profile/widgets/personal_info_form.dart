@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../common/widgets/custom_text_form_field.dart';
 
 class PersonalInfoForm extends StatelessWidget {
   final TextEditingController nameController;
@@ -18,55 +19,35 @@ class PersonalInfoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
+        CustomTextFormField(
           controller: nameController,
-          decoration: const InputDecoration(
-            labelText: 'Full Name',
-            prefixIcon: Icon(Icons.person_outline),
-            border: OutlineInputBorder(),
-            filled: true,
-            fillColor: Colors.white,
-          ),
+          labelText: 'Full Name',
+          prefixIcon: Icons.person_outline,
           validator: (v) => v!.isEmpty ? 'Required' : null,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
-        TextFormField(
+        CustomTextFormField(
           controller: emailController,
-          decoration: const InputDecoration(
-            labelText: 'Email',
-            prefixIcon: Icon(Icons.email_outlined),
-            border: OutlineInputBorder(),
-            filled: true,
-            fillColor: Colors.white,
-          ),
+          labelText: 'Email',
+          prefixIcon: Icons.email_outlined,
           validator: (v) => v!.isEmpty ? 'Required' : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
-        TextFormField(
+        CustomTextFormField(
           controller: phoneController,
-          decoration: const InputDecoration(
-            labelText: 'Phone Number',
-            prefixIcon: Icon(Icons.phone_outlined),
-            border: OutlineInputBorder(),
-            filled: true,
-            fillColor: Colors.white,
-          ),
+          labelText: 'Phone Number',
+          prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
-        TextFormField(
+        CustomTextFormField(
           controller: locationController,
-          decoration: const InputDecoration(
-            labelText: 'Location',
-            prefixIcon: Icon(Icons.location_on_outlined),
-            border: OutlineInputBorder(),
-            filled: true,
-            fillColor: Colors.white,
-          ),
+          labelText: 'Location',
+          prefixIcon: Icons.location_on_outlined,
           textInputAction: TextInputAction.done,
         ),
       ],
