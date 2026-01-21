@@ -33,76 +33,88 @@ class RemoteAIService {
       );
 
       if (response.statusCode == 200) {
-        print('DEBUG: Raw AI Response: ${response.body}');
-        
-        final dynamic decoded = jsonDecode(response.body);
-        if (decoded is! Map) {
-          throw Exception('AI response is not a JSON object');
-        }
-        
-        // Use dynamic to avoid Map<String, dynamic> casting issues
-        final data = decoded;
-        
-        // 1. Safe Summary
-        final String summary = data['generatedSummary']?.toString() ?? 'Summary not available.';
-        
-        // 2. Safe Skills
-        final List<String> tailoredSkills = [];
-        final dynamic rawSkills = data['tailoredSkills'] ?? data['skills'];
-        if (rawSkills is List) {
-          tailoredSkills.addAll(rawSkills.map((e) => e.toString()));
-        }
-        
-        // 3. Safe Experience Analysis
-        final refinedMap = <String, String>{};
-        final dynamic rawAnalysis = data['analyzedExperience'];
-        if (rawAnalysis is List) {
-          for (var item in rawAnalysis) {
-            if (item is Map) {
-              final key = item['originalTitle']?.toString().toLowerCase();
-              final val = item['refinedDescription']?.toString();
-              if (key != null && val != null) {
-                refinedMap[key] = val;
-              }
-            }
-          }
-        }
-        
-        // Merge refined descriptions into existing experience list
-        final refinedExperience = profile.experience.map((exp) {
-          final refinedDesc = refinedMap[exp.jobTitle.toLowerCase()];
-          if (refinedDesc != null) {
-            return Experience(
-              jobTitle: exp.jobTitle,
-              companyName: exp.companyName,
-              startDate: exp.startDate,
-              endDate: exp.endDate,
-              description: refinedDesc, // Use AI refined description
-            );
-          }
-          return exp;
-        }).toList();
-
-        return CVData(
-          id: const Uuid().v4(),
-          userProfile: profile.copyWith(
-            skills: tailoredSkills, 
-            experience: refinedExperience, // Use refined list
-            education: profile.education,
-          ),
-          generatedSummary: summary,
-          tailoredSkills: tailoredSkills,
-          styleId: styleId,
-          createdAt: DateTime.now(),
-          jobTitle: jobInput.jobTitle,
-          language: language,
-        );
+        return _parseCVResponse(response.body, profile, jobInput, styleId, language);
       } else {
         throw Exception('Failed to generate CV: ${response.body}');
       }
     } catch (e) {
       throw Exception('Network Error: $e');
     }
+  }
+
+  CVData _parseCVResponse(
+    String responseBody, 
+    UserProfile profile, 
+    JobInput jobInput, 
+    String styleId, 
+    String language
+  ) {
+    print('DEBUG: Raw AI Response: $responseBody');
+    
+    final dynamic decoded = jsonDecode(responseBody);
+    if (decoded is! Map) {
+      throw Exception('AI response is not a JSON object');
+    }
+    
+    // Use dynamic to avoid Map<String, dynamic> casting issues
+    final data = decoded;
+    
+    // 1. Safe Summary
+    final String summary = data['generatedSummary']?.toString() ?? 'Summary not available.';
+    
+    // 2. Safe Skills
+    final List<String> tailoredSkills = [];
+    final dynamic rawSkills = data['tailoredSkills'] ?? data['skills'];
+    if (rawSkills is List) {
+      tailoredSkills.addAll(rawSkills.map((e) => e.toString()));
+    }
+    
+    // 3. Safe Experience Analysis
+    final refinedExperience = _refineExperience(profile.experience, data['analyzedExperience']);
+
+    return CVData(
+      id: const Uuid().v4(),
+      userProfile: profile.copyWith(
+        skills: tailoredSkills, 
+        experience: refinedExperience, // Use refined list
+        education: profile.education,
+      ),
+      generatedSummary: summary,
+      tailoredSkills: tailoredSkills,
+      styleId: styleId,
+      createdAt: DateTime.now(),
+      jobTitle: jobInput.jobTitle,
+      language: language,
+    );
+  }
+
+  List<Experience> _refineExperience(List<Experience> originalExperience, dynamic rawAnalysis) {
+    if (rawAnalysis is! List) return originalExperience;
+
+    final refinedMap = <String, String>{};
+    for (var item in rawAnalysis) {
+      if (item is Map) {
+        final key = item['originalTitle']?.toString().toLowerCase();
+        final val = item['refinedDescription']?.toString();
+        if (key != null && val != null) {
+          refinedMap[key] = val;
+        }
+      }
+    }
+    
+    return originalExperience.map((exp) {
+      final refinedDesc = refinedMap[exp.jobTitle.toLowerCase()];
+      if (refinedDesc != null) {
+        return Experience(
+          jobTitle: exp.jobTitle,
+          companyName: exp.companyName,
+          startDate: exp.startDate,
+          endDate: exp.endDate,
+          description: refinedDesc, // Use AI refined description
+        );
+      }
+      return exp;
+    }).toList();
   }
 
   Future<String> rewriteContent(String originalText, String language) async {

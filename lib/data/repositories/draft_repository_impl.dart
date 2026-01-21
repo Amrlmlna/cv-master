@@ -8,7 +8,6 @@ class DraftRepositoryImpl implements DraftRepository {
 
   @override
   Future<void> saveDraft(CVData cv) async {
-    final prefs = await SharedPreferences.getInstance();
     final drafts = await getDrafts();
     
     // Check if draft with same ID exists and update it, or add new
@@ -19,8 +18,7 @@ class DraftRepositoryImpl implements DraftRepository {
       drafts.insert(0, cv); // Add to beginning
     }
 
-    final String encodedData = jsonEncode(drafts.map((e) => e.toJson()).toList());
-    await prefs.setString(_storageKey, encodedData);
+    await _persistDrafts(drafts);
   }
 
   @override
@@ -40,10 +38,13 @@ class DraftRepositoryImpl implements DraftRepository {
 
   @override
   Future<void> deleteDraft(String id) async {
-    final prefs = await SharedPreferences.getInstance();
     final drafts = await getDrafts();
     drafts.removeWhere((d) => d.id == id);
-    
+    await _persistDrafts(drafts);
+  }
+
+  Future<void> _persistDrafts(List<CVData> drafts) async {
+    final prefs = await SharedPreferences.getInstance();
     final String encodedData = jsonEncode(drafts.map((e) => e.toJson()).toList());
     await prefs.setString(_storageKey, encodedData);
   }
