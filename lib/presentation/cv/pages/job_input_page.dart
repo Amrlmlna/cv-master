@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/job_input.dart';
 import '../providers/cv_generation_provider.dart';
+import '../../profile/providers/profile_provider.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -90,15 +91,55 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     super.dispose();
   }
 
-  void _submit() {
+  bool _isLoading = false;
+
+  Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      final jobInput = JobInput(
-        jobTitle: _titleController.text,
-        jobDescription: _descController.text, // Could be empty, handled by backend
-      );
+      final masterProfile = ref.read(masterProfileProvider);
       
-      ref.read(cvCreationProvider.notifier).setJobInput(jobInput);
-      context.push('/create/user-data');
+      if (masterProfile == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.')),
+        );
+        return;
+      }
+
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final jobInput = JobInput(
+          jobTitle: _titleController.text,
+          jobDescription: _descController.text,
+        );
+        
+        // Save Job Input to state
+        ref.read(cvCreationProvider.notifier).setJobInput(jobInput);
+
+        // Call AI to Tailor Profile
+        final repository = ref.read(cvRepositoryProvider);
+        final tailoredProfile = await repository.tailorProfile(
+          masterProfile: masterProfile, 
+          jobInput: jobInput
+        );
+        
+        if (mounted) {
+           context.push('/create/user-data', extra: tailoredProfile);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Gagal menganalisis profil: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 
@@ -107,7 +148,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Target Pekerjaan'),
+        title: const Text('Target Posisi'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -140,7 +181,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
                       const Icon(Icons.auto_awesome, color: Colors.white, size: 28),
                       const SizedBox(height: 16),
                       const Text(
-                        'Lagi mau lamar kerja jadi apa nih?',
+                        'Kamu mau bikin CV buat posisi apa?',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -149,7 +190,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'AI bakal bantuin bikin CV yang pas banget buat posisi ini.',
+                        'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.',
                         style: TextStyle(color: Colors.white70, height: 1.4),
                       ),
                       const SizedBox(height: 24),
@@ -210,7 +251,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
                 // 2. Standard Description Field (Outside Card)
                 const Text(
-                  'Detail Lowongan (Opsional)',
+                  'Detail / Kualifikasi (Opsional)',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -222,7 +263,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
                   controller: _descController,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: 'Paste deskripsi pekerjaan, persyaratan, atau kualifikasi di sini...',
+                    hintText: 'Paste deskripsi posisi, persyaratan, atau kualiifikasi di sini...',
                     hintStyle: TextStyle(color: Colors.grey[500]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -256,7 +297,16 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Lanjut: Isi Data Diri'),
+                    child: _isLoading 
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)),
+                            SizedBox(width: 12),
+                            Text('Sedang Menganalisis...'),
+                          ],
+                        )
+                      : const Text('Lanjut: Review Data'),
                   ),
                 ),
               ],

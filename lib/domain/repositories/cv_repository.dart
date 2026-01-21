@@ -11,4 +11,9 @@ abstract class CVRepository {
   });
 
   Future<String> rewriteContent(String originalText, String language);
+  
+  Future<UserProfile> tailorProfile({
+    required UserProfile masterProfile,
+    required JobInput jobInput,
+  });
 }

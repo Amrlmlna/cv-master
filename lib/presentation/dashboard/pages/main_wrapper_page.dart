@@ -57,14 +57,7 @@ class MainWrapperPage extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('My Profile'),
-              onTap: () {
-                Navigator.pop(context); // Close Drawer
-                context.push('/profile'); // Push Profile Page
-              },
-            ),
+
              ListTile(
               leading: const Icon(Icons.help_outline),
               title: const Text('Help'),

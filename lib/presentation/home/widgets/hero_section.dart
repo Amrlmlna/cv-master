@@ -26,7 +26,7 @@ class HeroSection extends StatelessWidget {
           const Icon(Icons.auto_awesome, color: Colors.white, size: 32),
           const SizedBox(height: 16),
           const Text(
-            'Lagi nyari kerja?',
+            'Butuh CV Profesional?',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -35,7 +35,7 @@ class HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Bikin CV spesifik yang bakal dilirik HRD cuma dalam hitungan detik.',
+            'Bikin CV spesifik yang menarik perhatian pembaca cuma dalam hitungan detik.',
             style: TextStyle(
               color: Colors.white70,
               height: 1.4,

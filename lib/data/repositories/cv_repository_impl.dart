@@ -27,4 +27,12 @@ class CVRepositoryImpl implements CVRepository {
   Future<String> rewriteContent(String originalText, String language) {
     return aiService.rewriteContent(originalText, language);
   }
+
+  @override
+  Future<UserProfile> tailorProfile({
+    required UserProfile masterProfile,
+    required JobInput jobInput,
+  }) {
+    return aiService.tailorProfile(masterProfile: masterProfile, jobInput: jobInput);
+  }
 }

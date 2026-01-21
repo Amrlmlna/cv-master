@@ -128,4 +128,30 @@ class RemoteAIService {
       throw Exception('Network Error: $e');
     }
   }
+  Future<UserProfile> tailorProfile({
+    required UserProfile masterProfile,
+    required JobInput jobInput,
+  }) async {
+    final url = Uri.parse('$baseUrl/tailor'); // Make sure backend has this route
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'masterProfile': masterProfile.toJson(),
+          'jobInput': jobInput.toJson(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return UserProfile.fromJson(data);
+      } else {
+        throw Exception('Failed to tailor profile: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Network Error (Tailor): $e');
+    }
+  }
 }

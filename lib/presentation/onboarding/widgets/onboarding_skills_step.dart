@@ -23,9 +23,8 @@ class OnboardingSkillsStep extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Tulis skill teknis atau soft skill kamu.',
-             style: TextStyle(color: Colors.grey),
+            'Tulis semua keahlianmu. AI akan menonjolkan skill yang paling sesuai dengan kebutuhan posisi yang kamu tuju.',
+             style: TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           SkillsInputForm(

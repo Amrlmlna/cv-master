@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/onboarding_provider.dart';
 import '../../profile/providers/profile_provider.dart';
-import '../widgets/onboarding_welcome_step.dart';
+
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
@@ -40,7 +40,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           children: [
             // Progress Bar
             LinearProgressIndicator(
-              value: (_currentPage + 1) / 6,
+              value: (_currentPage + 1) / 5,
               backgroundColor: Colors.grey[200],
               valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
             ),
@@ -52,7 +52,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(), // Prevent swipe
                   children: [
-                    const OnboardingWelcomeStep(),
+
                     OnboardingPersonalStep(
                       nameController: _nameController,
                       emailController: _emailController,
@@ -98,7 +98,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
                     ),
-                    child: Text(_currentPage == 5 ? 'Mulai Sekarang' : 'Lanjut'),
+                    child: Text(_currentPage == 4 ? 'Mulai Sekarang' : 'Lanjut'),
                   ),
                 ],
               ),
@@ -111,14 +111,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   void _nextPage() {
     // Validation Logic
-    if (_currentPage == 1) {
+    if (_currentPage == 0) {
       if (_nameController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Tolong isi nama lengkap dulu ya.')));
         return;
       }
     }
 
-    if (_currentPage < 5) {
+    if (_currentPage < 4) {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
       setState(() {
         _currentPage++;
