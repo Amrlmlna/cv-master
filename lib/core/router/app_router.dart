@@ -13,6 +13,9 @@ import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/templates/pages/template_gallery_page.dart';
 import '../../presentation/onboarding/pages/onboarding_page.dart';
 import '../../presentation/onboarding/providers/onboarding_provider.dart';
+import '../../presentation/support/pages/help_page.dart';
+import '../../presentation/support/pages/feedback_page.dart';
+import '../../presentation/legal/pages/legal_page.dart';
 import '../../domain/entities/user_profile.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -86,13 +89,33 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfilePage(),
+                routes: [
+                  GoRoute(
+                    path: 'help',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const HelpPage(),
+                  ),
+                ],
               ),
             ],
           ),
         ],
       ),
       GoRoute(
+        path: '/support/feedback',
+        builder: (context, state) => const FeedbackPage(),
+      ),
+      GoRoute(
+        path: '/legal/privacy',
+        builder: (context, state) => const LegalPage(title: 'Privacy Policy', content: kPrivacyPolicy),
+      ),
+      GoRoute(
+        path: '/legal/terms',
+        builder: (context, state) => const LegalPage(title: 'Terms of Service', content: kTermsOfService),
+      ),
+      GoRoute(
         path: '/create/job-input',
+
         builder: (context, state) => const JobInputPage(),
       ),
       GoRoute(

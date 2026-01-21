@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
@@ -185,6 +186,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
             const SizedBox(height: 24),
+            
+            const SizedBox(height: 48),
+
+            const SizedBox(height: 48),
+
             Center(
               child: TextButton(
                 onPressed: () async {
