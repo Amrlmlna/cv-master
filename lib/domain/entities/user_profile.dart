@@ -89,6 +89,22 @@ class Experience extends Equatable {
     required this.description,
   });
 
+  Experience copyWith({
+    String? jobTitle,
+    String? companyName,
+    String? startDate,
+    String? endDate,
+    String? description,
+  }) {
+    return Experience(
+      jobTitle: jobTitle ?? this.jobTitle,
+      companyName: companyName ?? this.companyName,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      description: description ?? this.description,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'jobTitle': jobTitle,
@@ -125,6 +141,20 @@ class Education extends Equatable {
     required this.startDate,
     this.endDate,
   });
+
+  Education copyWith({
+    String? degree,
+    String? schoolName,
+    String? startDate,
+    String? endDate,
+  }) {
+    return Education(
+      degree: degree ?? this.degree,
+      schoolName: schoolName ?? this.schoolName,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
