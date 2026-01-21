@@ -27,6 +27,7 @@ class OnboardingPersonalStep extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
+          const Text(
             'Tolong isi informasi kontak kamu,\ndata ini akan disimpan biar kamu gaperlu input data berulang2 saat buat cv.',
              style: TextStyle(color: Colors.grey, height: 1.5),
           ),

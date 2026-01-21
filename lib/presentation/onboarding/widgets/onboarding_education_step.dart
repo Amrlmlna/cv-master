@@ -24,6 +24,7 @@ class OnboardingEducationStep extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
+          const Text(
             'Isi semua riwayat pendidikanmu. AI akan memilih jenjang yang paling relevan untuk ditaruh di CV.',
              style: TextStyle(color: Colors.grey, height: 1.5),
           ),
