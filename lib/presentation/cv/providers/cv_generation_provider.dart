@@ -49,18 +49,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
   Future<void> updateSummary(String newSummary) async {
     final currentState = state.value;
     if (currentState != null) {
-      // Create new CVData with updated summary
-      final updatedCV = CVData(
-        id: currentState.id,
-        userProfile: currentState.userProfile,
-        generatedSummary: newSummary,
-        tailoredSkills: currentState.tailoredSkills,
-        styleId: currentState.styleId,
-        createdAt: currentState.createdAt,
-        jobTitle: currentState.jobTitle,
-        language: currentState.language,
-      );
-      state = AsyncValue.data(updatedCV);
+      state = AsyncValue.data(currentState.copyWith(generatedSummary: newSummary));
       ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
@@ -68,17 +57,7 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
   Future<void> updateStyle(String newStyleId) async {
     final currentState = state.value;
     if (currentState != null) {
-      final updatedCV = CVData(
-        id: currentState.id,
-        userProfile: currentState.userProfile,
-        generatedSummary: currentState.generatedSummary,
-        tailoredSkills: currentState.tailoredSkills,
-        styleId: newStyleId,
-        createdAt: currentState.createdAt,
-        jobTitle: currentState.jobTitle,
-        language: currentState.language,
-      );
-      state = AsyncValue.data(updatedCV);
+      state = AsyncValue.data(currentState.copyWith(styleId: newStyleId));
       ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
@@ -88,31 +67,13 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
     if (currentState != null) {
       final newExperienceList = currentState.userProfile.experience.map((e) {
         if (e == oldExp) {
-          // Equatable makes this work if properties match
-          // We need to create a copy of Experience with new description
-          return Experience(
-              jobTitle: e.jobTitle,
-              companyName: e.companyName,
-              startDate: e.startDate,
-              endDate: e.endDate,
-              description: newDescription);
+           return e.copyWith(description: newDescription);
         }
         return e;
       }).toList();
 
       final updatedProfile = currentState.userProfile.copyWith(experience: newExperienceList);
-      
-      final updatedCV = CVData(
-        id: currentState.id,
-        userProfile: updatedProfile,
-        generatedSummary: currentState.generatedSummary,
-        tailoredSkills: currentState.tailoredSkills,
-        styleId: currentState.styleId,
-        createdAt: currentState.createdAt,
-        jobTitle: currentState.jobTitle,
-        language: currentState.language,
-      );
-      state = AsyncValue.data(updatedCV);
+      state = AsyncValue.data(currentState.copyWith(userProfile: updatedProfile));
       ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
@@ -121,51 +82,14 @@ class CVDisplayNotifier extends AsyncNotifier<CVData> {
     final currentState = state.value;
     if (currentState != null) {
       final updatedSkills = List<String>.from(currentState.tailoredSkills)..add(newSkill);
-      
-      final updatedCV = CVData(
-        id: currentState.id,
-        userProfile: currentState.userProfile,
-        generatedSummary: currentState.generatedSummary,
-        tailoredSkills: updatedSkills,
-        styleId: currentState.styleId,
-        createdAt: currentState.createdAt,
-        jobTitle: currentState.jobTitle,
-        language: currentState.language,
-      );
-      state = AsyncValue.data(updatedCV);
+      state = AsyncValue.data(currentState.copyWith(tailoredSkills: updatedSkills));
       ref.read(unsavedChangesProvider.notifier).state = true;
     }
   }
 
-
-
   void loadCV(CVData cvData) {
     state = AsyncValue.data(cvData);
     ref.read(unsavedChangesProvider.notifier).state = false; // Reset on load
-  }
-}
-
-extension CVDataCopyWith on CVData {
-  CVData copyWith({
-    String? id,
-    UserProfile? userProfile,
-    String? generatedSummary,
-    List<String>? tailoredSkills,
-    String? styleId,
-    DateTime? createdAt,
-    String? jobTitle,
-    String? language,
-  }) {
-    return CVData(
-      id: id ?? this.id,
-      userProfile: userProfile ?? this.userProfile,
-      generatedSummary: generatedSummary ?? this.generatedSummary,
-      tailoredSkills: tailoredSkills ?? this.tailoredSkills,
-      styleId: styleId ?? this.styleId,
-      createdAt: createdAt ?? this.createdAt,
-      jobTitle: jobTitle ?? this.jobTitle,
-      language: language ?? this.language,
-    );
   }
 }
 

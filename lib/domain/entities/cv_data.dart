@@ -22,6 +22,28 @@ class CVData extends Equatable {
     this.language = 'id',
   });
 
+  CVData copyWith({
+    String? id,
+    UserProfile? userProfile,
+    String? generatedSummary,
+    List<String>? tailoredSkills,
+    String? styleId,
+    DateTime? createdAt,
+    String? jobTitle,
+    String? language,
+  }) {
+    return CVData(
+      id: id ?? this.id,
+      userProfile: userProfile ?? this.userProfile,
+      generatedSummary: generatedSummary ?? this.generatedSummary,
+      tailoredSkills: tailoredSkills ?? this.tailoredSkills,
+      styleId: styleId ?? this.styleId,
+      createdAt: createdAt ?? this.createdAt,
+      jobTitle: jobTitle ?? this.jobTitle,
+      language: language ?? this.language,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

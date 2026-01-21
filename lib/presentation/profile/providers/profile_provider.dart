@@ -9,7 +9,9 @@ final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserP
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
-  MasterProfileNotifier({UserProfile? initialState}) : super(initialState);
+  MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
+    loadProfile();
+  }
 
   static const String _key = 'master_profile_data';
 

@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                   ),
             ),
             Text(
-              'Siap dapetin kerja impian?',
+              'Siap gapai tujuan profesionalmu?',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

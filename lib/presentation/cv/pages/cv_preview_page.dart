@@ -14,6 +14,19 @@ import '../widgets/preview/preview_education.dart';
 class CVPreviewPage extends ConsumerWidget {
   const CVPreviewPage({super.key});
 
+  Future<void> _saveDraft(BuildContext context, WidgetRef ref) async {
+    final currentData = ref.read(generatedCVProvider).asData?.value;
+    if (currentData != null) {
+      await ref.read(draftsProvider.notifier).saveDraft(currentData);
+      ref.read(unsavedChangesProvider.notifier).state = false;
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Draft Disimpan')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cvAsyncValue = ref.watch(generatedCVProvider);
@@ -46,16 +59,9 @@ class CVPreviewPage extends ConsumerWidget {
               ),
               FilledButton(
                 onPressed: () async {
-                  final currentData = ref.read(generatedCVProvider).asData?.value;
-                  if (currentData != null) {
-                    await ref.read(draftsProvider.notifier).saveDraft(currentData);
-                    ref.read(unsavedChangesProvider.notifier).state = false;
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Draft Disimpan')),
-                      );
-                      Navigator.of(context).pop(true);
-                    }
+                  await _saveDraft(context, ref);
+                  if (context.mounted) {
+                    Navigator.of(context).pop(true);
                   }
                 },
                 child: const Text('Simpan & Keluar'),
@@ -84,18 +90,7 @@ class CVPreviewPage extends ConsumerWidget {
           ),
           actions: [
             TextButton(
-               onPressed: () async {
-                 final currentData = ref.read(generatedCVProvider).asData?.value;
-                 if (currentData != null) {
-                   await ref.read(draftsProvider.notifier).saveDraft(currentData);
-                   ref.read(unsavedChangesProvider.notifier).state = false; // Reset dirty state
-                   if (context.mounted) {
-                     ScaffoldMessenger.of(context).showSnackBar(
-                       const SnackBar(content: Text('Draft Disimpan')),
-                     );
-                   }
-                 }
-              },
+               onPressed: () => _saveDraft(context, ref),
               child: const Text('Simpan'),
             ),
             TextButton(
