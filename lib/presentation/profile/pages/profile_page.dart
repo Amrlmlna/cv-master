@@ -46,6 +46,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _locationController.dispose();
+    super.dispose();
+  }
+
     void _saveProfile() {
     // Validate?
     if (_nameController.text.isEmpty) {

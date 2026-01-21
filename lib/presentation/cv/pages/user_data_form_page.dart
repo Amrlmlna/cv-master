@@ -41,7 +41,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       final profileToUse = widget.tailoredProfile ?? masterProfile;
       final isTailored = widget.tailoredProfile != null;
       
+      
       // If we have a profile to use AND the current form is empty
+      if (!mounted) return;
+
       if (profileToUse != null && _nameController.text.isEmpty) {
         setState(() {
           _nameController.text = profileToUse.fullName;

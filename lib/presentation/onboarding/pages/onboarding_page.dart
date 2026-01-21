@@ -33,6 +33,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   List<String> _skills = [];
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _locationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
