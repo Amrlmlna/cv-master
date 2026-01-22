@@ -21,7 +21,7 @@ class OnboardingExperienceStep extends StatelessWidget {
         children: [
           const Text(
             'Pengalaman Kerja',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
           const Text(

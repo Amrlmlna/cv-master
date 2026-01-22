@@ -13,6 +13,8 @@ class CustomTextFormField extends StatelessWidget {
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
 
+  final bool isDark; // NEW: Dark Mode Flag
+
   const CustomTextFormField({
     super.key,
     this.controller,
@@ -26,10 +28,17 @@ class CustomTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.onChanged,
+    this.isDark = false, // Default to light
   });
 
   @override
   Widget build(BuildContext context) {
+    // Styles based on mode
+    final fillColor = isDark ? const Color(0xFF2C2C2C) : Colors.white;
+    final textColor = isDark ? Colors.white : Colors.black87;
+    final labelColor = isDark ? Colors.grey[400] : Colors.grey[600];
+    final borderColor = isDark ? Colors.transparent : Colors.grey.shade300;
+    
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -39,17 +48,29 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly,
       onTap: onTap,
       onChanged: onChanged,
+      style: TextStyle(color: textColor), // Input text color
+      cursorColor: isDark ? Colors.white : Colors.black, // Cursor color
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: TextStyle(color: labelColor),
         hintText: hintText,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-        border: const OutlineInputBorder(),
+        hintStyle: TextStyle(color: labelColor),
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: labelColor) : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300),
+           borderRadius: BorderRadius.circular(12),
+           borderSide: BorderSide(color: borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+           borderRadius: BorderRadius.circular(12),
+           borderSide: BorderSide(color: isDark ? Colors.white54 : Colors.black, width: 1.5),
         ),
         filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        fillColor: fillColor,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         alignLabelWithHint: maxLines > 1,
       ),
     );

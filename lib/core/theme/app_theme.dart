@@ -29,8 +29,8 @@ class AppTheme {
       ),
 
       // Typography
-      // Using Inter as a proxy for Geist Sans (similar neo-grotesque)
-      textTheme: GoogleFonts.interTextTheme().apply(
+      // Using Outfit as requested
+      textTheme: GoogleFonts.outfitTextTheme().apply(
         bodyColor: primaryColor,
         displayColor: primaryColor,
       ),

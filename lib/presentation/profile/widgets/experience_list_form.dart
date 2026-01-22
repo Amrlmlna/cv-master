@@ -48,18 +48,22 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white)),
             TextButton.icon(
               onPressed: () => _editExperience(),
-              icon: const Icon(Icons.add),
-              label: const Text('Tambah'),
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: const Text('Tambah', style: TextStyle(color: Colors.white)),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.white.withOpacity(0.1),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
             ),
           ],
         ),
         if (widget.experiences.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: Colors.grey)),
+            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: Colors.white54)),
           ),
         ListView.separated(
           shrinkWrap: true,

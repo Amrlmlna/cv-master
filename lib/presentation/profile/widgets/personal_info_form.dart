@@ -25,6 +25,7 @@ class PersonalInfoForm extends StatelessWidget {
           prefixIcon: Icons.person_outline,
           validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
           textInputAction: TextInputAction.next,
+          isDark: true,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -34,6 +35,7 @@ class PersonalInfoForm extends StatelessWidget {
           validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
+          isDark: true,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -42,6 +44,7 @@ class PersonalInfoForm extends StatelessWidget {
           prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
+          isDark: true,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -49,6 +52,7 @@ class PersonalInfoForm extends StatelessWidget {
           labelText: 'Lokasi / Domisili',
           prefixIcon: Icons.location_on_outlined,
           textInputAction: TextInputAction.done,
+          isDark: true,
         ),
       ],
     );

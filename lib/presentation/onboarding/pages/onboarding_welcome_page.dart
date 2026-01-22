@@ -139,7 +139,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
                     minHeight: height * 0.8, 
                   ),
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xFF1E1E1E), // Dark Grey "Black Card"
                     borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                      boxShadow: [
                       BoxShadow(
