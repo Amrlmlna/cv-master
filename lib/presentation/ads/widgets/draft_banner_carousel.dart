@@ -87,8 +87,6 @@ class DraftsBannerCarousel extends StatelessWidget {
               ],
             ),
           ),
-          // const SizedBox(width: 8),
-          // Icon(Icons.star_border, color: Colors.white.withOpacity(0.2), size: 48),
         ],
       ),
     );

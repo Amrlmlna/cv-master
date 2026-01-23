@@ -55,32 +55,38 @@ class RecentDraftsList extends ConsumerWidget {
         width: 160,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
+          color: Colors.white, // White Card
+          borderRadius: BorderRadius.circular(24), // High rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // Subtle shadow
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+                color: Colors.black.withOpacity(0.05), // Light grey icon bg
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.description_outlined, size: 20, color: Colors.black87),
+              child: const Icon(Icons.edit_document, size: 20, color: Colors.black), // Black icon
             ),
             const Spacer(),
             Text(
               draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16, fontFamily: 'Outfit'),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
               timeago.format(draft.createdAt),
-              style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]), // Grey text
             ),
           ],
         ),
@@ -92,22 +98,29 @@ class RecentDraftsList extends ConsumerWidget {
     return Container(
       width: 100,
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        color: Colors.white.withOpacity(0.05), // Very subtle fill
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5), // Thicker white border
       ),
       child: InkWell(
         onTap: () {
            context.go('/drafts');
         },
-        borderRadius: BorderRadius.circular(12),
-        child: const Center(
+        borderRadius: BorderRadius.circular(24),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Icon(Icons.arrow_forward, color: Colors.grey),
-               SizedBox(height: 4),
-               Text('Lihat Semua', style: TextStyle(fontSize: 12, color: Colors.grey)),
+               Container(
+                 padding: const EdgeInsets.all(12),
+                 decoration: BoxDecoration(
+                   shape: BoxShape.circle,
+                   color: Colors.white, // White circle
+                 ),
+                 child: const Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16), // Black icon
+               ),
+               const SizedBox(height: 12),
+               const Text('Lihat\nSemua', textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
             ],
           ),
         ),

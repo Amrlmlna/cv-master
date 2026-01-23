@@ -9,11 +9,17 @@ final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserP
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
-  MasterProfileNotifier({UserProfile? initialState}) : super(initialState);
+  late Future<void> _initFuture;
+
+  MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
+    _initFuture = loadProfile();
+  }
 
   static const String _key = 'master_profile_data';
 
   Future<void> saveProfile(UserProfile profile) async {
+    // Wait for any pending load to finish so we don't get overwritten
+    await _initFuture;
     state = profile;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));
@@ -69,5 +75,11 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      if (state == null) return;
      final updated = state!.copyWith(skills: skills);
      saveProfile(updated);
+  }
+
+  Future<void> clearProfile() async {
+    state = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
   }
 }

@@ -1,71 +1,86 @@
+import 'dart:async';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/job_input.dart';
 import '../../domain/entities/user_profile.dart';
+import 'remote_ai_service.dart'; // Import to implement/extend
 
-class MockAIService {
+class MockAIService implements RemoteAIService {
+  
+  @override
   Future<CVData> generateCV({
     required UserProfile profile,
     required JobInput jobInput,
     required String styleId,
+    required String language,
   }) async {
-    // Simulate network delay
+    // Simulate Network Delay
     await Future.delayed(const Duration(seconds: 2));
 
-    print('DEBUG: MockAIService received profile');
-    print('DEBUG: Experience: ${profile.experience.length}');
-    print('DEBUG: Education: ${profile.education.length}');
+    final isIndo = language == 'id';
 
-    final title = jobInput.jobTitle.toLowerCase();
-    
-    // Deterministic "AI" Logic
-    String summary = '';
-    List<String> skills = [];
-    
-    if (title.contains('manager') || title.contains('lead')) {
-      summary = 'Results-oriented ${jobInput.jobTitle} with a proven track record of leading teams and driving strategic initiatives. Expert in optimizing processes and delivering high-impact solutions.';
-      skills = ['Leadership', 'Strategic Planning', 'Team Building', 'Project Management', 'Stakeholder Management'];
-    } else if (title.contains('engineer') || title.contains('developer')) {
-      summary = 'Passionate ${jobInput.jobTitle} with strong technical expertise in building scalable software solutions. Committed to writing clean, maintainable code and solving complex engineering challenges.';
-      skills = ['Software Architecture', 'Clean Code', 'System Design', 'Agile Methodologies', 'Problem Solving'];
-    } else if (title.contains('designer') || title.contains('creative')) {
-      summary = 'Visionary ${jobInput.jobTitle} with a keen eye for aesthetics and user experience. Dedicated to creating intuitive and visually stunning interfaces that delight users.';
-      skills = ['UI/UX Design', 'Visual Hierarchy', 'Prototyping', 'User Research', 'Creative Direction'];
-    } else {
-      // Default / Fallback
-      summary = 'Dedicated ${jobInput.jobTitle} professional with a strong work ethic and a desire to contribute to organizational success. Skilled in communication and adaptability.';
-      skills = ['Communication', 'Time Management', 'Problem Solving', 'Adaptability', 'Teamwork'];
-    }
+    // Dummy AI-Enhanced Description
+    final String summary = isIndo 
+        ? "Profesional ${jobInput.jobTitle} yang berdedikasi dengan pengalaman mendalam dalam industri. Terbukti mampu meningkatkan efisiensi operasional dan memimpin tim lintas fungsi menuju kesuksesan proyek. Ahli dalam memecahkan masalah kompleks dengan solusi inovatif."
+        : "Dedicated ${jobInput.jobTitle} professional with extensive industry experience. Proven track record of improving operational efficiency and leading cross-functional teams to project success. Expert in solving complex problems with innovative solutions.";
 
-    // Merge with user's existing skills if any, or prioritize "AI" skills
-    final finalSkills = {...skills, ...profile.skills}.toList(); 
+    // Dummy Tailored Skills
+    final List<String> tailoredSkills = [
+      'Strategic Planning',
+      'Team Leadership',
+      'Data Analysis',
+      'Project Management',
+      if (jobInput.jobTitle.toLowerCase().contains('dev')) 'Software Development',
+      if (jobInput.jobTitle.toLowerCase().contains('design')) 'UI/UX Design',
+      'Communication'
+    ];
+
+    // Dummy Enhanced Experience
+    final refinedExperience = profile.experience.map((e) {
+      return e.copyWith(
+        description: isIndo
+            ? "Meningkatkan produktivitas tim sebesar 20% melalui implementasi metodologi Agile. Memimpin pengembangan fitur utama yang berdampak pada 10.000+ pengguna aktif bulanan."
+            : "Increased team productivity by 20% through Agile methodology implementation. Led the development of key features impacting 10,000+ monthly active users.",
+      );
+    }).toList();
 
     return CVData(
       id: const Uuid().v4(),
       userProfile: profile.copyWith(
-        skills: finalSkills,
-        experience: profile.experience,
-        education: profile.education,
+        skills: tailoredSkills,
+        experience: refinedExperience,
       ),
       generatedSummary: summary,
-      tailoredSkills: finalSkills,
+      tailoredSkills: tailoredSkills,
       styleId: styleId,
       createdAt: DateTime.now(),
       jobTitle: jobInput.jobTitle,
+      language: language,
     );
   }
 
-  Future<String> rewriteContent(String originalText) async {
+  @override
+  Future<UserProfile> tailorProfile({
+    required UserProfile masterProfile,
+    required JobInput jobInput,
+  }) async {
+    // Simulate Network Delay
     await Future.delayed(const Duration(seconds: 1));
-    // Simple mock logic
-    if (originalText.startsWith('Passionate')) {
-      return originalText.replaceFirst('Passionate', 'Highly skilled and motivated');
-    } else if (originalText.startsWith('Dedicated')) {
-      return originalText.replaceFirst('Dedicated', 'Results-oriented');
-    } else if (originalText.startsWith('Results-oriented')) {
-      return originalText.replaceFirst('Results-oriented', 'Strategic and efficient');
-    } else {
-      return "Professional version: $originalText";
-    }
+
+    // Just return master profile but maybe add a skill or two relevant to job
+    final newSkills = List<String>.from(masterProfile.skills);
+    if (!newSkills.contains("Adaptability")) newSkills.add("Adaptability");
+
+    return masterProfile.copyWith(skills: newSkills);
+  }
+
+  @override
+  Future<String> rewriteContent(String originalText, String language) async {
+    // Simulate Network Delay
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    return language == 'id'
+        ? "[AI Rewritten] $originalText (Versi Lebih Profesional)"
+        : "[AI Rewritten] $originalText (More Professional Version)";
   }
 }

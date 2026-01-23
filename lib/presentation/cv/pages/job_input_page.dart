@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/job_input.dart';
 import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../widgets/job/job_input_hero_card.dart';
+import '../widgets/job/job_description_field.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -24,6 +27,10 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   int _charIndex = 0;
   bool _isDeleting = false;
   Timer? _typingTimer;
+  Timer? _debounceTimer;
+
+  static const String _kDraftTitleKey = 'draft_job_title';
+  static const String _kDraftDescKey = 'draft_job_desc';
 
   final List<String> _jobExamples = [
     'Barista',
@@ -37,7 +44,37 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
   @override
   void initState() {
     super.initState();
+    _loadDrafts();
     _startTypingAnimation();
+    _titleController.addListener(_onTextChanged);
+    _descController.addListener(_onTextChanged);
+  }
+
+  Future<void> _loadDrafts() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+       final savedTitle = prefs.getString(_kDraftTitleKey);
+       final savedDesc = prefs.getString(_kDraftDescKey);
+       
+       if (savedTitle != null && _titleController.text.isEmpty) {
+         _titleController.text = savedTitle;
+       }
+       if (savedDesc != null && _descController.text.isEmpty) {
+         _descController.text = savedDesc;
+       }
+    }
+  }
+
+  void _onTextChanged() {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), _saveDrafts);
+  }
+
+  Future<void> _saveDrafts() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_kDraftTitleKey, _titleController.text);
+    await prefs.setString(_kDraftDescKey, _descController.text);
+    // debugPrint("Draft saved: ${_titleController.text}");
   }
 
   void _startTypingAnimation() {
@@ -88,6 +125,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
     _titleController.dispose();
     _descController.dispose();
     _typingTimer?.cancel();
+    _debounceTimer?.cancel();
     super.dispose();
   }
 
@@ -99,7 +137,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       
       if (masterProfile == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.')),
+          SnackBar(
+            content: const Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.'),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
         );
         return;
       }
@@ -130,7 +173,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal menganalisis profil: $e')),
+            SnackBar(
+              content: Text('Gagal menganalisis profil: $e'),
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
           );
         }
       } finally {
@@ -145,12 +193,15 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    // Determine theme brightness
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Target Posisi'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        centerTitle: true,
+        backgroundColor: Colors.transparent, // Clean look
+        foregroundColor: isDark ? Colors.white : Colors.black, // Explicit Contrast
         elevation: 0,
       ),
       body: SafeArea(
@@ -161,152 +212,37 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. Black Card (Hero Style)
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 15,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.auto_awesome, color: Colors.white, size: 28),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Kamu mau bikin CV buat posisi apa?',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.',
-                        style: TextStyle(color: Colors.white70, height: 1.4),
-                      ),
-                      const SizedBox(height: 24),
-                      
-                      // White Input Pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _titleController,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: _hintText.isEmpty && _titleController.text.isEmpty 
-                                      ? '' 
-                                      : _hintText,
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[400],
-                                  ),
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Wajib diisi ya';
-                                  }
-                                  return null;
-                                },
-                                textInputAction: TextInputAction.next,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            InkWell(
-                              onTap: _submit,
-                              child: const Icon(
-                                Icons.arrow_circle_right,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                // 1. White Hero Card
+                JobInputHeroCard(
+                  controller: _titleController,
+                  hintText: _hintText,
+                  onSubmit: _submit,
                 ),
 
                 const SizedBox(height: 32),
 
-                // 2. Standard Description Field (Outside Card)
-                const Text(
-                  'Detail / Kualifikasi (Opsional)',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _descController,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    hintText: 'Paste deskripsi posisi, persyaratan, atau kualiifikasi di sini...',
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.black, width: 2),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[50], 
-                  ),
-                ),
+                // 2. Description Field (Adaptive/Dark)
+                JobDescriptionField(controller: _descController),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 48),
                 
-                // Bottom Button (Alternative Submit)
+                // Bottom Button (White CTA)
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.white, // White Btn
+                      foregroundColor: Colors.black, // Black Text
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                     child: _isLoading 
-                      ? const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)),
-                            SizedBox(width: 12),
-                            Text('Sedang Menganalisis...'),
-                          ],
-                        )
-                      : const Text('Lanjut: Review Data'),
+                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                      : const Text('Lanjut: Review Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   ),
                 ),
               ],

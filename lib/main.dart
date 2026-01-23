@@ -48,9 +48,11 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Job-Specific CV Builder',
+      title: 'CV Master',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark, // Force Dark Mode for Gen Z aesthetic
       routerConfig: router,
     );
   }

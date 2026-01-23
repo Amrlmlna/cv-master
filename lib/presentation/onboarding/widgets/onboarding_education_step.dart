@@ -21,7 +21,7 @@ class OnboardingEducationStep extends StatelessWidget {
         children: [
           const Text(
             'Riwayat Pendidikan',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
           const Text(
@@ -32,6 +32,7 @@ class OnboardingEducationStep extends StatelessWidget {
           EducationListForm(
             education: education,
             onChanged: onChanged,
+            isDark: true,
           ),
         ],
       ),

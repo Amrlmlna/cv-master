@@ -5,45 +5,50 @@ class OnboardingFinalStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: Colors.green.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Success Illustration with Fade/Depth Effect
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Image.asset(
+                  'assets/images/onboarding_complete.png',
+                  height: 250, 
+                  fit: BoxFit.contain,
+                ),
+                // Gradient Overlay for "Depth" / Fade into background
+                Container(
+                  height: 80, // Height of the fade
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        const Color(0xFF1E1E1E).withOpacity(0.0),
+                        const Color(0xFF1E1E1E), 
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            child: const Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
-          ),
-          const SizedBox(height: 48),
-          const Text(
-            'Selesai!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 32),
+            
+            const Text(
+              'Master Profile aman. Sekarang tinggal sat-set bikin CV.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white70,
+                height: 1.5,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Master Profile kamu udah tersimpan. Nanti bisa dipakai buat generate CV otomatis.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 32),
-          const Text(
-            'Dengan menekan "Mulai Sekarang", kamu setuju dengan Syarat & Ketentuan kami.',
-             textAlign: TextAlign.center,
-             style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

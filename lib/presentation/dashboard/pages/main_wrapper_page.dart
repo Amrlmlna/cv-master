@@ -58,12 +58,12 @@ class MainWrapperPage extends StatelessWidget {
               ),
             ),
 
-             ListTile(
+              ListTile(
               leading: const Icon(Icons.help_outline),
               title: const Text('Help'),
               onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to Help
+                Navigator.pop(context); // Close Drawer
+                context.go('/profile/help');
               },
             ),
           ],

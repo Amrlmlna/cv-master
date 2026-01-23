@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
+import '../../common/widgets/custom_text_form_field.dart';
 
 class EducationListForm extends StatefulWidget {
   final List<Education> education;
   final Function(List<Education>) onChanged;
+  final bool isDark;
 
   const EducationListForm({
     super.key,
     required this.education,
     required this.onChanged,
+    this.isDark = false,
   });
 
   @override
@@ -41,24 +45,31 @@ class _EducationListFormState extends State<EducationListForm> {
 
   @override
   Widget build(BuildContext context) {
+    // Check both explicit flag and system theme
+    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editEducation(),
-              icon: const Icon(Icons.add),
-              label: const Text('Tambah'),
+              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
+              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              style: TextButton.styleFrom(
+                backgroundColor: effectiveIsDark ? Colors.white.withOpacity(0.1) : Colors.grey[100],
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
             ),
           ],
         ),
         if (widget.education.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: Colors.grey)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -69,9 +80,10 @@ class _EducationListFormState extends State<EducationListForm> {
             final edu = widget.education[index];
             return Card(
               margin: EdgeInsets.zero,
+              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
               child: ListTile(
-                title: Text(edu.schoolName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}'),
+                title: Text(edu.schoolName, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
+                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -86,6 +98,8 @@ class _EducationListFormState extends State<EducationListForm> {
     );
   }
 }
+
+
 
 class _EducationDialog extends StatefulWidget {
   final Education? existing;
@@ -121,53 +135,115 @@ class _EducationDialogState extends State<_EducationDialog> {
     super.dispose();
   }
 
+  Future<void> _pickDate(TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1980),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.white,
+              onPrimary: Colors.black,
+              surface: Color(0xFF1E1E1E),
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      // Format: yyyy (Education usually mainly cares about Year)
+      // Or 'MMM yyyy' for consistency. Let's stick to 'MMM yyyy' or just 'yyyy' if user prefers.
+      // But let's try 'yyyy' for education as it's cleaner for schools.
+      // Actually, Experience was 'MMM yyyy'. Let's do 'MMM yyyy' for consistency.
+      controller.text = DateFormat('MMM yyyy').format(picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existing == null ? 'Tambah Pendidikan' : 'Edit Pendidikan'),
-      content: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _schoolCtrl,
-                decoration: const InputDecoration(labelText: 'Sekolah / Universitas'),
-                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _degreeCtrl,
-                decoration: const InputDecoration(labelText: 'Gelar / Jurusan'),
-                validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _startCtrl,
-                      decoration: const InputDecoration(labelText: 'Tahun Masuk'),
-                      validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+      backgroundColor: const Color(0xFF1E1E1E), // Dark Card
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: Text(
+        widget.existing == null ? 'TAMBAH PENDIDIKAN' : 'EDIT PENDIDIKAN',
+        style: const TextStyle(
+          color: Colors.white, 
+          fontWeight: FontWeight.w900, 
+          fontSize: 18, 
+          letterSpacing: 1.0,
+        ),
+      ),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomTextFormField(
+                  controller: _schoolCtrl,
+                  labelText: 'Sekolah / Universitas',
+                  hintText: 'Universitas Indonesia',
+                  isDark: true,
+                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                ),
+                const SizedBox(height: 16),
+                CustomTextFormField(
+                  controller: _degreeCtrl,
+                  labelText: 'Gelar / Jurusan',
+                  hintText: 'Sarjana Komputer',
+                  isDark: true,
+                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                ),
+                const SizedBox(height: 16),
+                
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: _startCtrl,
+                        labelText: 'Masuk',
+                        hintText: 'Tahun',
+                        isDark: true,
+                        readOnly: true,
+                        prefixIcon: Icons.calendar_today,
+                        onTap: () => _pickDate(_startCtrl),
+                        validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _endCtrl,
-                      decoration: const InputDecoration(labelText: 'Tahun Lulus (Opsional)'),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: _endCtrl,
+                        labelText: 'Lulus',
+                        hintText: 'Tahun',
+                        isDark: true,
+                        readOnly: true,
+                        prefixIcon: Icons.event,
+                        onTap: () => _pickDate(_endCtrl),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal')),
-        FilledButton(
+        TextButton(
+          onPressed: () => Navigator.pop(context), 
+          style: TextButton.styleFrom(foregroundColor: Colors.white54),
+          child: const Text('BATAL'),
+        ),
+        ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final edu = Education(
@@ -179,7 +255,13 @@ class _EducationDialogState extends State<_EducationDialog> {
               Navigator.pop(context, edu);
             }
           },
-          child: const Text('Simpan'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: const Text('SIMPAN', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
       ],
     );

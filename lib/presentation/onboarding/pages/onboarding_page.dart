@@ -10,6 +10,8 @@ import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
 import '../widgets/onboarding_skills_step.dart';
 import '../widgets/onboarding_final_step.dart';
+import '../widgets/onboarding_shell.dart';
+import '../widgets/onboarding_navigation_bar.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -23,7 +25,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   int _currentPage = 0;
   final _formKey = GlobalKey<FormState>();
 
-  // Temporary State for data collection
+  // Data State
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -33,87 +35,27 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   List<String> _skills = [];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Progress Bar
-            LinearProgressIndicator(
-              value: (_currentPage + 1) / 5,
-              backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-            ),
-            
-            Expanded(
-              child: Form(
-                key: _formKey, // Used mainly for personal info validation
-                child: PageView(
-                  controller: _pageController,
-                  physics: const NeverScrollableScrollPhysics(), // Prevent swipe
-                  children: [
-
-                    OnboardingPersonalStep(
-                      nameController: _nameController,
-                      emailController: _emailController,
-                      phoneController: _phoneController,
-                      locationController: _locationController,
-                    ),
-                    OnboardingExperienceStep(
-                      experiences: _experiences,
-                      onChanged: (val) => setState(() => _experiences = val),
-                    ),
-                    OnboardingEducationStep(
-                      education: _education,
-                      onChanged: (val) => setState(() => _education = val),
-                    ),
-                    OnboardingSkillsStep(
-                      skills: _skills,
-                      onChanged: (val) => setState(() => _skills = val),
-                    ),
-                    const OnboardingFinalStep(),
-                  ],
-                ),
-              ),
-            ),
-            
-            // Navigation Buttons
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    if (_currentPage > 0)
-                    TextButton(
-                      onPressed: _prevPage,
-                      child: const Text('Kembali', style: TextStyle(color: Colors.grey)),
-                    )
-                  else
-                    const SizedBox(width: 80), // Spacer
-
-                  ElevatedButton(
-                    onPressed: _nextPage,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text(_currentPage == 4 ? 'Mulai Sekarang' : 'Lanjut'),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void dispose() {
+    _pageController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _locationController.dispose();
+    super.dispose();
   }
 
   void _nextPage() {
     // Validation Logic
     if (_currentPage == 0) {
       if (_nameController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Tolong isi nama lengkap dulu ya.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Tolong isi nama lengkap dulu ya.'),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 120, left: 20, right: 20), // Higher margin for Onboarding Nav
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
         return;
       }
     }
@@ -149,7 +91,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       skills: _skills,
     );
     
-    ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
+    await ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
 
     // 2. Mark Onboarding as Complete
     await ref.read(onboardingProvider.notifier).completeOnboarding();
@@ -158,5 +100,57 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     if (mounted) {
       context.go('/');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OnboardingShell(
+      currentPage: _currentPage,
+      totalSteps: 5,
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Form(
+              key: _formKey, 
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(), // Prevent swipe
+                children: [
+                  OnboardingPersonalStep(
+                    nameController: _nameController,
+                    emailController: _emailController,
+                    phoneController: _phoneController,
+                    locationController: _locationController,
+                  ),
+                  OnboardingExperienceStep(
+                    experiences: _experiences,
+                    onChanged: (val) => setState(() => _experiences = val),
+                  ),
+                  OnboardingEducationStep(
+                    education: _education,
+                    onChanged: (val) => setState(() => _education = val),
+                  ),
+                  OnboardingSkillsStep(
+                    skills: _skills,
+                    onChanged: (val) => setState(() => _skills = val),
+                  ),
+                  const OnboardingFinalStep(),
+                ],
+              ),
+            ),
+          ),
+          
+          const Spacer(),
+
+          OnboardingNavigationBar(
+            currentPage: _currentPage,
+            isLastPage: _currentPage == 4,
+            onNext: _nextPage,
+            onBack: _prevPage,
+          ),
+        ],
+      ),
+    );
   }
 }

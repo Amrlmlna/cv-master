@@ -14,10 +14,50 @@ import '../widgets/preview/preview_education.dart';
 class CVPreviewPage extends ConsumerWidget {
   const CVPreviewPage({super.key});
 
+  Future<void> _saveDraft(BuildContext context, WidgetRef ref) async {
+    final currentData = ref.read(generatedCVProvider).asData?.value;
+    if (currentData != null) {
+      await ref.read(draftsProvider.notifier).saveDraft(currentData);
+      ref.read(unsavedChangesProvider.notifier).state = false;
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Draft Disimpan'),
+             behavior: SnackBarBehavior.floating,
+             // Float high enough to clear bottom buttons if any, though here buttons are at top.
+             // But consistency is key.
+             margin: const EdgeInsets.all(20),
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cvAsyncValue = ref.watch(generatedCVProvider);
     final hasUnsavedChanges = ref.watch(unsavedChangesProvider);
+
+    // Auto-Save Effect
+    ref.listen(generatedCVProvider, (previous, next) {
+      if (next is AsyncData && next.value != null) {
+        // Only auto-save if it's the *first* load (previous was loading/null) OR explicitly requested?
+        // Actually, "auto-save generated CV" usually means "save the initial result".
+        // But we must be careful not to save endlessly on every keystroke if we were treating this as a true "auto-save" for edits.
+        // For now, let's save when we transition from loading -> data (Generation Complete).
+        
+        final isGenerationComplete = (previous is AsyncLoading) && (next is AsyncData);
+        if (isGenerationComplete) {
+           // We use a microtask or post-frame callback to avoid build-phase side effects,
+           // but reading notifier in listen is generally safe.
+           // However, saveDraft is async and modifies state.
+           Future(() {
+             ref.read(draftsProvider.notifier).saveDraft(next.value!);
+           });
+        }
+      }
+    });
 
     return PopScope(
       canPop: !hasUnsavedChanges,
@@ -46,16 +86,9 @@ class CVPreviewPage extends ConsumerWidget {
               ),
               FilledButton(
                 onPressed: () async {
-                  final currentData = ref.read(generatedCVProvider).asData?.value;
-                  if (currentData != null) {
-                    await ref.read(draftsProvider.notifier).saveDraft(currentData);
-                    ref.read(unsavedChangesProvider.notifier).state = false;
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Draft Disimpan')),
-                      );
-                      Navigator.of(context).pop(true);
-                    }
+                  await _saveDraft(context, ref);
+                  if (context.mounted) {
+                    Navigator.of(context).pop(true);
                   }
                 },
                 child: const Text('Simpan & Keluar'),
@@ -84,18 +117,7 @@ class CVPreviewPage extends ConsumerWidget {
           ),
           actions: [
             TextButton(
-               onPressed: () async {
-                 final currentData = ref.read(generatedCVProvider).asData?.value;
-                 if (currentData != null) {
-                   await ref.read(draftsProvider.notifier).saveDraft(currentData);
-                   ref.read(unsavedChangesProvider.notifier).state = false; // Reset dirty state
-                   if (context.mounted) {
-                     ScaffoldMessenger.of(context).showSnackBar(
-                       const SnackBar(content: Text('Draft Disimpan')),
-                     );
-                   }
-                 }
-              },
+               onPressed: () => _saveDraft(context, ref),
               child: const Text('Simpan'),
             ),
             TextButton(
