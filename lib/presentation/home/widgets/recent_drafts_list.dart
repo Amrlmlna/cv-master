@@ -78,7 +78,7 @@ class RecentDraftsList extends ConsumerWidget {
             ),
             const Spacer(),
             Text(
-              draft.userProfile.fullName.isNotEmpty ? draft.userProfile.fullName : 'Tanpa Judul',
+              draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Tanpa Judul',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16, fontFamily: 'Outfit'),

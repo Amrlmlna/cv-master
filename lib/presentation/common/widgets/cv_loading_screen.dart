@@ -18,7 +18,7 @@ class _CVLoadingScreenState extends State<CVLoadingScreen> with TickerProviderSt
     "Menyusun Struktur...",
     "Menulis Summary Profesional...",
     "Memoles Tata Letak...", 
-    "Finishing Touches... ✨"
+    "Finishing Touches..."
   ];
   Timer? _timer;
 
@@ -66,10 +66,10 @@ class _CVLoadingScreenState extends State<CVLoadingScreen> with TickerProviderSt
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.05) : Colors.blue.withOpacity(0.05),
+                color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.blue.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isDark ? Colors.white24 : Colors.blue.withOpacity(0.2),
+                  color: isDark ? Colors.white24 : Colors.blue.withValues(alpha: 0.2),
                   width: 2,
                 ),
               ),

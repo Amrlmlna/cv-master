@@ -29,8 +29,6 @@ final routerProvider = Provider<GoRouter>((ref) {
   
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-  return GoRouter(
-    navigatorKey: _rootNavigatorKey,
     initialLocation: '/', // Handled by redirects
     redirect: (context, state) {
       // If onboarding is NOT completed, redirect to /onboarding
