@@ -140,7 +140,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               offset: const Offset(0, -4),
               blurRadius: 10,
             ),
@@ -229,7 +229,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
                       const SizedBox(height: 24),
                       Container(
                         decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+                          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: isDark ? Colors.white10 : Colors.grey[200]!),
                         ),

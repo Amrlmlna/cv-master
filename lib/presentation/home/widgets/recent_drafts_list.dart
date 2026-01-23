@@ -59,7 +59,7 @@ class RecentDraftsList extends ConsumerWidget {
           borderRadius: BorderRadius.circular(24), // High rounded corners
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1), // Subtle shadow
+              color: Colors.black.withValues(alpha: 0.1), // Subtle shadow
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -71,7 +71,7 @@ class RecentDraftsList extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.05), // Light grey icon bg
+                color: Colors.black.withValues(alpha: 0.05), // Light grey icon bg
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(Icons.edit_document, size: 20, color: Colors.black), // Black icon
@@ -98,9 +98,9 @@ class RecentDraftsList extends ConsumerWidget {
     return Container(
       width: 100,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05), // Very subtle fill
+        color: Colors.white.withValues(alpha: 0.05), // Very subtle fill
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5), // Thicker white border
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5), // Thicker white border
       ),
       child: InkWell(
         onTap: () {

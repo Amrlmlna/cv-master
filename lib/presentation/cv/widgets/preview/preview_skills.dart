@@ -30,8 +30,8 @@ class PreviewSkills extends StatelessWidget {
                 skill, 
                 style: TextStyle(color: isDark ? Colors.white : Colors.black),
               ),
-              backgroundColor: isDark ? Colors.white.withOpacity(0.1) : Colors.grey[200],
-              side: isDark ? BorderSide(color: Colors.white.withOpacity(0.1)) : BorderSide.none,
+              backgroundColor: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[200],
+              side: isDark ? BorderSide(color: Colors.white.withValues(alpha: 0.1)) : BorderSide.none,
             )),
             ActionChip(
               label: Icon(Icons.add, size: 16, color: isDark ? Colors.white : Colors.black),
@@ -40,7 +40,7 @@ class PreviewSkills extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(
-                  color: isDark ? Colors.white.withOpacity(0.3) : Colors.grey.shade400, 
+                  color: isDark ? Colors.white.withValues(alpha: 0.3) : Colors.grey.shade400, 
                   style: BorderStyle.solid
                 ),
               ),

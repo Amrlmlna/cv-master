@@ -32,9 +32,10 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
           });
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (_selectedFolder == null) ...[
@@ -134,7 +135,8 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildFolderGrid(Map<String, List<CVData>> folders) {
