@@ -48,7 +48,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Validation Logic
     if (_currentPage == 0) {
       if (_nameController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Tolong isi nama lengkap dulu ya.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Tolong isi nama lengkap dulu ya.'),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 120, left: 20, right: 20), // Higher margin for Onboarding Nav
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
         return;
       }
     }

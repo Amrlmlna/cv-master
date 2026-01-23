@@ -21,7 +21,14 @@ class CVPreviewPage extends ConsumerWidget {
       ref.read(unsavedChangesProvider.notifier).state = false;
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Draft Disimpan')),
+          SnackBar(
+            content: const Text('Draft Disimpan'),
+             behavior: SnackBarBehavior.floating,
+             // Float high enough to clear bottom buttons if any, though here buttons are at top.
+             // But consistency is key.
+             margin: const EdgeInsets.all(20),
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
         );
       }
     }

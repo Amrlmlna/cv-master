@@ -28,7 +28,12 @@ class ErrorPage extends StatelessWidget {
     if (args.technicalDetails != null) {
       Clipboard.setData(ClipboardData(text: args.technicalDetails!));
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error details copied to clipboard')),
+        SnackBar(
+          content: const Text('Error details copied to clipboard'),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(20),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
       );
     }
   }

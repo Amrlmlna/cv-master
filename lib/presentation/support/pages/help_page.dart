@@ -37,7 +37,12 @@ class _HelpPageState extends State<HelpPage> {
     if (!await launchUrl(emailLaunchUri)) {
       if (mounted) {
          ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text('Tidak bisa membuka aplikasi email.')),
+           SnackBar(
+             content: const Text('Tidak bisa membuka aplikasi email.'),
+             behavior: SnackBarBehavior.floating,
+             margin: const EdgeInsets.all(20),
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+           ),
          );
       }
     }

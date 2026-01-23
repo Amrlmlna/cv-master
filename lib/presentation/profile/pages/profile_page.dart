@@ -78,7 +78,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void _saveProfile() {
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Isi nama dulu dong')),
+        SnackBar(
+          content: const Text('Isi nama dulu dong'),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(20),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
       );
       return;
     }
@@ -96,7 +101,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.')),
+      SnackBar(
+        content: const Text('Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.'),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20), // Avoid Floating Button
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
   }
 

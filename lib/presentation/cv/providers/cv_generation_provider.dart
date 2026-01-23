@@ -7,7 +7,15 @@ import '../../../data/repositories/cv_repository_impl.dart';
 import '../../../domain/entities/job_input.dart';
 import '../../../core/services/analytics_service.dart';
 
-final remoteAIServiceProvider = Provider<RemoteAIService>((ref) => RemoteAIService());
+import '../../../core/config/app_config.dart';
+import '../../../data/datasources/mock_ai_service.dart';
+
+final remoteAIServiceProvider = Provider<RemoteAIService>((ref) {
+  if (AppConfig.useMockAI) {
+    return MockAIService();
+  }
+  return RemoteAIService();
+});
 
 final cvRepositoryProvider = Provider<CVRepository>((ref) {
   final aiService = ref.watch(remoteAIServiceProvider);

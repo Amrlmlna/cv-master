@@ -98,12 +98,28 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       );
 
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
-
+      
+      // Smart Save Logic: Only update Master Profile if checking enabled AND data actually changed
       if (_updateMasterProfile) {
-        ref.read(masterProfileProvider.notifier).saveProfile(profile);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Master Profile berhasil diupdate!')),
-        );
+         final currentMaster = ref.read(masterProfileProvider);
+         
+         // Equatable makes this comparison easy and deep
+         if (currentMaster != profile) {
+            ref.read(masterProfileProvider.notifier).saveProfile(profile);
+            
+            // UI Fix: Floating SnackBar with margin to avoid button overlap
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Master Profile berhasil diupdate!'),
+                behavior: SnackBarBehavior.floating,
+                margin: const EdgeInsets.only(bottom: 100, left: 24, right: 24), // Float high above button
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            );
+         } else {
+           // Debug: Data identical, skipping save
+           // print("DEBUG: Profile data unchanged, skipping save.");
+         }
       }
 
       context.push('/create/style-selection');

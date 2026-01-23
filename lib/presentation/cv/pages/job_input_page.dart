@@ -137,7 +137,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       
       if (masterProfile == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.')),
+          SnackBar(
+            content: const Text('Silakan lengkapi Master Profile Anda terlebih dahulu di menu Profile.'),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
         );
         return;
       }
@@ -168,7 +173,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> with SingleTickerPr
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal menganalisis profil: $e')),
+            SnackBar(
+              content: Text('Gagal menganalisis profil: $e'),
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.only(bottom: 100, left: 20, right: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
           );
         }
       } finally {
