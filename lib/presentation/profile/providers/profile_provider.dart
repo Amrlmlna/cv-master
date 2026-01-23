@@ -9,13 +9,17 @@ final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserP
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
+  late Future<void> _initFuture;
+
   MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
-    loadProfile();
+    _initFuture = loadProfile();
   }
 
   static const String _key = 'master_profile_data';
 
   Future<void> saveProfile(UserProfile profile) async {
+    // Wait for any pending load to finish so we don't get overwritten
+    await _initFuture;
     state = profile;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));

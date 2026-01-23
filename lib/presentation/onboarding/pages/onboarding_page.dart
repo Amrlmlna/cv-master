@@ -328,7 +328,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       skills: _skills,
     );
     
-    ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
+    await ref.read(masterProfileProvider.notifier).saveProfile(masterProfile);
 
     // 2. Mark Onboarding as Complete
     await ref.read(onboardingProvider.notifier).completeOnboarding();
