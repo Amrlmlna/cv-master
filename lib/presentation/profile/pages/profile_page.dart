@@ -1,5 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
@@ -25,6 +30,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
+  String? _profileImagePath;
   
   bool _isInit = true;
 
@@ -49,6 +55,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _locationController.text = masterProfile.location ?? '';
       
       setState(() {
+        _profileImagePath = masterProfile.profilePicturePath;
         _experience = List.from(masterProfile.experience);
         _education = List.from(masterProfile.education);
         _skills = List.from(masterProfile.skills);
@@ -59,9 +66,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
        _phoneController.clear();
        _locationController.clear();
        setState(() {
-         _experience = [];
+          _experience = [];
          _education = [];
          _skills = [];
+         _profileImagePath = null;
        });
     }
   }
@@ -73,6 +81,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _phoneController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = path.basename(pickedFile.path);
+      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+
+      setState(() {
+        _profileImagePath = savedImage.path;
+      });
+    }
   }
 
   void _saveProfile() {
@@ -96,6 +119,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       experience: _experience,
       education: _education,
       skills: _skills,
+      profilePicturePath: _profileImagePath,
     );
 
     ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
@@ -127,7 +151,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           child: Column(
             children: [
               const SizedBox(height: 16), // Extra spacing for top
-              const ProfileHeader(),
+              const SizedBox(height: 16), // Extra spacing for top
+              ProfileHeader(
+                imagePath: _profileImagePath,
+                onEditImage: _pickImage,
+              ),
               const SizedBox(height: 32),
 
             SectionCard(
