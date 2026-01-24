@@ -24,7 +24,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));
   }
-  
+
   // Method to manually re-load if needed (e.g. after clear)
   Future<void> loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,6 +34,69 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     } else {
       state = null;
     }
+  }
+
+  /// Merges new profile data into the existing Master Profile.
+  /// 
+  /// Logic:
+  /// 1. Updates Personal Info (Name, Email, Phone, Location)
+  /// 2. Adds NEW Experience/Education/Skills that don't exist in Master.
+  /// 3. Does NOT remove existing data from Master (Non-destructive).
+  Future<void> mergeProfile(UserProfile newProfile) async {
+    if (state == null) {
+      await saveProfile(newProfile);
+      return;
+    }
+
+    final current = state!;
+    
+    // 1. Personal Info - Always update to latest (User might have fixed a typo)
+    final updatedInfo = current.copyWith(
+      fullName: newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName,
+      email: newProfile.email.isNotEmpty ? newProfile.email : current.email,
+      phoneNumber: newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber,
+      location: newProfile.location?.isNotEmpty == true ? newProfile.location : current.location,
+    );
+
+    // 2. Experience - Add only NEW items
+    // unique check based on: Title + Company + StartDate
+    final List<Experience> mergedExperience = List.from(current.experience);
+    for (final newExp in newProfile.experience) {
+       final exists = mergedExperience.any((oldExp) => 
+          oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
+          oldExp.companyName.toLowerCase() == newExp.companyName.toLowerCase() && 
+          oldExp.startDate == newExp.startDate
+       );
+       
+       if (!exists) {
+         mergedExperience.add(newExp);
+       }
+    }
+
+    // 3. Education - Add only NEW items
+    final List<Education> mergedEducation = List.from(current.education);
+    for (final newEdu in newProfile.education) {
+       final exists = mergedEducation.any((oldEdu) => 
+          oldEdu.schoolName.toLowerCase() == newEdu.schoolName.toLowerCase() &&
+          oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase()
+       );
+       
+       if (!exists) {
+         mergedEducation.add(newEdu);
+       }
+    }
+
+    // 4. Skills - Union
+    final Set<String> uniqueSkills = Set.from(current.skills);
+    uniqueSkills.addAll(newProfile.skills);
+    
+    final finalProfile = updatedInfo.copyWith(
+      experience: mergedExperience,
+      education: mergedEducation,
+      skills: uniqueSkills.toList(),
+    );
+
+    await saveProfile(finalProfile);
   }
 
   void updatePersonalInfo({
