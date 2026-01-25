@@ -10,13 +10,13 @@ class NotificationsPage extends StatelessWidget {
     // Dummy Data for now
     final notifications = [
       {
-        'title': 'Selamat Datang! 👋',
+        'title': 'Selamat Datang!',
         'message': 'Mulai buat CV profesional pertamamu sekarang.',
         'time': 'Baru saja',
         'isRead': false,
       },
       {
-        'title': 'Tips CV 💡',
+        'title': 'Tips CV',
         'message': 'Cantumkan angka di pencapaian kerjamu agar lebih menarik bagi rekruter.',
         'time': '2 jam yang lalu',
         'isRead': true,
