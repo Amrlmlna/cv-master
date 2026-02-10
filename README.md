@@ -79,7 +79,7 @@ sequenceDiagram
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/cv-master.git
+   git clone https://github.com/Amrlmlna/cv-master.git
    cd cv-master/cv_master
    ```
 
