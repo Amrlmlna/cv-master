@@ -4,6 +4,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../domain/entities/cv_data.dart';
 import '../../domain/entities/user_profile.dart';
+import '../../domain/entities/certification.dart'; // Import
 
 class PDFGenerator {
   static Future<void> generateAndPrint(CVData cvData) async {
@@ -109,6 +110,13 @@ class PDFGenerator {
            pw.Text('No education listed.', style: const pw.TextStyle(fontSize: 11))
         else
            ...cvData.userProfile.education.map((edu) => _buildEducationItem(edu, isATS: true)),
+           
+        // Certifications (New)
+        if (cvData.userProfile.certifications.isNotEmpty) ...[
+          pw.SizedBox(height: 16),
+          _buildSectionHeader(title: 'CERTIFICATIONS', styleId: 'ATS'),
+           ...cvData.userProfile.certifications.map((cert) => _buildCertificationItem(cert, isATS: true)),
+        ],
       ],
     );
   }
@@ -120,7 +128,7 @@ class PDFGenerator {
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        // Sidebar (Left) - Contact, Skills, Education
+        // Sidebar (Left) - Contact, Skills, Education, Certifications
         pw.Container(
           width: 180,
           padding: const pw.EdgeInsets.only(right: 16),
@@ -184,6 +192,23 @@ class PDFGenerator {
                      ]
                    )
                  )),
+                 
+              // Certifications (New)
+              if (cvData.userProfile.certifications.isNotEmpty) ...[
+                pw.SizedBox(height: 24),
+                _buildSectionHeader(title: 'CERTIFICATIONS', styleId: 'Modern', color: accentColor),
+                ...cvData.userProfile.certifications.map((cert) => pw.Padding(
+                   padding: const pw.EdgeInsets.only(bottom: 8),
+                   child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                     children: [
+                       pw.Text(cert.name, style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                       pw.Text(cert.issuer, style: const pw.TextStyle(fontSize: 9)),
+                       pw.Text(cert.date.year.toString(), style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey600)),
+                     ]
+                   )
+                 )),
+              ],
             ],
           ),
         ),
@@ -329,14 +354,22 @@ class PDFGenerator {
                       ).toList())
                    ])),
                    pw.SizedBox(width: 20),
-                   // Education
+                   // Education & Certifications
                    pw.Expanded(child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                      pw.Text('EDUCATION', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: headerColor)),
+                      pw.Text('EDUCATION & CERTIFICATIONS', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: headerColor)),
                       pw.Divider(color: accentColor),
                       ...cvData.userProfile.education.map((edu) => pw.Padding(
                         padding: const pw.EdgeInsets.only(bottom: 6),
                         child: pw.Text('${edu.schoolName}\n${edu.degree}', style: const pw.TextStyle(fontSize: 10))
-                      ))
+                      )),
+                      // Certifications
+                      if (cvData.userProfile.certifications.isNotEmpty) ...[
+                         pw.SizedBox(height: 8),
+                         ...cvData.userProfile.certifications.map((cert) => pw.Padding(
+                            padding: const pw.EdgeInsets.only(bottom: 4),
+                            child: pw.Text('${cert.name}\n${cert.issuer} (${cert.date.year})', style: const pw.TextStyle(fontSize: 9, fontStyle: pw.FontStyle.italic)),
+                         )),
+                      ]
                    ])),
                  ]
                )
@@ -416,7 +449,7 @@ class PDFGenerator {
           ),
         )),
 
-        // Education & Skills (Compact)
+        // Education, Skills & Certifications
         pw.Divider(thickness: 0.5),
         pw.SizedBox(height: 16),
         pw.Row(
@@ -434,7 +467,18 @@ class PDFGenerator {
                child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children:[
                  pw.Text('CORE COMPETENCIES', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
                  pw.SizedBox(height: 8),
-                 pw.Text(cvData.userProfile.skills.join(' • '), style: const pw.TextStyle(fontSize: 11))
+                 pw.Text(cvData.userProfile.skills.join(' • '), style: const pw.TextStyle(fontSize: 11)),
+                 
+                 // Certifications (New)
+                 if (cvData.userProfile.certifications.isNotEmpty) ...[
+                   pw.SizedBox(height: 12),
+                   pw.Text('CERTIFICATIONS', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                   pw.SizedBox(height: 4),
+                   ...cvData.userProfile.certifications.map((cert) => pw.Text(
+                      '${cert.name} - ${cert.issuer}',
+                      style: const pw.TextStyle(fontSize: 10),
+                   )),
+                 ]
                ])
             ),
           ]
@@ -517,6 +561,25 @@ class PDFGenerator {
           ),
           pw.Text(
             '${edu.degree} (${edu.startDate} - ${edu.endDate ?? "Present"})',
+            style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  static pw.Widget _buildCertificationItem(Certification cert, {required bool isATS}) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 8.0),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            cert.name, 
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+          ),
+          pw.Text(
+            '${cert.issuer} (${cert.date.year})',
             style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
           ),
         ],
