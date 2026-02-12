@@ -133,13 +133,10 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
                 // Transparent Spacer = 70% of Screen
                 SizedBox(height: height * 0.7),
 
-                // Acts as the "Bottom Sheet" surface
-                Container(
-                  constraints: BoxConstraints(
-                    minHeight: height * 0.8, 
-                  ),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF1E1E1E), // Dark Grey "Black Card"
+                  Container(
+                    height: height * 0.85, // Fixed height to allow Spacer() to work
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF1E1E1E), // Dark Grey "Black Card"
                     borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                      boxShadow: [
                       BoxShadow(

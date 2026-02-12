@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
+import '../../../domain/entities/certification.dart'; // Import
 import '../providers/onboarding_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
+import '../widgets/onboarding_certification_step.dart'; // Import
 import '../widgets/onboarding_skills_step.dart';
 import '../widgets/onboarding_final_step.dart';
 import '../widgets/onboarding_shell.dart';
@@ -32,6 +34,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final _locationController = TextEditingController();
   List<Experience> _experiences = [];
   List<Education> _education = [];
+  List<Certification> _certifications = []; // Add
   List<String> _skills = [];
 
   @override
@@ -60,7 +63,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       }
     }
 
-    if (_currentPage < 4) {
+    // Increased total steps to 6 (0-5)
+    if (_currentPage < 5) {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
       setState(() {
         _currentPage++;
@@ -88,6 +92,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       location: _locationController.text,
       experience: _experiences,
       education: _education,
+      certifications: _certifications, // Save
       skills: _skills,
     );
     
@@ -106,11 +111,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget build(BuildContext context) {
     return OnboardingShell(
       currentPage: _currentPage,
-      totalSteps: 5,
+      totalSteps: 6, // Update Total Steps
       child: Column(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
+          Expanded(
             child: Form(
               key: _formKey, 
               child: PageView(
@@ -131,6 +135,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     education: _education,
                     onChanged: (val) => setState(() => _education = val),
                   ),
+                  OnboardingCertificationStep( // Add Step
+                    certifications: _certifications,
+                    onChanged: (val) => setState(() => _certifications = val),
+                  ),
                   OnboardingSkillsStep(
                     skills: _skills,
                     onChanged: (val) => setState(() => _skills = val),
@@ -140,12 +148,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               ),
             ),
           ),
-          
-          const Spacer(),
 
           OnboardingNavigationBar(
             currentPage: _currentPage,
-            isLastPage: _currentPage == 4,
+            isLastPage: _currentPage == 5, // Update Last Page Index
             onNext: _nextPage,
             onBack: _prevPage,
           ),

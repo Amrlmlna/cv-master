@@ -73,7 +73,7 @@ class OnboardingShell extends StatelessWidget {
           ),
 
         // Main Content (Form)
-        child,
+        Expanded(child: child),
       ],
     );
   }
