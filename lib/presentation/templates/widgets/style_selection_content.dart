@@ -105,20 +105,30 @@ class StyleSelectionContent extends StatelessWidget {
                             borderRadius: BorderRadius.circular(0),
                             child: CachedNetworkImage(
                               imageUrl: template.thumbnailUrl,
+                              cacheKey: template.id, // Use template ID as cache key
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
-                              ),
-                              errorWidget: (context, url, error) => const Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.description_outlined, color: Colors.grey, size: 32),
-                                    SizedBox(height: 4),
-                                    Text("Preview", style: TextStyle(color: Colors.grey, fontSize: 10)),
-                                  ],
-                                ),
-                              ),
+                              memCacheHeight: 600, // Limit memory cache size
+                              maxHeightDiskCache: 800, // Limit disk cache size
+                              fadeInDuration: const Duration(milliseconds: 200),
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                print('ERROR loading thumbnail: $url - Error: $error');
+                                return Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.error_outline, color: Colors.red, size: 32),
+                                      const SizedBox(height: 4),
+                                      const Text("Failed", style: TextStyle(color: Colors.red, fontSize: 10)),
+                                      Text(error.toString(), style: const TextStyle(color: Colors.grey, fontSize: 6), maxLines: 2, overflow: TextOverflow.ellipsis),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
