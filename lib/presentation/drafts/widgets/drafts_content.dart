@@ -205,7 +205,7 @@ class DraftsContent extends StatelessWidget {
             : 'Tanpa Judul #$version';
             
         final templateName = _getTemplateName(draft.styleId);
-        final lang = draft.language == 'id' ? '🇮🇩 Indo' : '🇺🇸 English';
+        final lang = draft.language == 'id' ? 'IN' : 'EN';
 
         return Dismissible(
           key: Key(draft.id),
