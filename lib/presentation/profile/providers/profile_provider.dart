@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../data/repositories/firestore_profile_repository.dart';
 import '../../../domain/entities/user_profile.dart';
 
 // Provides the "Master" profile data (persisted across sessions)
@@ -14,6 +15,7 @@ final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserP
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   late Future<void> _initFuture;
+  final FirestoreProfileRepository _firestoreRepo = FirestoreProfileRepository();
 
   MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
     _initFuture = loadProfile();
@@ -197,5 +199,33 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     state = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_key);
+  }
+
+  /// Syncs local profile with Firestore for the given [uid].
+  Future<void> syncWithCloud(String uid) async {
+    try {
+      final cloudProfile = await _firestoreRepo.getProfile(uid);
+      
+      if (cloudProfile != null) {
+        // Cloud has data. Merge into local.
+        // If state is null, mergeProfile handles it by setting state = newProfile.
+        final hasChanges = await mergeProfile(cloudProfile);
+        
+        // If we have local data that wasn't in cloud, or just to be safe,
+        // push the final merged state back to cloud so cloud is up to date too.
+        if (state != null) {
+           await _firestoreRepo.saveProfile(uid, state!);
+        }
+      } else {
+        // Cloud is empty. If we have local data, push it.
+        if (state != null) {
+          await _firestoreRepo.saveProfile(uid, state!);
+        }
+      }
+    } catch (e) {
+      print("[Sync Error] $e");
+      // Fail silently or rethrow depending on needs. 
+      // For now, silent fail to not block auth flow, maybe show snackbar elsewhere.
+    }
   }
 }

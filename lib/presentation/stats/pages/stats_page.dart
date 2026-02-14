@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/providers/user_level_provider.dart';
-import '../../profile/providers/profile_provider.dart';
+
 import '../widgets/user_level_card.dart';
 import '../widgets/activity_chart.dart';
 import '../widgets/stats_grid.dart';

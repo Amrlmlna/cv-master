@@ -22,6 +22,8 @@ import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
 import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
+import '../../presentation/auth/pages/login_page.dart';
+import '../../presentation/auth/pages/signup_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -53,6 +55,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       PosthogObserver(),
     ],
     routes: [
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/signup',
+        builder: (context, state) => const SignupPage(),
+      ),
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationsPage(),

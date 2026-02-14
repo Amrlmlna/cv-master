@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../domain/entities/user_profile.dart';
-import '../providers/cv_import_provider.dart';
-import '../../common/widgets/app_loading_screen.dart';
-import '../../../../core/utils/custom_snackbar.dart';
 import '../utils/cv_import_handler.dart';
 
 /// Reusable CV Import Button

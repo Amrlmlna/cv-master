@@ -10,9 +10,13 @@ import 'presentation/onboarding/providers/onboarding_provider.dart';
 import 'presentation/profile/providers/profile_provider.dart';
 import 'domain/entities/user_profile.dart';
 
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  
+  await Firebase.initializeApp(); // Initialize Firebase
   
   // Check onboarding status and load master profile
   final prefs = await SharedPreferences.getInstance();
