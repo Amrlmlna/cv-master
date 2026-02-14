@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../profile/providers/profile_sync_provider.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -30,7 +31,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             child: PopupMenuButton<String>(
               onSelected: (value) async {
                 if (value == 'sync') {
-                  ref.read(masterProfileProvider.notifier).syncWithCloud(user.uid);
+                  ref.read(profileSyncProvider).initialCloudFetch(user.uid);
                 } else if (value == 'logout') {
                   await ref.read(authRepositoryProvider).signOut();
                 }

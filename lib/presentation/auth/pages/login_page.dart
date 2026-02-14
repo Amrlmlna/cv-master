@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -42,7 +43,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (user != null && mounted) {
         // Sync Profile
         try {
-          await ref.read(masterProfileProvider.notifier).syncWithCloud(user.uid);
+          await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
           // Log error but allow login
           debugPrint("Sync failed on login: $e");
@@ -76,7 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (user != null && mounted) {
         // Sync Profile
         try {
-          await ref.read(masterProfileProvider.notifier).syncWithCloud(user.uid);
+          await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
           debugPrint("Sync failed on Google login: $e");
         }

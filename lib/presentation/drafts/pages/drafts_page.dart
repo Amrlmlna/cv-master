@@ -38,6 +38,9 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
     // 4. Style & Language
     notifier.setStyle(draft.styleId);
     notifier.setLanguage(draft.language);
+    
+    // 5. Set Draft ID for future updates
+    notifier.setCurrentDraftId(draft.id);
 
     // Navigate to Form for Editing
     final tailoredResult = TailoredCVResult(

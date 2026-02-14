@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
@@ -45,7 +46,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       if (user != null && mounted) {
         // Sync Profile (Push local empty/filled profile to new cloud account)
         try {
-          await ref.read(masterProfileProvider.notifier).syncWithCloud(user.uid);
+          await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
           debugPrint("Sync failed on signup: $e");
         }

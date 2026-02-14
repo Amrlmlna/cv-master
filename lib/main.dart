@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'presentation/onboarding/providers/onboarding_provider.dart';
 import 'presentation/profile/providers/profile_provider.dart';
 import 'domain/entities/user_profile.dart';
+import 'presentation/profile/providers/profile_sync_provider.dart';
+import 'presentation/drafts/providers/draft_sync_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase
 
@@ -118,6 +120,10 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Initialize Sync Managers
+    ref.read(profileSyncProvider).init();
+    ref.read(draftSyncProvider).init();
+
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(

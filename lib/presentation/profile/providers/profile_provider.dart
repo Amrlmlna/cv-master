@@ -1,36 +1,19 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../data/repositories/firestore_profile_repository.dart';
 import '../../../domain/entities/user_profile.dart';
-
-import '../../auth/providers/auth_state_provider.dart';
 
 // Provides the "Master" profile data (persisted across sessions)
 final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
-  return MasterProfileNotifier(ref: ref);
+  return MasterProfileNotifier();
 });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   late Future<void> _initFuture;
-  final FirestoreProfileRepository _firestoreRepo = FirestoreProfileRepository();
-  final Ref? _ref;
 
-  MasterProfileNotifier({UserProfile? initialState, Ref? ref}) 
-      : _ref = ref, 
-        super(initialState) {
+  MasterProfileNotifier({UserProfile? initialState}) 
+      : super(initialState) {
     _initFuture = loadProfile();
-    
-    // Listen for auth changes to trigger sync automatically
-    if (_ref != null) {
-      _ref!.listen(authStateProvider, (previous, next) {
-        final user = next.value;
-        if (user != null && (previous == null || previous.value == null)) {
-          print("[DEBUG] Auth change detected: User logged in (${user.uid}). Triggering internal sync...");
-          syncWithCloud(user.uid);
-        }
-      });
-    }
   }
 
   static const String _key = 'master_profile_data';
@@ -41,25 +24,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     state = profile;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));
-    
-    // Auto-sync to cloud if logged in
-    if (_ref != null) {
-      final authValue = _ref!.read(authStateProvider);
-      final user = authValue.value;
-      
-      print("[DEBUG] saveProfile: user is ${user?.uid ?? 'NULL'} (Auth State: $authValue)");
-      
-      if (user != null) {
-        try {
-          print("[DEBUG] Attempting cloud save for ${user.uid}...");
-          await _firestoreRepo.saveProfile(user.uid, profile);
-          print("[DEBUG] Cloud save SUCCESSFUL for ${user.uid}");
-        } catch (e) {
-          print("[Cloud Save Error] $e");
-          // Fail silently to not block local persistence
-        }
-      }
-    }
   }
 
   // Method to manually re-load if needed (e.g. after clear)
@@ -217,35 +181,5 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     state = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_key);
-  }
-
-  /// Syncs local profile with Firestore for the given [uid].
-  Future<void> syncWithCloud(String uid) async {
-    print("[DEBUG] syncWithCloud started for $uid");
-    try {
-      final cloudProfile = await _firestoreRepo.getProfile(uid);
-      print("[DEBUG] cloudProfile fetched: ${cloudProfile != null ? 'DATA FOUND' : 'EMPTY'}");
-      
-      if (cloudProfile != null) {
-        // Cloud has data. Merge into local.
-        // If state is null, mergeProfile handles it by setting state = newProfile.
-        await mergeProfile(cloudProfile);
-        
-        // If we have local data that wasn't in cloud, or just to be safe,
-        // push the final merged state back to cloud so cloud is up to date too.
-        if (state != null) {
-           await _firestoreRepo.saveProfile(uid, state!);
-        }
-      } else {
-        // Cloud is empty. If we have local data, push it.
-        if (state != null) {
-          await _firestoreRepo.saveProfile(uid, state!);
-        }
-      }
-    } catch (e) {
-      print("[Sync Error] $e");
-      // Fail silently or rethrow depending on needs. 
-      // For now, silent fail to not block auth flow, maybe show snackbar elsewhere.
-    }
   }
 }
