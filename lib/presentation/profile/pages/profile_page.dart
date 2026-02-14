@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/personal_info_form.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
@@ -126,16 +127,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Simpan Perubahan?'),
-        content: const Text('Kamu punya perubahan yang belum disimpan. Yakin mau keluar?'),
+        title: Text(AppLocalizations.of(context)!.saveChangesTitle),
+        content: Text(AppLocalizations.of(context)!.saveChangesMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, true), // Leave anyway
-            child: const Text('Keluar Tanpa Simpan', style: TextStyle(color: Colors.red)),
+            child: Text(AppLocalizations.of(context)!.exitWithoutSaving, style: const TextStyle(color: Colors.red)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, false), // Stay
-            child: const Text('Tetap di Sini'),
+            child: Text(AppLocalizations.of(context)!.stayHere),
           ),
         ],
       ),
@@ -175,16 +176,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     CustomSnackBar.showSuccess(
       context,
-      'CV berhasil diimport!\n'
-      'Ditambahkan: ${importedProfile.experience.length} pengalaman, '
-      '${importedProfile.education.length} pendidikan, '
-      '${importedProfile.skills.length} skill',
+      AppLocalizations.of(context)!.importSuccessMessage(
+        importedProfile.experience.length,
+        importedProfile.education.length,
+        importedProfile.skills.length,
+      ),
     );
   }
 
   void _saveProfile() {
     if (_nameController.text.isEmpty) {
-      CustomSnackBar.showWarning(context, 'Isi nama dulu dong');
+      CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
       return;
     }
 
@@ -205,11 +207,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ref.read(masterProfileProvider.notifier).saveProfile(newProfile);
       
       if (mounted) {
-        CustomSnackBar.showSuccess(context, 'Profil Disimpan! Bakal dipake buat CV-mu selanjutnya.');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.profileSavedSuccess);
       }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.showError(context, 'Gagal simpan profil: $e');
+        CustomSnackBar.showError(context, AppLocalizations.of(context)!.profileSaveError(e.toString()));
       }
     } finally {
       if (mounted) {
@@ -253,7 +255,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               const SizedBox(height: 32),
 
             SectionCard(
-              title: 'Info Personal',
+              title: AppLocalizations.of(context)!.personalInfo,
               icon: Icons.person_outline,
               child: PersonalInfoForm(
                 nameController: _nameController,
@@ -266,7 +268,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 24),
 
             SectionCard(
-              title: 'Pengalaman Kerja',
+              title: AppLocalizations.of(context)!.experience,
               icon: Icons.work_outline,
               child: ExperienceListForm(
                 experiences: _experience,
@@ -277,7 +279,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 24),
 
             SectionCard(
-              title: 'Pendidikan',
+              title: AppLocalizations.of(context)!.educationHistory,
               icon: Icons.school_outlined,
               child: EducationListForm(
                 education: _education,
@@ -288,7 +290,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 24),
 
             SectionCard(
-              title: 'Sertifikasi',
+              title: AppLocalizations.of(context)!.certifications,
               icon: Icons.card_membership,
               child: CertificationListForm(
                 certifications: _certifications,
@@ -299,7 +301,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             const SizedBox(height: 24),
 
             SectionCard(
-              title: 'Skill',
+              title: AppLocalizations.of(context)!.skills,
               icon: Icons.code,
               child: SkillsInputForm(
                 skills: _skills,

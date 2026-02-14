@@ -5,6 +5,7 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../profile/utils/cv_import_handler.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class HomeQuickActions extends ConsumerWidget {
   const HomeQuickActions({super.key});
@@ -16,7 +17,7 @@ class HomeQuickActions extends ConsumerWidget {
       children: [
         _QuickActionCircle(
           icon: Icons.upload_file,
-          label: 'Import CV',
+          label: AppLocalizations.of(context)!.importCV,
           onTap: () {
             CVImportHandler.showImportDialog(
               context: context,
@@ -31,12 +32,12 @@ class HomeQuickActions extends ConsumerWidget {
                   if (hasChanges) {
                     CustomSnackBar.showSuccess(
                       context,
-                      'CV berhasil diimport! Mari lengkapi profilmu.',
+                      AppLocalizations.of(context)!.cvImportedSuccess,
                     );
                   } else {
                     CustomSnackBar.showInfo(
                       context,
-                      'Data CV sudah ada di profilmu.',
+                      AppLocalizations.of(context)!.cvDataExists,
                     );
                   }
                   // Navigate to profile for review
@@ -48,7 +49,7 @@ class HomeQuickActions extends ConsumerWidget {
         ),
         _QuickActionCircle(
           icon: Icons.folder_open_rounded,
-          label: 'Lihat Draft',
+          label: AppLocalizations.of(context)!.viewDrafts,
           onTap: () {
             // TODO: Navigate to drafts page or show bottom sheet
             context.push('/drafts');
@@ -56,14 +57,14 @@ class HomeQuickActions extends ConsumerWidget {
         ),
         _QuickActionCircle(
           icon: Icons.bar_chart_rounded,
-          label: 'Statistik',
+          label: AppLocalizations.of(context)!.statistics,
           onTap: () {
             context.push('/stats');
           },
         ),
         _QuickActionCircle(
           icon: Icons.add_circle_outline,
-          label: 'Buat CV',
+          label: AppLocalizations.of(context)!.createCV,
           onTap: () {
             context.push('/create/job-input');
           },

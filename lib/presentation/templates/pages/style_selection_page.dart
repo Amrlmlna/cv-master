@@ -12,6 +12,7 @@ import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
   const StyleSelectionPage({super.key});
@@ -28,7 +29,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
     
     // Validate Data
     if (creationState.jobInput == null || creationState.userProfile == null || creationState.summary == null) {
-      CustomSnackBar.showWarning(context, 'Data tidak lengkap. Kembali ke form sebelumnya.');
+      CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.incompleteData);
       return;
     }
 
@@ -72,13 +73,13 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
          final result = await OpenFilex.open(file.path);
          if (result.type != ResultType.done) {
             if (mounted) {
-              CustomSnackBar.showError(context, 'Gagal membuka PDF: ${result.message}');
+              CustomSnackBar.showError(context, AppLocalizations.of(context)!.pdfOpenError(result.message));
             }
          }
       }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.showError(context, 'Gagal membuat PDF: $e');
+        CustomSnackBar.showError(context, AppLocalizations.of(context)!.pdfGenerateError(e.toString()));
       }
     } finally {
       if (mounted) {
@@ -124,24 +125,24 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               onExport: _exportPDF,
             ),
             if (_isGenerating)
-               const AppLoadingScreen(
-                 badge: "GENERATING PDF",
+               AppLoadingScreen(
+                 badge: AppLocalizations.of(context)!.generatingPdfBadge,
                  messages: [
-                   "Memproses Data...",
-                   "Menerapkan Desain...",
-                   "Membuat Halaman...",
-                   "Finalisasi PDF...",
+                   AppLocalizations.of(context)!.processingData,
+                   AppLocalizations.of(context)!.applyingDesign,
+                   AppLocalizations.of(context)!.creatingPages,
+                   AppLocalizations.of(context)!.finalizingPdf,
                  ],
                ),
           ],
         );
       },
-      loading: () => const AppLoadingScreen(
-        badge: "LOADING TEMPLATES",
+      loading: () => AppLoadingScreen(
+        badge: AppLocalizations.of(context)!.loadingTemplatesBadge,
         messages: [
-          "Mengambil Template...",
-          "Menyiapkan Galeri...",
-          "Memuat Preview...",
+          AppLocalizations.of(context)!.fetchingTemplates,
+          AppLocalizations.of(context)!.preparingGallery,
+          AppLocalizations.of(context)!.loadingPreview,
         ],
       ),
       error: (err, stack) => Scaffold(
@@ -151,10 +152,10 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
              children: [
                const Icon(Icons.error_outline, size: 48, color: Colors.red),
                const SizedBox(height: 16),
-               Text('Error loading templates: $err'),
+               Text(AppLocalizations.of(context)!.templateLoadError(err.toString())),
                ElevatedButton(
                  onPressed: () => ref.refresh(templatesProvider),
-                 child: const Text('Retry'),
+                 child: Text(AppLocalizations.of(context)!.retry),
                )
              ]
           ),

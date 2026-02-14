@@ -5,6 +5,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../providers/onboarding_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../widgets/onboarding_personal_step.dart';
 import '../widgets/onboarding_experience_step.dart';
@@ -51,7 +52,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Validation Logic
     if (_currentPage == 0) {
       if (_nameController.text.isEmpty) {
-        CustomSnackBar.showWarning(context, 'Tolong isi nama lengkap dulu ya.');
+        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
         return;
       }
     }

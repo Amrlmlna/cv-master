@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class TailoredDataHeader extends StatelessWidget {
   final bool isDark;
@@ -21,7 +22,7 @@ class TailoredDataHeader extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Data ini sudah disesuaikan AI agar relevan dengan posisi yang kamu tuju. Cek lagi ya!',
+              AppLocalizations.of(context)!.tailoredDataMessage,
               style: TextStyle(
                 color: isDark ? Colors.blue[100] : Colors.blue[900], 
                 fontSize: 14,

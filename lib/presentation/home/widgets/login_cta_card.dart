@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../auth/providers/auth_state_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class LoginCTACard extends ConsumerWidget {
   const LoginCTACard({super.key});
@@ -55,9 +56,9 @@ class LoginCTACard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Login agar datamu tersimpan',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.loginToSave,
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -65,7 +66,7 @@ class LoginCTACard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Akses dari device manapun, sync otomatis',
+                    AppLocalizations.of(context)!.syncAnywhere,
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey.shade400,

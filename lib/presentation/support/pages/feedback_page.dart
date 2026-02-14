@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../../core/services/analytics_service.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 // Note: In a real app, you would inject a repository to handle the API call.
 // For this MVP, we will use a simple inline HTTP call or just mock it.
@@ -21,7 +22,22 @@ class _FeedbackPageState extends State<FeedbackPage> {
   final _contactController = TextEditingController();
   bool _isLoading = false;
 
-  final List<String> _types = ['Lapor Bug', 'Saran Fitur', 'Pertanyaan', 'Lainnya'];
+  late List<String> _types;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _types = [
+      AppLocalizations.of(context)!.bugReport,
+      AppLocalizations.of(context)!.featureRequest,
+      AppLocalizations.of(context)!.question,
+      AppLocalizations.of(context)!.other,
+    ];
+    // Ensure default selection is valid or set to first
+    if (!_types.contains(_feedbackType)) {
+       _feedbackType = _types.first;
+    }
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
@@ -63,8 +79,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Terima Kasih!'),
-          content: const Text('Masukan Anda sangat berharga buat pengembangan CV Master.'),
+          title: Text(AppLocalizations.of(context)!.thankYou),
+          content: Text(AppLocalizations.of(context)!.feedbackThanksMessage),
           actions: [
             TextButton(
               onPressed: () {
@@ -91,7 +107,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kirim Masukan'),
+        title: Text(AppLocalizations.of(context)!.sendFeedback),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -100,12 +116,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Apa yang bisa kami bantu?',
+              AppLocalizations.of(context)!.howCanWeHelp,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black, fontFamily: 'Outfit'),
             ),
             const SizedBox(height: 8),
             Text(
-              'Ceritakan pengalamanmu atau laporkan masalah yang kamu temui.',
+              AppLocalizations.of(context)!.feedbackSubtitle,
               style: TextStyle(color: Colors.grey[500], fontSize: 16),
             ),
             const SizedBox(height: 32),
@@ -132,7 +148,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Type Dropdown
-                      const Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text(AppLocalizations.of(context)!.category, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -156,17 +172,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       // Message
                       CustomTextFormField(
                         controller: _msgController,
-                        labelText: 'Pesan / Detail',
+                        labelText: AppLocalizations.of(context)!.messageDetail,
                         maxLines: 5,
-                        validator: (v) => v!.isEmpty ? 'Tulis sesuatu dong' : null,
+                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.writeSomething : null,
                       ),
                       const SizedBox(height: 24),
     
                       // Contact (Optional)
                       CustomTextFormField(
                         controller: _contactController,
-                        labelText: 'Email / WhatsApp (Opsional)',
-                        hintText: 'Biar kami bisa bales...',
+                        labelText: AppLocalizations.of(context)!.contactOptional,
+                        hintText: AppLocalizations.of(context)!.contactHint,
                       ),
     
                       const SizedBox(height: 32),
@@ -183,7 +199,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           ),
                           child: _isLoading 
                             ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                            : const Text('Kirim Masukan', style: TextStyle(fontWeight: FontWeight.bold)),
+                            : Text(AppLocalizations.of(context)!.sendFeedback, style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ],

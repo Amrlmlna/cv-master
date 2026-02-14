@@ -6,7 +6,8 @@ import '../providers/cv_generation_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 // Widgets
 import '../widgets/form/user_data_form_content.dart';
-import '../../../core/utils/custom_snackbar.dart'; // Add this import
+import '../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart'; // import
 
@@ -73,8 +74,8 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         CustomSnackBar.showSuccess(
           context,
           isTailored 
-            ? 'Data & Summary telah disesuaikan oleh AI' 
-            : 'Data otomatis diisi dari Master Profile kamu',
+            ? AppLocalizations.of(context)!.reviewedByAI
+            : AppLocalizations.of(context)!.autoFillFromMaster,
         );
       }
     });
@@ -93,7 +94,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   Future<void> _generateSummary() async {
     final jobInput = ref.read(cvCreationProvider).jobInput;
     if (jobInput == null) {
-      CustomSnackBar.showError(context, 'Error: Job Input missing');
+      CustomSnackBar.showError(context, AppLocalizations.of(context)!.jobInputMissing);
       return;
     }
 
@@ -131,7 +132,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     } catch (e) {
       if (mounted) {
         setState(() => _isGeneratingSummary = false);
-        CustomSnackBar.showError(context, 'Gagal generate summary: $e');
+        CustomSnackBar.showError(context, AppLocalizations.of(context)!.generateSummaryFailed(e.toString()));
       }
     }
   }
@@ -159,7 +160,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
       final hasChanges = await ref.read(masterProfileProvider.notifier).mergeProfile(profile);
       
       if (hasChanges && mounted) {
-        CustomSnackBar.showSuccess(context, 'Master Profile berhasil diupdate');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.masterProfileUpdated);
       }
 
       if (mounted) {
@@ -174,7 +175,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Review Data'),
+        title: Text(AppLocalizations.of(context)!.reviewData),
         centerTitle: true,
       ),
       bottomNavigationBar: Container(
@@ -200,9 +201,9 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
             ),
             elevation: 0,
           ),
-          child: const Text(
-            'Lanjut: Pilih Template',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          child: Text(
+            AppLocalizations.of(context)!.continueChooseTemplate,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
       ),

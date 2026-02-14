@@ -6,6 +6,8 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 
+import 'package:clever/l10n/generated/app_localizations.dart';
+
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -48,7 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           debugPrint("Sync failed on login: $e");
         }
 
-        CustomSnackBar.showSuccess(context, 'Welcome back!');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.welcomeBackSuccess);
         // Navigation is handled by router redirect or manual pop
         if (context.canPop()) {
           context.pop();
@@ -81,7 +83,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           debugPrint("Sync failed on Google login: $e");
         }
 
-        CustomSnackBar.showSuccess(context, 'Signed in with Google!');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.googleSignInSuccess);
         if (context.canPop()) {
           context.pop();
         } else {
@@ -90,7 +92,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.showError(context, 'Google Sign-In failed: $e');
+        CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
       }
     } finally {
       if (mounted) {
@@ -130,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Welcome Back',
+                  AppLocalizations.of(context)!.welcomeBack,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     fontSize: 28,
@@ -139,7 +141,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to sync your CVs across devices',
+                  AppLocalizations.of(context)!.signInSubtitle,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     color: Colors.grey,
@@ -153,7 +155,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -161,7 +163,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return AppLocalizations.of(context)!.pleaseEnterEmail;
                     }
                     return null;
                   },
@@ -173,7 +175,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -191,7 +193,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppLocalizations.of(context)!.pleaseEnterPassword;
                     }
                     return null;
                   },
@@ -214,7 +216,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                         )
                       : Text(
-                          'Login',
+                          AppLocalizations.of(context)!.login,
                           style: GoogleFonts.outfit(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -229,7 +231,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const Expanded(child: Divider()),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text('OR', style: TextStyle(color: Colors.grey.shade600)),
+                      child: Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey.shade600)),
                     ),
                     const Expanded(child: Divider()),
                   ],
@@ -247,7 +249,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   icon: const Icon(Icons.g_mobiledata, size: 28), // Simplified Google Icon
                   label: Text(
-                    'Continue with Google',
+                    AppLocalizations.of(context)!.continueWithGoogle,
                     style: GoogleFonts.outfit(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -260,11 +262,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Don\'t have an account?'),
+                    Text(AppLocalizations.of(context)!.dontHaveAccount),
                     TextButton(
                       onPressed: () => context.push('/signup'),
                       child: Text(
-                        'Sign Up',
+                        AppLocalizations.of(context)!.signUp,
                         style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
                       ),
                     ),

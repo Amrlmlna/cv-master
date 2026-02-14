@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ErrorPageArgs {
   final String title;
@@ -28,7 +29,7 @@ class ErrorPage extends StatelessWidget {
   void _copyToClipboard(BuildContext context) {
     if (args.technicalDetails != null) {
       Clipboard.setData(ClipboardData(text: args.technicalDetails!));
-      CustomSnackBar.showSuccess(context, 'Error details copied to clipboard');
+      CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.errorDetailsCopied);
     }
   }
 
@@ -103,9 +104,9 @@ class ErrorPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'TECHNICAL DETAILS',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.technicalDetails,
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
@@ -153,15 +154,11 @@ class ErrorPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         foregroundColor: isDark ? Colors.white : Colors.black,
                       ),
-                      child: const Text('Go Home'),
+                      child: Text(AppLocalizations.of(context)!.goHome),
                     ),
                   ),
                   
-                  if (args.onRetry != null || true) ...[ // Always show Close or Retry if passed?
-                     // Actually let's just use Go Home as secondary.
-                     // A primary "Try Again" is redundant if we don't have a callback.
-                     // But typically error pages are terminal unless we pass a specific retry logic.
-                     // For now, let's keep it simple.
+                  if (args.onRetry != null || true) ...[
                      const SizedBox(width: 0), 
                   ],
                 ],
@@ -170,7 +167,7 @@ class ErrorPage extends StatelessWidget {
               if (Navigator.of(context).canPop())
                 TextButton(
                   onPressed: () => context.pop(),
-                  child: const Text('Close'),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               const SizedBox(height: 24),
             ],

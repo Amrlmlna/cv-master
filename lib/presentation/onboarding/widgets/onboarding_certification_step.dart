@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/certification.dart';
 import '../../profile/widgets/certification_list_form.dart';
 
@@ -19,14 +20,14 @@ class OnboardingCertificationStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Sertifikasi & Lisensi',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          Text(
+            AppLocalizations.of(context)!.certificationTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Masukkan sertifikasi, lisensi, atau penghargaan yang relevan. Ini bisa jadi nilai tambah besar.',
-             style: TextStyle(color: Colors.grey, height: 1.5),
+          Text(
+            AppLocalizations.of(context)!.certificationSubtitle,
+             style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           CertificationListForm(

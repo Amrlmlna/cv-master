@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class StatsGrid extends StatelessWidget {
   final Map<String, int> stats;
@@ -13,10 +14,10 @@ class StatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      {'label': 'Total CVs', 'value': stats['cvCount'].toString(), 'icon': Icons.description_outlined},
-      {'label': 'Skills', 'value': stats['skillsCount'].toString(), 'icon': Icons.bolt_outlined},
-      {'label': 'Experience', 'value': stats['experienceCount'].toString(), 'icon': Icons.work_outline},
-      {'label': 'Education', 'value': stats['educationCount'].toString(), 'icon': Icons.school_outlined},
+      {'label': AppLocalizations.of(context)!.totalCVs, 'value': stats['cvCount'].toString(), 'icon': Icons.description_outlined},
+      {'label': AppLocalizations.of(context)!.skills, 'value': stats['skillsCount'].toString(), 'icon': Icons.bolt_outlined},
+      {'label': AppLocalizations.of(context)!.experience, 'value': stats['experienceCount'].toString(), 'icon': Icons.work_outline},
+      {'label': AppLocalizations.of(context)!.educationHistory, 'value': stats['educationCount'].toString(), 'icon': Icons.school_outlined},
     ];
 
     return GridView.builder(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/widgets/experience_list_form.dart';
 
@@ -19,14 +20,14 @@ class OnboardingExperienceStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Pengalaman Kerja',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          Text(
+            AppLocalizations.of(context)!.experienceTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Ceritakan pengalamanmu (kerja, magang, organisasi). AI akan memilih yang paling relevan dengan tujuanmu.',
-             style: TextStyle(color: Colors.grey, height: 1.5),
+          Text(
+            AppLocalizations.of(context)!.experienceSubtitle,
+             style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           ExperienceListForm(

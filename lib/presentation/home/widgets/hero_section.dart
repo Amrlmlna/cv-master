@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../drafts/providers/draft_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class HeroSection extends ConsumerWidget {
   const HeroSection({super.key});
@@ -50,7 +51,7 @@ class HeroSection extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'AI POWERED',
+                    AppLocalizations.of(context)!.aiPowered,
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 12,
@@ -63,7 +64,9 @@ class HeroSection extends ConsumerWidget {
                 
                 // Minimalist Large Typography
                 Text(
-                  hasDrafts ? 'Buat CV\nProfesional.' : 'Buat CV\nPertama Kamu.',
+                  hasDrafts 
+                    ? AppLocalizations.of(context)!.createProfessionalCV 
+                    : AppLocalizations.of(context)!.createFirstCV,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 42, // Very Large
@@ -90,9 +93,9 @@ class HeroSection extends ConsumerWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 0),
                     ),
-                    child: const Text(
-                      'Mulai Sekarang',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.startNow,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

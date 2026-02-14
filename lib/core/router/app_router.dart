@@ -24,6 +24,7 @@ import '../../presentation/legal/pages/legal_page.dart';
 import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
 import '../../presentation/auth/pages/signup_page.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -72,9 +73,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final args = state.extra as ErrorPageArgs?;
           return ErrorPage(
-            args: args ?? const ErrorPageArgs(
-              title: 'Unknown Error',
-              message: 'Something went wrong, but we aren\'t sure what.',
+            args: args ?? ErrorPageArgs(
+              title: AppLocalizations.of(context)!.unknownError,
+              message: AppLocalizations.of(context)!.unknownErrorDesc,
             ),
           );
         },
@@ -132,11 +133,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/legal/privacy',
-        builder: (context, state) => const LegalPage(title: 'Privacy Policy', content: kPrivacyPolicy),
+        builder: (context, state) => LegalPage(title: AppLocalizations.of(context)!.privacyPolicy, content: kPrivacyPolicy),
       ),
       GoRoute(
         path: '/legal/terms',
-        builder: (context, state) => const LegalPage(title: 'Terms of Service', content: kTermsOfService),
+        builder: (context, state) => LegalPage(title: AppLocalizations.of(context)!.termsOfService, content: kTermsOfService),
       ),
       GoRoute(
         path: '/drafts',

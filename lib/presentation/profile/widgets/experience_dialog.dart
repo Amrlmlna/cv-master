@@ -7,6 +7,7 @@ import '../../cv/providers/cv_generation_provider.dart';
 import '../../common/widgets/spinning_text_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ExperienceDialog extends ConsumerStatefulWidget {
   final Experience? existing;
@@ -75,7 +76,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
   Future<void> _rewriteDescription() async {
     if (_descCtrl.text.isEmpty) {
-      CustomSnackBar.showWarning(context, 'Isi deskripsi dulu baru bisa di-rewrite AI!');
+      CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillDescriptionFirst);
       return;
     }
 
@@ -107,7 +108,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
       backgroundColor: const Color(0xFF1E1E1E), // Dark Card
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        widget.existing == null ? 'TAMBAH PENGALAMAN' : 'EDIT PENGALAMAN',
+        widget.existing == null ? AppLocalizations.of(context)!.addExperience : AppLocalizations.of(context)!.editExperienceTitle,
         style: const TextStyle(
           color: Colors.white, 
           fontWeight: FontWeight.w900, 
@@ -125,18 +126,18 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
               children: [
                 CustomTextFormField(
                   controller: _titleCtrl,
-                  labelText: 'Posisi / Jabatan',
+                  labelText: AppLocalizations.of(context)!.jobTitle,
                   hintText: 'Software Engineer',
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextFormField(
                   controller: _companyCtrl,
-                  labelText: 'Perusahaan',
-                  hintText: 'PT Teknologi Maju',
+                  labelText: AppLocalizations.of(context)!.company,
+                  hintText: AppLocalizations.of(context)!.companyPlaceholder,
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                 ),
                 const SizedBox(height: 16),
                 
@@ -146,21 +147,21 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                     Expanded(
                       child: CustomTextFormField(
                         controller: _startCtrl,
-                        labelText: 'Mulai',
-                        hintText: 'Pilih Tanggal',
+                        labelText: AppLocalizations.of(context)!.startDate,
+                        hintText: AppLocalizations.of(context)!.selectDate,
                         isDark: true,
                         readOnly: true,
                         prefixIcon: Icons.calendar_today,
                         onTap: () => _pickDate(_startCtrl),
-                        validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: CustomTextFormField(
                         controller: _endCtrl,
-                        labelText: 'Selesai',
-                        hintText: 'Sampai Sekarang',
+                        labelText: AppLocalizations.of(context)!.endDate,
+                        hintText: AppLocalizations.of(context)!.untilNow,
                         isDark: true,
                         readOnly: true,
                         prefixIcon: Icons.event,
@@ -177,14 +178,18 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Deskripsi Singkat', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    Text(AppLocalizations.of(context)!.shortDescription, style: const TextStyle(color: Colors.white70, fontSize: 12)),
                     // Premium Monochrome Rewrite Button
                     _isRewriting 
                     ? SizedBox(
                         height: 16,
                         width: 100,
                         child: SpinningTextLoader(
-                          texts: const ['Improving...', 'Rephrasing...', 'Polishing...'],
+                          texts: [
+                            AppLocalizations.of(context)!.improving,
+                            AppLocalizations.of(context)!.rephrasing,
+                            AppLocalizations.of(context)!.polishing,
+                          ],
                           style: GoogleFonts.outfit(
                             color: Colors.white, 
                             fontSize: 12, 
@@ -197,7 +202,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                       onPressed: _rewriteDescription,
                       icon: const Icon(Icons.auto_awesome, size: 12, color: Colors.white),
                       label: Text(
-                        'Rewrite AI', 
+                        AppLocalizations.of(context)!.rewriteAI, 
                         style: GoogleFonts.outfit(
                           color: Colors.white, 
                           fontSize: 12, 
@@ -218,10 +223,10 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                 CustomTextFormField(
                   controller: _descCtrl,
                   labelText: '', // Hide label since header is above
-                  hintText: 'Jelaskan tanggung jawab utama dan pencapaianmu...',
+                  hintText: AppLocalizations.of(context)!.descriptionHint,
                   isDark: true,
                   maxLines: 4,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                 ),
               ],
             ),
@@ -233,7 +238,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
         TextButton(
           onPressed: () => Navigator.pop(context), 
           style: TextButton.styleFrom(foregroundColor: Colors.white54),
-          child: const Text('BATAL'),
+          child: Text(AppLocalizations.of(context)!.cancelAllCaps),
         ),
         ElevatedButton(
           onPressed: () {
@@ -254,7 +259,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          child: const Text('SIMPAN', style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(AppLocalizations.of(context)!.saveAllCaps, style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
       ],
     );

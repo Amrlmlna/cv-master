@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/certification.dart';
 import 'certification_dialog.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class CertificationListForm extends StatefulWidget {
   final List<Certification> certifications;
@@ -53,11 +54,11 @@ class _CertificationListFormState extends State<CertificationListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Sertifikasi & Lisensi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(AppLocalizations.of(context)!.certificationsLicenses, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editCertification(),
               icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
                 backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -68,7 +69,7 @@ class _CertificationListFormState extends State<CertificationListForm> {
         if (widget.certifications.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada sertifikasi.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(AppLocalizations.of(context)!.noCertifications, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,

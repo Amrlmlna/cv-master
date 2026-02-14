@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../auth/providers/auth_state_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class WelcomeHeader extends ConsumerWidget {
   const WelcomeHeader({super.key});
@@ -20,7 +21,7 @@ class WelcomeHeader extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Halo, $name',
+          AppLocalizations.of(context)!.helloName(name),
           style: const TextStyle(
             fontSize: 16,
             color: Colors.grey,
@@ -28,9 +29,9 @@ class WelcomeHeader extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
-          'Siap gapai tujuan profesionalmu?',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.readyToAchieve,
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: Colors.white,

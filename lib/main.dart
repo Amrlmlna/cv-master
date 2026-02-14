@@ -11,6 +11,9 @@ import 'presentation/profile/providers/profile_provider.dart';
 import 'domain/entities/user_profile.dart';
 import 'presentation/profile/providers/profile_sync_provider.dart';
 import 'presentation/drafts/providers/draft_sync_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
+import 'core/providers/locale_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase
 
@@ -123,9 +126,13 @@ class MyApp extends ConsumerWidget {
     // Initialize Sync Managers
     ref.read(profileSyncProvider).init();
     ref.read(draftSyncProvider).init();
+    // Initialize Locale (check IP/Prefs)
+    ref.read(localeNotifierProvider.notifier).init();
 
     final router = ref.watch(routerProvider);
 
+    final locale = ref.watch(localeNotifierProvider);
+    
     return MaterialApp.router(
       title: 'CV Master',
       debugShowCheckedModeBanner: false,
@@ -133,6 +140,17 @@ class MyApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark, // Force Dark Mode for Gen Z aesthetic
       routerConfig: router,
+      locale: locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('id'), // Indonesian
+      ],
     );
   }
 }

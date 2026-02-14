@@ -11,6 +11,7 @@ import '../providers/ocr_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../widgets/job/job_input_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class JobInputPage extends ConsumerStatefulWidget {
   const JobInputPage({super.key});
@@ -95,7 +96,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       final masterProfile = ref.read(masterProfileProvider);
       
       if (masterProfile == null) {
-        CustomSnackBar.showWarning(context, 'Lengkapi profil dulu untuk hasil terbaik');
+        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.completeProfileFirst);
         return;
       }
 
@@ -103,11 +104,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       // We push it as a route so we can pop it later
       Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const AppLoadingScreen(
+          pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
             messages: [
-              "Memvalidasi data...",
-              "Menyiapkan profil...",
-              "Melanjutkan ke form...",
+              AppLocalizations.of(context)!.validatingData,
+              AppLocalizations.of(context)!.preparingProfile,
+              AppLocalizations.of(context)!.continuingToForm,
             ],
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -148,12 +149,12 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
           // Pop Loading Screen first
           Navigator.of(context).pop();
           
-          CustomSnackBar.showError(context, 'Gagal menganalisis profil: $e');
+          CustomSnackBar.showError(context, AppLocalizations.of(context)!.analyzeProfileError(e.toString()));
         }
       } 
       // Finally block removed as popping is handled in try/catch
     } else {
-      CustomSnackBar.showError(context, 'Isi job title dulu!');
+      CustomSnackBar.showError(context, AppLocalizations.of(context)!.fillJobTitle);
     }
   }
 
@@ -169,14 +170,14 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            const Text(
-              'Scan Job Posting',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.scanJobPosting,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('Camera'),
+              title: Text(AppLocalizations.of(context)!.camera),
               onTap: () {
                 Navigator.pop(context);
                 _scanJobPosting(ImageSource.camera);
@@ -184,7 +185,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Gallery'),
+              title: Text(AppLocalizations.of(context)!.gallery),
               onTap: () {
                 Navigator.pop(context);
                 _scanJobPosting(ImageSource.gallery);
@@ -212,13 +213,13 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
             PageRouteBuilder(
               opaque: false,
               barrierDismissible: false,
-              pageBuilder: (context, animation, secondaryAnimation) => const AppLoadingScreen(
-                badge: "OCR SCANNING",
+              pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
+                badge: AppLocalizations.of(context)!.ocrScanning,
                 messages: [
-                  "Menganalisis teks...",
-                  "Mengidentifikasi lowongan...",
-                  "Menyusun data...",
-                  "Finalisasi...",
+                  AppLocalizations.of(context)!.analyzingText,
+                  AppLocalizations.of(context)!.identifyingVacancy,
+                  AppLocalizations.of(context)!.organizingData,
+                  AppLocalizations.of(context)!.finalizing,
                 ],
               ),
             ),
@@ -240,16 +241,16 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         _titleController.text = result.jobInput!.jobTitle;
         _companyController.text = result.jobInput!.company ?? '';
         _descController.text = result.jobInput!.jobDescription ?? '';
-        CustomSnackBar.showSuccess(context, 'Job posting extracted successfully!');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.jobExtractionSuccess);
 
       case OCRStatus.cancelled:
         // Silent - user cancelled
 
       case OCRStatus.noText:
-        CustomSnackBar.showWarning(context, 'Tidak ada teks ditemukan dalam gambar');
+        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.noTextFound);
 
       case OCRStatus.error:
-        CustomSnackBar.showError(context, result.errorMessage ?? 'Failed to extract job posting');
+        CustomSnackBar.showError(context, result.errorMessage ?? AppLocalizations.of(context)!.jobExtractionFailed);
     }
   }
 
@@ -257,11 +258,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Target Posisi'),
+        title: Text(AppLocalizations.of(context)!.targetPosition),
         actions: [
           IconButton(
             icon: const Icon(Icons.photo_camera),
-            tooltip: 'Scan Job Posting',
+            tooltip: AppLocalizations.of(context)!.scanJobPosting,
             onPressed: _showImageSourceDialog,
           ),
         ],

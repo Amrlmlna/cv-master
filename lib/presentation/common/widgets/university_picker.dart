@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/universities_data.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class UniversityPicker extends StatefulWidget {
   final TextEditingController controller;
@@ -53,11 +54,11 @@ class _UniversityPickerState extends State<UniversityPicker> {
                   focusNode: focusNode,
                   style: TextStyle(color: textColor),
                   cursorColor: effectiveIsDark ? Colors.white : Colors.black,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                   decoration: InputDecoration(
-                    labelText: 'Sekolah / Universitas',
+                    labelText: AppLocalizations.of(context)!.schoolLabel,
                     labelStyle: TextStyle(color: labelColor),
-                    hintText: 'Cth: Universitas Indonesia',
+                    hintText: AppLocalizations.of(context)!.schoolHint,
                     hintStyle: TextStyle(color: labelColor.withValues(alpha: 0.5)),
                     prefixIcon: Icon(Icons.school, color: labelColor),
                     filled: true,

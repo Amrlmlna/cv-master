@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/core/constants/regions_data.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class LocationPicker extends StatefulWidget {
   final TextEditingController controller;
@@ -55,9 +56,9 @@ class _LocationPickerState extends State<LocationPicker> {
                   style: TextStyle(color: textColor),
                   cursorColor: effectiveIsDark ? Colors.white : Colors.black,
                   decoration: InputDecoration(
-                    labelText: 'Lokasi (Cari Kota/Kabupaten)',
+                    labelText: AppLocalizations.of(context)!.locationLabel,
                     labelStyle: TextStyle(color: labelColor),
-                    hintText: 'Cth: Palu -> Sulawesi Tengah, Kota Palu',
+                    hintText: AppLocalizations.of(context)!.locationHint,
                     hintStyle: TextStyle(color: labelColor.withValues(alpha: 0.5)),
                     prefixIcon: Icon(Icons.location_on, color: labelColor),
                     filled: true,

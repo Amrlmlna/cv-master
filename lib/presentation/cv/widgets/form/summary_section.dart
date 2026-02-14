@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import
-import '../../../common/widgets/spinning_text_loader.dart'; // Import corrected
+import '../../../common/widgets/spinning_text_loader.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class SummarySection extends StatelessWidget {
   final TextEditingController controller;
@@ -25,7 +26,7 @@ class SummarySection extends StatelessWidget {
           controller: controller,
           maxLines: 5,
           decoration: InputDecoration(
-            hintText: 'Tulis ringkasan profesional Anda secara singkat...',
+            hintText: AppLocalizations.of(context)!.summaryHint,
             filled: true,
             fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
             border: OutlineInputBorder(
@@ -35,7 +36,7 @@ class SummarySection extends StatelessWidget {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Summary tidak boleh kosong';
+              return AppLocalizations.of(context)!.summaryEmpty;
             }
             return null;
           },
@@ -52,9 +53,13 @@ class SummarySection extends StatelessWidget {
                   height: 20,
                   width: 150, // Fixed width to prevent jitter
                   child: SpinningTextLoader(
-                    texts: const ['Thinking...', 'Writing...', 'Polishing...'],
+                    texts: [
+                      AppLocalizations.of(context)!.thinking,
+                      AppLocalizations.of(context)!.writing,
+                      AppLocalizations.of(context)!.polishing,
+                    ],
                     style: GoogleFonts.outfit(
-                      color: isDark ? Colors.black : Colors.white, // Keep text color logic? User said "button will turn into dark color". If button is dark, text is white. 
+                      color: isDark ? Colors.black : Colors.white, 
                       // Wait, if isDark is TRUE (Dark Mode), button is White. 
                       // If isDark is FALSE (Light Mode), button is Black.
                       // If button is Black, text is White.
@@ -70,7 +75,7 @@ class SummarySection extends StatelessWidget {
                     interval: const Duration(milliseconds: 1000),
                   ),
                 )
-              : Text('Generate with AI', style: GoogleFonts.outfit(fontWeight: FontWeight.bold)),
+              : Text(AppLocalizations.of(context)!.generateWithAI, style: GoogleFonts.outfit(fontWeight: FontWeight.bold)),
           style: ElevatedButton.styleFrom(
             backgroundColor: isDark ? Colors.white : Colors.black,
             foregroundColor: isDark ? Colors.black : Colors.white,
