@@ -209,7 +209,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       if (cloudProfile != null) {
         // Cloud has data. Merge into local.
         // If state is null, mergeProfile handles it by setting state = newProfile.
-        final hasChanges = await mergeProfile(cloudProfile);
+        await mergeProfile(cloudProfile);
         
         // If we have local data that wasn't in cloud, or just to be safe,
         // push the final merged state back to cloud so cloud is up to date too.

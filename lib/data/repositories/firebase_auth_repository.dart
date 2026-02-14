@@ -8,7 +8,7 @@ class FirebaseAuthRepository implements AuthRepository {
 
   FirebaseAuthRepository({FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
   @override
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -60,12 +60,17 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<User?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      await _googleSignIn.initialize();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
+          ?? await _googleSignIn.authenticate();
+      
       if (googleUser == null) return null; // User cancelled
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final authorization = await googleUser.authorizationClient.authorizeScopes([]);
+      
       final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
+        accessToken: authorization.accessToken,
         idToken: googleAuth.idToken,
       );
 
