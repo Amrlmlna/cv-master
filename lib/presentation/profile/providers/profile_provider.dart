@@ -1,9 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/repositories/firestore_profile_repository.dart';
 import '../../../domain/entities/user_profile.dart';
@@ -94,13 +90,11 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
     final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
     final newLocation = newProfile.location?.isNotEmpty == true ? newProfile.location : current.location;
-    final newProfilePic = newProfile.profilePicturePath?.isNotEmpty == true ? newProfile.profilePicturePath : current.profilePicturePath;
     
     if (newName != current.fullName || 
         newEmail != current.email || 
         newPhone != current.phoneNumber || 
-        newLocation != current.location ||
-        newProfilePic != current.profilePicturePath) {
+        newLocation != current.location) {
       print("[DEBUG] Personal Info Changed!");
       hasChanges = true;
     }
@@ -110,7 +104,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       email: newEmail,
       phoneNumber: newPhone,
       location: newLocation,
-      profilePicturePath: newProfilePic,
     );
 
     // 2. Experience - Add only NEW items
@@ -219,19 +212,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      saveProfile(updated);
   }
 
-  /// Pick and save profile image
-  Future<String?> pickProfileImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = path.basename(pickedFile.path);
-      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
-      return savedImage.path;
-    }
-    return null;
-  }
 
   Future<void> clearProfile() async {
     state = null;

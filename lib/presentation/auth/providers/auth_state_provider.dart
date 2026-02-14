@@ -26,5 +26,11 @@ final userDisplayNameProvider = Provider<String?>((ref) {
   return authState.value?.displayName;
 });
 
+/// User photo URL (if logged in via Google)
+final userPhotoUrlProvider = Provider<String?>((ref) {
+  final authState = ref.watch(authStateProvider);
+  return authState.value?.photoURL;
+});
+
 /// Whether user has premium subscription (Still Mocked)
 final isPremiumProvider = StateProvider<bool>((ref) => false);
