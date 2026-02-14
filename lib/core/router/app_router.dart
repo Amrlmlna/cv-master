@@ -11,6 +11,7 @@ import '../../presentation/drafts/pages/drafts_page.dart';
 import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
+import '../../presentation/stats/pages/stats_page.dart'; // Import StatsPage
 
 import '../../presentation/templates/pages/style_selection_page.dart';
 
@@ -145,6 +146,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/create/style-selection',
         builder: (context, state) => const StyleSelectionPage(),
+      ),
+      GoRoute(
+        path: '/stats',
+        builder: (context, state) => const StatsPage(),
       ),
 
 

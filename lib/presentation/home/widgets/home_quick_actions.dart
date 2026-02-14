@@ -58,8 +58,7 @@ class HomeQuickActions extends ConsumerWidget {
           icon: Icons.bar_chart_rounded,
           label: 'Statistik',
           onTap: () {
-            // TODO: Show stats modal or page
-            CustomSnackBar.showInfo(context, 'Statistik - Coming soon!');
+            context.push('/stats');
           },
         ),
         _QuickActionCircle(

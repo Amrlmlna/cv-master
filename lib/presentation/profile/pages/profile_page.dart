@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart'; // Import GoRouter
 
 import '../../../domain/entities/user_profile.dart';
 import '../providers/profile_provider.dart';
@@ -175,7 +176,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 imagePath: _profileImagePath,
                 onEditImage: _pickImage,
               ),
-              const SizedBox(height: 24),
+
 
               // Import CV Button (Extracted Widget)
               ImportCVButton(
