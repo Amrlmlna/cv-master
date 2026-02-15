@@ -1,0 +1,37 @@
+workflows:
+  ios-release:
+    name: iOS Release (Unsigned)
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: Install Pods
+        script: |
+          find . -name "Podfile" -exec dir {} \;
+          cd ios && pod install
+      - name: Build iOS (No Codesign)
+        script: |
+          # Build the app without signing
+          flutter build ios --release --no-codesign
+      - name: Package .ipa
+        script: |
+          # Convert the .app to .ipa manually
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r Runner.ipa Payload
+    artifacts:
+      - build/ios/iphoneos/Runner.ipa
+    publishing:
+      email:
+        recipients:
+          - user_email@example.com # Update this on Codemagic dashboard
+      github_releases:
+        draft: false
+        prerelease: false
+        # Note: You must link your GitHub account in Codemagic project settings for this to work
