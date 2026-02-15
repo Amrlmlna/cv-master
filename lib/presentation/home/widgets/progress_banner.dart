@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_level_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ProgressBanner extends ConsumerWidget {
   const ProgressBanner({super.key});
@@ -10,6 +11,17 @@ class ProgressBanner extends ConsumerWidget {
     final userLevel = ref.watch(userLevelProvider);
     final rawCompletion = ref.watch(profileCompletionProvider);
     final stats = ref.watch(profileStatsProvider);
+    
+    // Helper to get localized user level
+    String getLocalizedLevel(String key) {
+      final l10n = AppLocalizations.of(context)!;
+      switch (key) {
+        case 'userLevelRookie': return l10n.userLevelRookie;
+        case 'userLevelMid': return l10n.userLevelMid;
+        case 'userLevelExpert': return l10n.userLevelExpert;
+        default: return key;
+      }
+    }
     
     // Cap completion at 100%
     final completion = rawCompletion > 100 ? 100 : rawCompletion;
@@ -43,14 +55,23 @@ class ProgressBanner extends ConsumerWidget {
               color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Text(
-              userLevel.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 1.2,
-                color: Colors.white,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getLocalizedLevel(userLevel),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           
@@ -72,11 +93,11 @@ class ProgressBanner extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 8),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    'Complete',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.complete,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                       fontWeight: FontWeight.w500,
@@ -107,17 +128,17 @@ class ProgressBanner extends ConsumerWidget {
           Row(
             children: [
               _StatItem(
-                label: 'CVs',
+                label: AppLocalizations.of(context)!.cvs,
                 value: stats['cvCount']!,
               ),
               const SizedBox(width: 24),
               _StatItem(
-                label: 'Experience',
+                label: AppLocalizations.of(context)!.experience,
                 value: stats['experienceCount']!,
               ),
               const SizedBox(width: 24),
               _StatItem(
-                label: 'Skills',
+                label: AppLocalizations.of(context)!.skills,
                 value: stats['skillsCount']!,
               ),
             ],

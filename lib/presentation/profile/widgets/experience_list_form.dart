@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/user_profile.dart';
 import 'experience_dialog.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ExperienceListForm extends StatefulWidget {
   final List<Experience> experiences;
@@ -53,11 +54,11 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Pengalaman Kerja', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(AppLocalizations.of(context)!.workExperience, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editExperience(),
               icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
                 backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -68,7 +69,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         if (widget.experiences.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada pengalaman kerja.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(AppLocalizations.of(context)!.noExperience, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -82,7 +83,7 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
               color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
               child: ListTile(
                 title: Text(exp.jobTitle, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
-                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? "Sekarang"}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
+                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? AppLocalizations.of(context)!.present}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),

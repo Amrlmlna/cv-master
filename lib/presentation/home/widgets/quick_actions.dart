@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/widgets/import_cv_button.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
-/// Quick actions section for home page
+/// Quick actions section for home page 
 /// Only shows Import CV for users without profile
 class QuickActions extends ConsumerWidget {
   const QuickActions({super.key});
@@ -17,9 +18,10 @@ class QuickActions extends ConsumerWidget {
         // Show success message
         CustomSnackBar.showSuccess(
           context,
-          'CV berhasil diimport!\n'
-          'Ditambahkan: ${profile.experience.length} pengalaman, '
-          '${profile.education.length} pendidikan',
+          AppLocalizations.of(context)!.cvImportSuccessWithCount(
+            profile.experience.length,
+            profile.education.length,
+          ),
         );
         // Navigate to profile to review/complete
         context.push('/profile');

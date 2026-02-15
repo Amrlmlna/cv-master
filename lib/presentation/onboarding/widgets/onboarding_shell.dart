@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class OnboardingShell extends StatelessWidget {
   final int currentPage;
@@ -36,7 +37,7 @@ class OnboardingShell extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                currentPage == totalSteps - 1 ? 'YOU\'RE ALL SET!' : 'DROP YOUR DETAILS.',
+                currentPage == totalSteps - 1 ? AppLocalizations.of(context)!.youreAllSet : AppLocalizations.of(context)!.dropYourDetails,
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w900, // Extra Bold
@@ -48,7 +49,7 @@ class OnboardingShell extends StatelessWidget {
               const SizedBox(height: 12),
               if (currentPage == 0) ...[
                 Text(
-                  'Isi data sekali, generate ribuan CV tanpa ngetik ulang. Hemat waktu, fokus "grinding".',
+                  AppLocalizations.of(context)!.onboardingSubtitle,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[400],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
@@ -10,15 +11,15 @@ class NotificationsPage extends StatelessWidget {
     // Dummy Data for now
     final notifications = [
       {
-        'title': 'Selamat Datang!',
-        'message': 'Mulai buat CV profesional pertamamu sekarang.',
-        'time': 'Baru saja',
+        'title': AppLocalizations.of(context)!.welcomeTitle,
+        'message': AppLocalizations.of(context)!.welcomeMessage,
+        'time': AppLocalizations.of(context)!.justNow,
         'isRead': false,
       },
       {
-        'title': 'Tips CV',
-        'message': 'Cantumkan angka di pencapaian kerjamu agar lebih menarik bagi rekruter.',
-        'time': '2 jam yang lalu',
+        'title': AppLocalizations.of(context)!.cvTipsTitle,
+        'message': AppLocalizations.of(context)!.cvTipsMessage,
+        'time': AppLocalizations.of(context)!.hoursAgo(2),
         'isRead': true,
       },
     ];
@@ -28,7 +29,7 @@ class NotificationsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Notifikasi',
+          AppLocalizations.of(context)!.notificationsTitle,
           style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -61,7 +62,7 @@ class NotificationsPage extends StatelessWidget {
           Icon(Icons.notifications_off_outlined, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
-            'Belum ada notifikasi',
+            AppLocalizations.of(context)!.noNotifications,
             style: GoogleFonts.outfit(
               fontSize: 18,
               fontWeight: FontWeight.bold,

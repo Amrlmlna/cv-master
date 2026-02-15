@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class SkillsInputForm extends StatefulWidget {
   final List<String> skills;
@@ -41,9 +42,9 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             Expanded(
               child: TextField(
                 controller: _controller,
-                decoration: const InputDecoration(
-                  labelText: 'Tambah Skill',
-                  hintText: 'contoh: Flutter, Leadership',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.addSkill,
+                  hintText: AppLocalizations.of(context)!.skillHint,
                 ),
                 onSubmitted: (_) => _addSkill(),
               ),
@@ -57,7 +58,7 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
         ),
         const SizedBox(height: 16),
         if (widget.skills.isEmpty)
-          const Text('Belum ada skill.', style: TextStyle(color: Colors.grey))
+          Text(AppLocalizations.of(context)!.noSkills, style: const TextStyle(color: Colors.grey))
         else
           Wrap(
             spacing: 8.0,

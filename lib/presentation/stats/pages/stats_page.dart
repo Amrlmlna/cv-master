@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/providers/user_level_provider.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../widgets/user_level_card.dart';
 import '../widgets/activity_chart.dart';
@@ -11,38 +12,54 @@ class StatsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userLevel = ref.watch(userLevelProvider);
+    final userLevelKey = ref.watch(userLevelProvider);
     final stats = ref.watch(profileStatsProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // Helper to get localized user level
+    String getLocalizedLevel(String key) {
+      final l10n = AppLocalizations.of(context)!;
+      switch (key) {
+        case 'userLevelRookie': return l10n.userLevelRookie;
+        case 'userLevelMid': return l10n.userLevelMid;
+        case 'userLevelExpert': return l10n.userLevelExpert;
+        default: return key;
+      }
+    }
+
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Career Analytics'),
+        title: Text(AppLocalizations.of(context)!.careerAnalytics),
         centerTitle: true,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1. User Level Card
-            UserLevelCard(level: userLevel, isDark: isDark),
+            UserLevelCard(level: getLocalizedLevel(userLevelKey), isDark: isDark),
+
             const SizedBox(height: 24),
 
             // 2. Activity Chart
-            const Text(
-              'Activity Overview',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.activityOverview,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 16),
             ActivityChart(isDark: isDark),
             const SizedBox(height: 24),
 
             // 3. Stats Grid
-            const Text(
-              'Key Metrics',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.keyMetrics,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 16),
             StatsGrid(stats: stats, isDark: isDark),
           ],

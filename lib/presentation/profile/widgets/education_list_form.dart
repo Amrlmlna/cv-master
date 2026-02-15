@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/university_picker.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class EducationListForm extends StatefulWidget {
   final List<Education> education;
@@ -55,11 +56,11 @@ class _EducationListFormState extends State<EducationListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Pendidikan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(AppLocalizations.of(context)!.educationHistory, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
             TextButton.icon(
               onPressed: () => _editEducation(),
               icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text('Tambah', style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
               style: TextButton.styleFrom(
                 backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -70,7 +71,7 @@ class _EducationListFormState extends State<EducationListForm> {
         if (widget.education.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Belum ada riwayat pendidikan.', style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(AppLocalizations.of(context)!.noEducation, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -84,7 +85,7 @@ class _EducationListFormState extends State<EducationListForm> {
               color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
               child: ListTile(
                 title: Text(edu.schoolName, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
-                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? "Sekarang"}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
+                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -171,7 +172,7 @@ class _EducationDialogState extends State<_EducationDialog> {
       backgroundColor: const Color(0xFF1E1E1E), // Dark Card
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        widget.existing == null ? 'TAMBAH PENDIDIKAN' : 'EDIT PENDIDIKAN',
+        widget.existing == null ? AppLocalizations.of(context)!.addEducation : AppLocalizations.of(context)!.editEducation,
         style: const TextStyle(
           color: Colors.white, 
           fontWeight: FontWeight.w900, 
@@ -194,10 +195,10 @@ class _EducationDialogState extends State<_EducationDialog> {
                 const SizedBox(height: 16),
                 CustomTextFormField(
                   controller: _degreeCtrl,
-                  labelText: 'Gelar / Jurusan',
-                  hintText: 'Sarjana Komputer',
+                  labelText: AppLocalizations.of(context)!.degree,
+                  hintText: AppLocalizations.of(context)!.degreeHint,
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                 ),
                 const SizedBox(height: 16),
                 
@@ -206,21 +207,21 @@ class _EducationDialogState extends State<_EducationDialog> {
                     Expanded(
                       child: CustomTextFormField(
                         controller: _startCtrl,
-                        labelText: 'Masuk',
-                        hintText: 'Tahun',
+                        labelText: AppLocalizations.of(context)!.startDate,
+                        hintText: AppLocalizations.of(context)!.year,
                         isDark: true,
                         readOnly: true,
                         prefixIcon: Icons.calendar_today,
                         onTap: () => _pickDate(_startCtrl),
-                        validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
+                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: CustomTextFormField(
                         controller: _endCtrl,
-                        labelText: 'Lulus',
-                        hintText: 'Tahun',
+                        labelText: AppLocalizations.of(context)!.endDate,
+                        hintText: AppLocalizations.of(context)!.year,
                         isDark: true,
                         readOnly: true,
                         prefixIcon: Icons.event,
@@ -239,7 +240,7 @@ class _EducationDialogState extends State<_EducationDialog> {
         TextButton(
           onPressed: () => Navigator.pop(context), 
           style: TextButton.styleFrom(foregroundColor: Colors.white54),
-          child: const Text('BATAL'),
+          child: Text(AppLocalizations.of(context)!.cancelAllCaps),
         ),
         ElevatedButton(
           onPressed: () {
@@ -259,7 +260,7 @@ class _EducationDialogState extends State<_EducationDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          child: const Text('SIMPAN', style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(AppLocalizations.of(context)!.saveAllCaps, style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
       ],
     );

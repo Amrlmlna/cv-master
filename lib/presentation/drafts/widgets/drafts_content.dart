@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../ads/widgets/draft_banner_carousel.dart';
 
@@ -49,7 +50,7 @@ class DraftsContent extends StatelessWidget {
             children: [
               if (selectedFolderName == null) ...[
                 Text(
-                  'Draft Saya',
+                  AppLocalizations.of(context)!.myDrafts,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -60,7 +61,7 @@ class DraftsContent extends StatelessWidget {
                   controller: TextEditingController(text: searchQuery)
                     ..selection = TextSelection.fromPosition(TextPosition(offset: searchQuery.length)),
                   decoration: InputDecoration(
-                    hintText: 'Cari lowongan...',
+                    hintText: AppLocalizations.of(context)!.searchJob,
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     fillColor: Colors.grey[100],
@@ -118,7 +119,7 @@ class DraftsContent extends StatelessWidget {
       return _buildDraftList(context, currentDrafts);
     } else {
       if (folders.isEmpty) {
-         return const Center(child: Text('Belum ada draft.'));
+         return Center(child: Text(AppLocalizations.of(context)!.noDrafts));
       }
       return _buildFolderGrid(context, folders);
     }
@@ -129,7 +130,7 @@ class DraftsContent extends StatelessWidget {
     final keys = folders.keys.toList()..sort();
 
     if (keys.isEmpty) {
-       return const Center(child: Text('Ga ada lowongan yang cocok.'));
+       return Center(child: Text(AppLocalizations.of(context)!.noMatchingJobs));
     }
 
     return GridView.builder(
@@ -186,7 +187,7 @@ class DraftsContent extends StatelessWidget {
   }
 
   Widget _buildDraftList(BuildContext context, List<CVData> drafts) {
-    if (drafts.isEmpty) return const Center(child: Text('Folder kosong'));
+    if (drafts.isEmpty) return Center(child: Text(AppLocalizations.of(context)!.folderEmpty));
     
     // Drafts are already sorted by the Smart Component
 
@@ -202,10 +203,10 @@ class DraftsContent extends StatelessWidget {
         
         final title = draft.jobTitle.isNotEmpty 
             ? '${draft.jobTitle} #$version' 
-            : 'Tanpa Judul #$version';
+            : '${AppLocalizations.of(context)!.untitled} #$version';
             
-        final templateName = _getTemplateName(draft.styleId);
-        final lang = draft.language == 'id' ? 'IN' : 'EN';
+        final templateName = _getTemplateName(context, draft.styleId);
+
 
         return Dismissible(
           key: Key(draft.id),
@@ -252,13 +253,13 @@ class DraftsContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    const SizedBox(height: 4),
-                   Text(
-                    'Template: $templateName • $lang',
+                    Text(
+                    'Template: $templateName',
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                    const SizedBox(height: 2),
                   Text(
-                    'Dibuat ${timeago.format(draft.createdAt)}',
+                    '${AppLocalizations.of(context)!.created} ${timeago.format(draft.createdAt)}',
                     style: TextStyle(fontSize: 11, color: Colors.grey[500]),
                   ),
                 ],
@@ -272,11 +273,11 @@ class DraftsContent extends StatelessWidget {
     );
   }
 
-  String _getTemplateName(String id) {
+  String _getTemplateName(BuildContext context, String id) {
     switch (id) {
-      case 'ATS': return 'ATS Standard';
-      case 'Modern': return 'Modern Professional';
-      case 'Creative': return 'Creative Design';
+      case 'ATS': return AppLocalizations.of(context)!.atsStandard;
+      case 'Modern': return AppLocalizations.of(context)!.modernProfessional;
+      case 'Creative': return AppLocalizations.of(context)!.creativeDesign;
       default: return id;
     }
   }

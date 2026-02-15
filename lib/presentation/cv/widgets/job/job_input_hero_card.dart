@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class JobInputHeroCard extends StatelessWidget {
   final TextEditingController controller;
@@ -24,7 +25,7 @@ class JobInputHeroCard extends StatelessWidget {
       children: [
         // Title
         Text(
-          'Mau lamar kerja apa?',
+          AppLocalizations.of(context)!.whatJobApply,
           style: GoogleFonts.outfit(
             color: isDark ? Colors.white : Colors.black,
             fontSize: 32,
@@ -37,7 +38,7 @@ class JobInputHeroCard extends StatelessWidget {
         
         // Subtitle
         Text(
-          'AI bakal bantuin bikin CV yang pas banget buat tujuan ini.',
+          AppLocalizations.of(context)!.aiHelpCreateCV,
           style: GoogleFonts.outfit(
             color: isDark ? Colors.grey[400] : Colors.grey[600],
             height: 1.5,
@@ -60,7 +61,7 @@ class JobInputHeroCard extends StatelessWidget {
               _buildMinimalInput(
                 context: context,
                 controller: controller,
-                hint: hintText.isEmpty && controller.text.isEmpty ? 'Posisi (Misal: UI Designer)' : hintText,
+                hint: hintText.isEmpty && controller.text.isEmpty ? AppLocalizations.of(context)!.positionHint : hintText,
                 autoFocus: true,
               ),
               
@@ -78,7 +79,7 @@ class JobInputHeroCard extends StatelessWidget {
               _buildMinimalInput(
                 context: context,
                 controller: companyController,
-                hint: 'Nama Perusahaan (Opsional)',
+                hint: AppLocalizations.of(context)!.companyHint,
                 isLast: true,
                 onSubmit: onSubmit,
               ),
@@ -124,7 +125,7 @@ class JobInputHeroCard extends StatelessWidget {
       ),
       validator: (value) {
         if (!isLast && (value == null || value.isEmpty)) {
-          return 'Wajib diisi ya';
+          return AppLocalizations.of(context)!.requiredFieldFriendly;
         }
         return null;
       },

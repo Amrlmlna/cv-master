@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class JobDescriptionField extends StatelessWidget {
   final TextEditingController controller;
@@ -13,7 +14,7 @@ class JobDescriptionField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Detail / Kualifikasi (Opsional)',
+          AppLocalizations.of(context)!.jobDetailLabel,
           style: GoogleFonts.outfit(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -34,7 +35,7 @@ class JobDescriptionField extends StatelessWidget {
               fontSize: 16,
             ),
             decoration: InputDecoration(
-              hintText: 'Paste deskripsi posisi, persyaratan, atau kualifikasi di sini...',
+              hintText: AppLocalizations.of(context)!.jobDetailHint,
               hintStyle: GoogleFonts.outfit(
                 color: isDark ? Colors.grey[600] : Colors.grey[400],
                 fontSize: 16,

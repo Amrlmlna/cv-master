@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../presentation/cv/widgets/job/job_input_hero_card.dart';
 import '../../../../presentation/cv/widgets/job/job_description_field.dart';
 
@@ -134,7 +135,7 @@ class _JobInputContentState extends State<JobInputContent> {
                   ),
                   child: widget.isLoading 
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                    : const Text('Lanjut: Review Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    : Text(AppLocalizations.of(context)!.continueToReview, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
               ),
             ],

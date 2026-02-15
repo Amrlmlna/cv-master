@@ -6,6 +6,8 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
 
+import 'package:clever/l10n/generated/app_localizations.dart';
+
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
@@ -50,7 +52,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           debugPrint("Sync failed on signup: $e");
         }
 
-        CustomSnackBar.showSuccess(context, 'Account created successfully!');
+        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.accountCreatedSuccess);
         // Go to home after signup
         context.go('/');
       }
@@ -88,7 +90,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               children: [
                 const SizedBox(height: 16),
                 Text(
-                  'Create Account',
+                  AppLocalizations.of(context)!.createAccount,
                   style: GoogleFonts.outfit(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -96,7 +98,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start your journey to a better career',
+                  AppLocalizations.of(context)!.createAccountSubtitle,
                   style: GoogleFonts.outfit(
                     color: Colors.grey,
                     fontSize: 16,
@@ -108,7 +110,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
-                    labelText: 'Full Name',
+                    labelText: AppLocalizations.of(context)!.fullName,
                     prefixIcon: const Icon(Icons.person_outline),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -116,7 +118,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
+                      return AppLocalizations.of(context)!.pleaseEnterName;
                     }
                     return null;
                   },
@@ -128,7 +130,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -136,7 +138,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return AppLocalizations.of(context)!.pleaseEnterEmail;
                     }
                     return null;
                   },
@@ -148,7 +150,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -166,10 +168,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return AppLocalizations.of(context)!.pleaseEnterPassword;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return AppLocalizations.of(context)!.passwordMinLength;
                     }
                     return null;
                   },
@@ -192,7 +194,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                         )
                       : Text(
-                          'Create Account',
+                          AppLocalizations.of(context)!.createAccount,
                           style: GoogleFonts.outfit(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -206,11 +208,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Already have an account?'),
+                    Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                     TextButton(
                       onPressed: () => context.go('/login'), // Use go to replace stack or push? standardized on login page
                       child: Text(
-                        'Log In',
+                        AppLocalizations.of(context)!.logIn,
                         style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
                       ),
                     ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../profile/providers/profile_sync_provider.dart';
+import '../../common/widgets/language_selector.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
@@ -24,6 +26,11 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       title: title != null ? Text(title!) : null,
       centerTitle: true,
       actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          child: const LanguageSelector(),
+        ),
+        const SizedBox(width: 8),
         if (user != null)
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -38,22 +45,24 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'sync',
-                  child: ListTile(
-                    leading: Icon(Icons.sync, size: 20),
-                    title: Text('Sync Data'),
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.sync, color: Colors.blue),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context)!.syncData),
+                    ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'logout',
-                  child: ListTile(
-                    leading: Icon(Icons.logout, color: Colors.red, size: 20),
-                    title: Text('Log Out', style: TextStyle(color: Colors.red)),
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.logout, color: Colors.red),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context)!.logOut),
+                    ],
                   ),
                 ),
               ],

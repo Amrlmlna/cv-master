@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/widgets/education_list_form.dart';
 
@@ -19,14 +20,14 @@ class OnboardingEducationStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Riwayat Pendidikan',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          Text(
+            AppLocalizations.of(context)!.educationTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Isi semua riwayat pendidikanmu. AI akan memilih jenjang yang paling relevan untuk ditaruh di CV.',
-             style: TextStyle(color: Colors.grey, height: 1.5),
+          Text(
+            AppLocalizations.of(context)!.educationSubtitle,
+             style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           EducationListForm(

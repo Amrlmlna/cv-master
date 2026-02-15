@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../profile/widgets/skills_input_form.dart';
 
 class OnboardingSkillsStep extends StatelessWidget {
@@ -18,14 +19,14 @@ class OnboardingSkillsStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Skill Kamu Apa Aja?',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          Text(
+            AppLocalizations.of(context)!.skillsTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Tulis semua keahlianmu. AI akan menonjolkan skill yang paling sesuai dengan kebutuhan posisi yang kamu tuju.',
-             style: TextStyle(color: Colors.grey, height: 1.5),
+          Text(
+            AppLocalizations.of(context)!.skillsSubtitle,
+             style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           SkillsInputForm(

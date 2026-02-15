@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import
 import '../../legal/pages/legal_page.dart';
 import 'onboarding_legal_modal.dart';
-import '../../common/widgets/spinning_text_loader.dart'; // Import
+import '../../common/widgets/spinning_text_loader.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class OnboardingNavigationBar extends StatelessWidget {
   final int currentPage;
@@ -34,14 +35,14 @@ class OnboardingNavigationBar extends StatelessWidget {
               child: RichText(
                 textAlign: TextAlign.center,
                 
-                text: TextSpan(
+                  text: TextSpan(
                   style: const TextStyle(fontSize: 12, color: Colors.white38, fontFamily: 'Outfit'),
                   children: [
-                    const TextSpan(
-                      text: 'Dengan menekan "MULAI SEKARANG", kamu setuju dengan ',
+                    TextSpan(
+                      text: AppLocalizations.of(context)!.termsAgreePrefix,
                     ),
                     TextSpan(
-                      text: 'Syarat & Ketentuan',
+                      text: AppLocalizations.of(context)!.termsOfService,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -52,9 +53,9 @@ class OnboardingNavigationBar extends StatelessWidget {
                           OnboardingLegalModal.show(context, title: 'Terms of Service', content: kTermsOfService);
                         },
                     ),
-                    const TextSpan(text: ' dan '),
+                    TextSpan(text: AppLocalizations.of(context)!.and),
                     TextSpan(
-                      text: 'Kebijakan Privasi',
+                      text: AppLocalizations.of(context)!.privacyPolicy,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -65,7 +66,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                           OnboardingLegalModal.show(context, title: 'Privacy Policy', content: kPrivacyPolicy);
                         },
                     ),
-                    const TextSpan(text: ' kami.'),
+                    TextSpan(text: AppLocalizations.of(context)!.termsAgreeSuffix),
                   ],
                 ),
               ),
@@ -89,7 +90,11 @@ class OnboardingNavigationBar extends StatelessWidget {
                 ? SizedBox(
                     height: 20,
                      child: SpinningTextLoader(
-                      texts: const ['Finalizing...', 'Saving Profile...', 'Ready!'],
+                      texts: [
+                        AppLocalizations.of(context)!.finalizing,
+                        AppLocalizations.of(context)!.savingProfile,
+                        AppLocalizations.of(context)!.ready
+                      ],
                       style: GoogleFonts.outfit(
                          color: Colors.white, // User implies button turns dark, so text should be white? User said "white shimmering... button will turn into dark color". If button is dark, text should be white.
                          fontWeight: FontWeight.w900,
@@ -100,8 +105,9 @@ class OnboardingNavigationBar extends StatelessWidget {
                     ),
                   ) 
                 : Text(
-                  isLastPage ? 'MULAI SEKARANG' : 'NEXT STEP',
+                  isLastPage ? AppLocalizations.of(context)!.startNow : AppLocalizations.of(context)!.nextStep,
                   style: GoogleFonts.outfit(
+
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
                     letterSpacing: 1.0,
@@ -117,7 +123,7 @@ class OnboardingNavigationBar extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white54,
               ),
-              child: const Text('Back', style: TextStyle(fontSize: 14)),
+              child: Text(AppLocalizations.of(context)!.back, style: const TextStyle(fontSize: 14)),
             ),
           ] else ...[
             const SizedBox(height: 24), // Spacer to keep balance if no back button

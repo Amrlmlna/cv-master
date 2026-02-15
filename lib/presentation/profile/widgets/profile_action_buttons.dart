@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 /// Profile action buttons (Save + Help)
 class ProfileActionButtons extends StatelessWidget {
@@ -24,7 +25,7 @@ class ProfileActionButtons extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: canSave ? onSave : null,
             icon: const Icon(Icons.check),
-            label: const Text('Simpan Profil'),
+            label: Text(AppLocalizations.of(context)!.saveProfile),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
@@ -39,7 +40,7 @@ class ProfileActionButtons extends StatelessWidget {
             onPressed: () => context.push('/profile/help'),
             icon: Icon(Icons.help_outline, color: Theme.of(context).disabledColor),
             label: Text(
-              'Bantuan & Dukungan',
+              AppLocalizations.of(context)!.helpSupport,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),

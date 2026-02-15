@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class OnboardingFinalStep extends StatelessWidget {
   const OnboardingFinalStep({super.key});
@@ -38,10 +39,10 @@ class OnboardingFinalStep extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             
-            const Text(
-              'Master Profile aman. Sekarang tinggal sat-set bikin CV.',
+            Text(
+              AppLocalizations.of(context)!.onboardingFinalMessage,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white70,
                 height: 1.5,

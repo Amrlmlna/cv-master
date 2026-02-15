@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class AIEditableText extends StatefulWidget {
   final String initialText;
@@ -132,21 +133,21 @@ class _AIEditableTextState extends State<AIEditableText> {
                 IconButton(
                   icon: Icon(Icons.format_bold, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: () => _applyFormatting('**'),
-                  tooltip: 'Bold',
+                  tooltip: AppLocalizations.of(context)!.bold,
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
                   icon: Icon(Icons.format_italic, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: () => _applyFormatting('_'),
-                  tooltip: 'Italic',
+                  tooltip: AppLocalizations.of(context)!.italic,
                    constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
                   icon: Icon(Icons.title, size: 20, color: isDark ? Colors.white70 : Colors.black87),
                   onPressed: _applyHeader,
-                  tooltip: 'Header',
+                  tooltip: AppLocalizations.of(context)!.header,
                    constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
@@ -161,7 +162,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                   TextButton.icon(
                     onPressed: _handleRewrite,
                     icon: const Icon(Icons.auto_awesome, size: 16),
-                    label: const Text('Rewrite', style: TextStyle(fontSize: 12)),
+                    label: Text(AppLocalizations.of(context)!.rewrite, style: const TextStyle(fontSize: 12)),
                     style: TextButton.styleFrom(foregroundColor: Colors.purple),
                   ),
               ],
@@ -178,7 +179,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
-                hintText: 'Type here...',
+                hintText: AppLocalizations.of(context)!.typeHere,
                 hintStyle: TextStyle(color: isDark ? Colors.grey[600] : Colors.grey[400]),
               ),
               style: widget.style ?? TextStyle(color: isDark ? Colors.white : Colors.black),
@@ -194,7 +195,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                       _controller.text = widget.initialText; // Revert
                     });
                   },
-                  child: const Text('Cancel', style: TextStyle(fontSize: 12)),
+                  child: Text(AppLocalizations.of(context)!.cancel, style: const TextStyle(fontSize: 12)),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -203,7 +204,7 @@ class _AIEditableTextState extends State<AIEditableText> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     minimumSize: const Size(0, 32),
                   ),
-                  child: const Text('Save', style: TextStyle(fontSize: 12)),
+                  child: Text(AppLocalizations.of(context)!.save, style: const TextStyle(fontSize: 12)),
                 ),
               ],
             ),

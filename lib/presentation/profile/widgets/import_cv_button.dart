@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../utils/cv_import_handler.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 /// Reusable CV Import Button
 /// Shows dialog with Camera/Gallery/PDF options and handles import flow
@@ -35,7 +36,7 @@ class ImportCVButton extends ConsumerWidget {
           ),
         ),
         child: Text(
-          'IMPORT DARI CV',
+          AppLocalizations.of(context)!.importFromCV,
           style: GoogleFonts.outfit(
             fontSize: 14,
             fontWeight: FontWeight.w600,

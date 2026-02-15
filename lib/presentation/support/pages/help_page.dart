@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/faq_item.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -37,7 +38,7 @@ class _HelpPageState extends State<HelpPage> {
 
     if (!await launchUrl(emailLaunchUri)) {
       if (mounted) {
-         CustomSnackBar.showError(context, 'Tidak bisa membuka aplikasi email.');
+         CustomSnackBar.showError(context, AppLocalizations.of(context)!.cantOpenEmail);
       }
     }
   }
@@ -47,7 +48,7 @@ class _HelpPageState extends State<HelpPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bantuan & Dukungan'),
+        title: Text(AppLocalizations.of(context)!.helpSupport),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -62,7 +63,7 @@ class _HelpPageState extends State<HelpPage> {
                   child: _SupportCard(
                     icon: Icons.email_outlined,
                     title: 'Email',
-                    subtitle: 'Hubungi Support',
+                    subtitle: AppLocalizations.of(context)!.contactSupport,
                     onTap: _contactSupport,
                   ),
                 ),
@@ -70,8 +71,8 @@ class _HelpPageState extends State<HelpPage> {
                 Expanded(
                   child: _SupportCard(
                     icon: Icons.feedback_outlined,
-                    title: 'Masukan',
-                    subtitle: 'Saran & Bug',
+                    title: AppLocalizations.of(context)!.feedback,
+                    subtitle: AppLocalizations.of(context)!.suggestionsBugs,
                     onTap: () => context.push('/support/feedback'),
                   ),
                 ),
@@ -79,8 +80,9 @@ class _HelpPageState extends State<HelpPage> {
             ),
             
             const SizedBox(height: 48),
+            const SizedBox(height: 48),
             Text(
-              'Pertanyaan Umum',
+              AppLocalizations.of(context)!.frequentQuestions,
               style: TextStyle(
                 fontSize: 20, 
                 fontWeight: FontWeight.bold,
@@ -90,21 +92,21 @@ class _HelpPageState extends State<HelpPage> {
             ),
             const SizedBox(height: 20),
 
-            const FAQItem(
-              question: 'Apakah CV Master gratis?',
-              answer: 'Ya, fitur dasar CV Master gratis untuk digunakan. Kami mungkin menambahkan fitur premium di masa mendatang.',
+            FAQItem(
+              question: AppLocalizations.of(context)!.faqFreeQuestion,
+              answer: AppLocalizations.of(context)!.faqFreeAnswer,
             ),
-            const FAQItem(
-              question: 'Bagaimana cara mengubah profil?',
-              answer: 'Pergi ke menu Profile di navigasi bawah, lalu edit bagian yang ingin Anda ubah dan tekan simpan.',
+            FAQItem(
+              question: AppLocalizations.of(context)!.faqEditQuestion,
+              answer: AppLocalizations.of(context)!.faqEditAnswer,
             ),
-             const FAQItem(
-              question: 'Apakah data saya aman?',
-              answer: 'Data Anda disimpan secara lokal di perangkat Anda (hanya Master Profile). Data yang dikirim ke AI diproses sesaat dan tidak disimpan oleh pihak ketiga untuk tujuan lain.',
+             FAQItem(
+              question: AppLocalizations.of(context)!.faqDataQuestion,
+              answer: AppLocalizations.of(context)!.faqDataAnswer,
             ),
-            const FAQItem(
-              question: 'Bisa export ke PDF?',
-              answer: 'Tentu! Setelah selesai membuat CV, Anda bisa melihat preview dan menekan tombol Download/Print PDF di pojok kanan atas.',
+            FAQItem(
+              question: AppLocalizations.of(context)!.faqPdfQuestion,
+              answer: AppLocalizations.of(context)!.faqPdfAnswer,
             ),
 
             const SizedBox(height: 48),
@@ -126,12 +128,12 @@ class _HelpPageState extends State<HelpPage> {
                     children: [
                       TextButton(
                         onPressed: () => context.push('/legal/privacy'),
-                        child: Text('Privacy Policy', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                        child: Text(AppLocalizations.of(context)!.privacyPolicy, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
                       ),
                       Text('|', style: TextStyle(color: Colors.grey[700], fontSize: 12)),
                       TextButton(
                         onPressed: () => context.push('/legal/terms'),
-                        child: Text('Terms of Service', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                        child: Text(AppLocalizations.of(context)!.termsOfService, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
                       ),
                     ],
                   )

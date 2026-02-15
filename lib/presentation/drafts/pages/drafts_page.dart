@@ -35,9 +35,8 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
     // 3. Summary
     notifier.setSummary(draft.summary);
 
-    // 4. Style & Language
+    // 4. Style
     notifier.setStyle(draft.styleId);
-    notifier.setLanguage(draft.language);
     
     // 5. Set Draft ID for future updates
     notifier.setCurrentDraftId(draft.id);
@@ -109,14 +108,6 @@ class _DraftsPageState extends ConsumerState<DraftsPage> {
             List<CVData> currentDrafts = [];
             if (_selectedFolder != null) {
                currentDrafts = folders[_selectedFolder] ?? [];
-               // Sort here if needed (Content sorts by passed list order? No, Content does sorting. Wait, Content does NOT do sorting on input list, it sorts inside listbuilder? Check Content. Content does sort.)
-               // Actually, the previous implementation sorted INSIDE the builder. 
-               // Best practice: Sort filtered data in Smart Component, pass Sorted Data to dumb component? 
-               // Or let dumb component handle display sorting? 
-               // The Content widget handles version calculation which implies it relies on sort order.
-               // Let's rely on Content's internal sort for now or pre-sort here.
-               // Content: `final sorted = List<CVData>.from(drafts)..sort(...)`
-               // So we pass unsorted `currentDrafts` and Content sorts it. Correct.
             }
 
             return DraftsContent(

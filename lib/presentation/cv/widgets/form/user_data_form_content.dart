@@ -10,6 +10,7 @@ import '../../../profile/widgets/personal_info_form.dart';
 import 'tailored_data_header.dart';
 import 'review_section_card.dart';
 import 'summary_section.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 
 import '../../../../domain/entities/tailored_cv_result.dart';
@@ -90,7 +91,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
 
             // 1. Personal Info Section
             ReviewSectionCard(
-              title: 'Informasi Personal',
+              title: AppLocalizations.of(context)!.personalInfo,
               icon: Icons.person_outline,
               isExpanded: _isPersonalExpanded,
               onExpansionChanged: (val) => setState(() => _isPersonalExpanded = val),
@@ -105,7 +106,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
 
             // 2. Professional Summary
             ReviewSectionCard(
-              title: 'Professional Summary',
+              title: AppLocalizations.of(context)!.professionalSummary,
               icon: Icons.description_outlined,
               isExpanded: _isSummaryExpanded,
               onExpansionChanged: (val) => setState(() => _isSummaryExpanded = val),
@@ -120,7 +121,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
 
             // 3. Experience Section
             ReviewSectionCard(
-              title: 'Pengalaman Kerja',
+              title: AppLocalizations.of(context)!.workExperience,
               icon: Icons.work_outline,
               isExpanded: _isExperienceExpanded,
               onExpansionChanged: (val) => setState(() => _isExperienceExpanded = val),
@@ -133,7 +134,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
 
             // 4. Education Section
             ReviewSectionCard(
-              title: 'Riwayat Pendidikan',
+              title: AppLocalizations.of(context)!.educationHistory,
               icon: Icons.school_outlined,
               isExpanded: _isEducationExpanded,
               onExpansionChanged: (val) => setState(() => _isEducationExpanded = val),
@@ -146,7 +147,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
             
             // 5. Certifications Section (New)
             ReviewSectionCard(
-              title: 'Sertifikasi',
+              title: AppLocalizations.of(context)!.certificationsLicenses,
               icon: Icons.card_membership,
               isExpanded: _isCertificationsExpanded,
               onExpansionChanged: (val) => setState(() => _isCertificationsExpanded = val),
@@ -159,7 +160,7 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
 
             // 6. Skills Section
             ReviewSectionCard(
-              title: 'Keahlian (Skills)',
+              title: AppLocalizations.of(context)!.skills,
               icon: Icons.lightbulb_outline,
               isExpanded: _isSkillsExpanded,
               onExpansionChanged: (val) => setState(() => _isSkillsExpanded = val),

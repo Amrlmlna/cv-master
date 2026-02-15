@@ -28,6 +28,7 @@ String calculateUserLevel(UserProfile? profile, List<dynamic> drafts) {
   return "Expert Career Builder";
 }
 
+
 /// Calculate profile completion percentage
 int calculateProfileCompletion(UserProfile? profile) {
   if (profile == null) return 0;

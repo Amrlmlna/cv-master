@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
   const PremiumBanner({super.key});
@@ -40,9 +41,9 @@ class PremiumBanner extends ConsumerWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  'PREMIUM',
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.premiumBadge,
+                  style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1.2,
@@ -55,9 +56,9 @@ class PremiumBanner extends ConsumerWidget {
           
           const SizedBox(height: 12),
           
-          const Text(
-            'Unlock Advanced Features',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.unlockFeatures,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -67,10 +68,7 @@ class PremiumBanner extends ConsumerWidget {
           const SizedBox(height: 8),
           
           Text(
-            '• ATS-optimized templates\n'
-            '• Unlimited CV exports\n'
-            '• Cloud sync across devices\n'
-            '• Priority support',
+            AppLocalizations.of(context)!.premiumFeaturesDesc,
             style: TextStyle(
               fontSize: 13,
               color: Colors.grey.shade300,
@@ -85,7 +83,7 @@ class PremiumBanner extends ConsumerWidget {
             child: OutlinedButton(
               onPressed: () {
                 // TODO: Navigate to premium page
-                  CustomSnackBar.showInfo(context, 'Premium - Coming soon!');
+                  CustomSnackBar.showInfo(context, AppLocalizations.of(context)!.premiumComingSoon);
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -95,9 +93,9 @@ class PremiumBanner extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Lihat Fitur Premium',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.viewPremiumFeatures,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),

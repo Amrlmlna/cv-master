@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ActivityChart extends StatelessWidget {
   final bool isDark;
@@ -44,7 +45,15 @@ class ActivityChart extends StatelessWidget {
                 reservedSize: 30,
                 interval: 1,
                 getTitlesWidget: (value, meta) {
-                  const titles = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                  final titles = [
+                    AppLocalizations.of(context)!.mon,
+                    AppLocalizations.of(context)!.tue,
+                    AppLocalizations.of(context)!.wed,
+                    AppLocalizations.of(context)!.thu,
+                    AppLocalizations.of(context)!.fri,
+                    AppLocalizations.of(context)!.sat,
+                    AppLocalizations.of(context)!.sun,
+                  ];
                   final index = value.toInt();
                   if (index >= 0 && index < titles.length) {
                     return Padding(
