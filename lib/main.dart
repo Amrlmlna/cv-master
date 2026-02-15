@@ -118,19 +118,30 @@ class _BootstrapAppState extends State<BootstrapApp> {
   }
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Initialize Sync Managers
-    ref.read(profileSyncProvider).init();
-    ref.read(draftSyncProvider).init();
-    // Initialize Locale (check IP/Prefs)
-    ref.read(localeNotifierProvider.notifier).init();
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize Sync Managers just ONCE when the app starts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(profileSyncProvider).init();
+      ref.read(draftSyncProvider).init();
+      // Initialize Locale (check IP/Prefs)
+      ref.read(localeNotifierProvider.notifier).init();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Watchers are safe here as they return values, not trigger side-effects
     final router = ref.watch(routerProvider);
-
     final locale = ref.watch(localeNotifierProvider);
     
     return MaterialApp.router(

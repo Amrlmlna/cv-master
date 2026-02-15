@@ -27,7 +27,12 @@ class DraftSyncManager {
 
   DraftSyncManager(this._ref);
 
+  bool _isInitialized = false;
+
   void init() {
+    if (_isInitialized) return;
+    _isInitialized = true;
+    
     print("[DraftSyncManager] Initializing...");
     
     // 1. Initial startup check: if user is already logged in, fetch cloud drafts
