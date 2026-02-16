@@ -94,3 +94,35 @@ final profileStatsProvider = Provider<Map<String, int>>((ref) {
     'skillsCount': profile?.skills.length ?? 0,
   };
 });
+
+/// Provider for weekly activity (CVs created per day for current week)
+/// Returns a List<int> of size 7, where index 0 is Monday and 6 is Sunday.
+final weeklyActivityProvider = Provider<List<int>>((ref) {
+  final draftsAsync = ref.watch(draftsProvider);
+  
+  return draftsAsync.when(
+    data: (drafts) {
+      final now = DateTime.now();
+      // Find the most recent Monday
+      final monday = now.subtract(Duration(days: now.weekday - 1));
+      final startOfWeek = DateTime(monday.year, monday.month, monday.day);
+      final endOfWeek = startOfWeek.add(const Duration(days: 7));
+      
+      final activity = List<int>.filled(7, 0);
+      
+      for (final draft in drafts) {
+        if (draft.createdAt.isAfter(startOfWeek) && draft.createdAt.isBefore(endOfWeek)) {
+          // weekday is 1-7 (Mon-Sun), we want 0-6 index
+          final index = draft.createdAt.weekday - 1;
+          if (index >= 0 && index < 7) {
+            activity[index]++;
+          }
+        }
+      }
+      
+      return activity;
+    },
+    loading: () => List<int>.filled(7, 0),
+    error: (_, __) => List<int>.filled(7, 0),
+  );
+});

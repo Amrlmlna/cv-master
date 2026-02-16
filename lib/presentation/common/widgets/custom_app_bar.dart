@@ -27,7 +27,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: const LanguageSelector(),
         ),
         const SizedBox(width: 8),

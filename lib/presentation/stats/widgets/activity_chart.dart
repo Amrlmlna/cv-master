@@ -4,14 +4,22 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 
 class ActivityChart extends StatelessWidget {
   final bool isDark;
+  final List<int> weeklyActivity;
 
   const ActivityChart({
     super.key,
     required this.isDark,
+    required this.weeklyActivity,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Determine max Y value for dynamic scaling, with a minimum of 5
+    final maxY = (weeklyActivity.isNotEmpty 
+        ? weeklyActivity.reduce((curr, next) => curr > next ? curr : next) 
+        : 5).toDouble();
+    final effectiveMaxY = maxY < 5 ? 5.0 : maxY + 1;
+
     return Container(
       height: 220,
       padding: const EdgeInsets.only(right: 16, top: 24, bottom: 12),
@@ -23,6 +31,8 @@ class ActivityChart extends StatelessWidget {
         ),
       ),
       child: LineChart(
+        duration: const Duration(milliseconds: 500), // Animate data changes
+        curve: Curves.easeInOutCubic,
         LineChartData(
           gridData: FlGridData(
             show: true,
@@ -92,18 +102,12 @@ class ActivityChart extends StatelessWidget {
           minX: 0,
           maxX: 6,
           minY: 0,
-          maxY: 5,
+          maxY: effectiveMaxY,
           lineBarsData: [
             LineChartBarData(
-              spots: const [
-                FlSpot(0, 1),
-                FlSpot(1, 1),
-                FlSpot(2, 3),
-                FlSpot(3, 2),
-                FlSpot(4, 4),
-                FlSpot(5, 3),
-                FlSpot(6, 4),
-              ],
+              spots: List.generate(weeklyActivity.length, (index) {
+                return FlSpot(index.toDouble(), weeklyActivity[index].toDouble());
+              }),
               isCurved: true,
               gradient: LinearGradient(
                 colors: isDark 

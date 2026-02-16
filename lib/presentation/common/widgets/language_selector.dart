@@ -8,12 +8,14 @@ class LanguageSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLocale = ref.watch(localeNotifierProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.grey[800] 
-            : Colors.grey[200],
+        color: theme.brightness == Brightness.dark 
+            ? colorScheme.surfaceContainerHighest 
+            : colorScheme.surfaceContainerHighest, // Use consistent container color
         borderRadius: BorderRadius.circular(20),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -49,21 +51,26 @@ class _LanguageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected 
-              ? Theme.of(context).primaryColor 
+              ? colorScheme.primary 
               : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey[600],
+            color: isSelected 
+                ? colorScheme.onPrimary // Correct contrast color (Black on White in Dark Mode)
+                : colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
