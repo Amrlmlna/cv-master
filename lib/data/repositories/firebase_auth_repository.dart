@@ -1,15 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/repositories/auth_repository.dart';
-import 'package:http/http.dart' as http;
-import '../../core/config/api_config.dart';
+import '../datasources/remote_user_datasource.dart';
+import '../utils/data_error_mapper.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final RemoteUserDataSource remoteDataSource;
 
-  FirebaseAuthRepository({FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+  FirebaseAuthRepository({
+    FirebaseAuth? firebaseAuth, 
+    GoogleSignIn? googleSignIn,
+    required this.remoteDataSource,
+  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
   @override
@@ -27,7 +31,7 @@ class FirebaseAuthRepository implements AuthRepository {
       );
       return userCredential.user;
     } catch (e) {
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 
@@ -39,7 +43,6 @@ class FirebaseAuthRepository implements AuthRepository {
         password: password,
       );
       
-      // Update display name
       if (userCredential.user != null) {
         await userCredential.user!.updateDisplayName(name);
         await userCredential.user!.reload();
@@ -47,7 +50,7 @@ class FirebaseAuthRepository implements AuthRepository {
       
       return _firebaseAuth.currentUser;
     } catch (e) {
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 
@@ -66,7 +69,7 @@ class FirebaseAuthRepository implements AuthRepository {
       final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
           ?? await _googleSignIn.authenticate();
       
-      if (googleUser == null) return null; // User cancelled
+      if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final authorization = await googleUser.authorizationClient.authorizeScopes([]);
@@ -79,27 +82,17 @@ class FirebaseAuthRepository implements AuthRepository {
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 
   @override
   Future<void> deleteAccount() async {
-    final String baseUrl = ApiConfig.baseUrl;
     try {
-      final response = await http.delete(
-        Uri.parse('$baseUrl/user/account'),
-        headers: await ApiConfig.getAuthHeaders(),
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to delete account from server: ${response.body}');
-      }
-
+      await remoteDataSource.deleteAccount();
       await signOut();
     } catch (e) {
-      print('[FirebaseAuthRepository] Error deleting account: $e');
-      rethrow;
+      throw DataErrorMapper.map(e);
     }
   }
 }

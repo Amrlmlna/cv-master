@@ -38,7 +38,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Certification> _certifications = [];
   
   bool _isInit = true;
-// isSaving is now managed by profileFormStateProvider
 
   @override
   void initState() {
@@ -105,7 +104,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     bool changed = false;
 
     if (masterProfile == null) {
-      // If no profile, we have changes if any field is not empty
       changed = _nameController.text.isNotEmpty ||
           _emailController.text.isNotEmpty ||
           _phoneController.text.isNotEmpty ||
@@ -128,8 +126,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       changed = currentLocal != masterProfile;
     }
     
-    // Sync with Provider for Navigation Guard
-    // We delay this to avoid "setState during build" errors if called during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         ref.read(profileUnsavedChangesProvider.notifier).state = changed;
@@ -161,9 +157,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void _handleImportSuccess(UserProfile importedProfile) {
-    // MERGE imported data with existing data (don't replace!)
-    
-    // Update text fields only if they're currently empty
     if (_nameController.text.isEmpty) {
       _nameController.text = importedProfile.fullName;
     }
@@ -178,15 +171,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
     
     setState(() {
-      // ADD imported items to existing lists (merge, don't replace!)
       _experience = [..._experience, ...importedProfile.experience];
       _education = [..._education, ...importedProfile.education];
       
-      // For skills, merge and remove duplicates
       final allSkills = {..._skills, ...importedProfile.skills}.toList();
       _skills = allSkills;
       
-      // Add certifications
       _certifications = [..._certifications, ...importedProfile.certifications];
     });
 
@@ -294,12 +284,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     ref.read(profileFormStateProvider.notifier).setSaving(true);
     try {
       await ref.read(authRepositoryProvider).deleteAccount();
-      // Clear local state
       await ref.read(masterProfileProvider.notifier).clearProfile();
       
       if (mounted) {
         CustomSnackBar.showSuccess(context, 'Account successfully deleted. Goodbye!');
-        context.go('/'); // Back to home/auth
+        context.go('/');
       }
     } catch (e) {
       if (mounted) {
@@ -340,8 +329,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               const SizedBox(height: 16),
               const SizedBox(height: 16),
 
-
-              // Import CV Button (Extracted Widget)
               ImportCVButton(
                 onImportSuccess: _handleImportSuccess,
               ),

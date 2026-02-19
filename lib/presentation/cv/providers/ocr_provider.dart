@@ -1,9 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../data/services/ocr_service.dart';
+import '../../../data/datasources/ocr_datasource.dart';
+import '../../../data/datasources/remote_job_datasource.dart';
 import '../../../data/repositories/job_extraction_repository.dart';
 import '../../../domain/entities/job_input.dart';
+
+final remoteJobDataSourceProvider = Provider<RemoteJobDataSource>((ref) {
+  return RemoteJobDataSource();
+});
+
+final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((ref) {
+  final dataSource = ref.watch(remoteJobDataSourceProvider);
+  return JobExtractionRepository(remoteDataSource: dataSource);
+});
 
 /// OCR State
 class OCRState {
@@ -61,24 +71,21 @@ class OCRResult {
 
 /// OCR Notifier
 class OCRNotifier extends Notifier<OCRState> {
-  late final OCRService _ocrService;
+  late final OCRDataSource _ocrService;
   late final JobExtractionRepository _repository;
 
   @override
   OCRState build() {
-    _ocrService = OCRService();
-    _repository = JobExtractionRepository();
+    _ocrService = OCRDataSource();
+    _repository = ref.watch(jobExtractionRepositoryProvider);
     return const OCRState();
   }
 
-  /// Complete OCR flow: pick image -> extract text -> parse with backend
-  /// Returns OCRResult with status and data
-  /// onProcessingStart: callback fired when backend processing begins (after image is picked)
+  /// scanJobPosting method
   Future<OCRResult> scanJobPosting(
     ImageSource source, {
     VoidCallback? onProcessingStart,
   }) async {
-    // Step 1: Pick image and extract text (no loading state yet)
     final extractedText = await _pickAndExtractText(source);
     
     if (extractedText == null) {
@@ -89,10 +96,8 @@ class OCRNotifier extends Notifier<OCRState> {
       return OCRResult.noText();
     }
 
-    // Step 2: Notify UI that processing is starting (show loading screen)
     onProcessingStart?.call();
 
-    // Step 3: Process text with backend (with loading state)
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -115,7 +120,6 @@ class OCRNotifier extends Notifier<OCRState> {
     }
   }
 
-  /// Private: Pick image and extract text
   Future<String?> _pickAndExtractText(ImageSource source) async {
     try {
       final text = await _ocrService.extractTextFromImage(source);
@@ -125,12 +129,10 @@ class OCRNotifier extends Notifier<OCRState> {
     }
   }
 
-  /// Reset state
   void reset() {
     state = const OCRState();
     _ocrService.dispose();
   }
 }
 
-/// OCR Provider
 final ocrProvider = NotifierProvider<OCRNotifier, OCRState>(OCRNotifier.new);

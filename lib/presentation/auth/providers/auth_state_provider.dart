@@ -2,10 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/repositories/firebase_auth_repository.dart';
 import '../../../domain/repositories/auth_repository.dart';
+import '../../../data/datasources/remote_user_datasource.dart';
+
+final remoteUserDataSourceProvider = Provider<RemoteUserDataSource>((ref) {
+  return RemoteUserDataSource();
+});
 
 /// Provider for the Auth Repository
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return FirebaseAuthRepository();
+  final dataSource = ref.watch(remoteUserDataSourceProvider);
+  return FirebaseAuthRepository(remoteDataSource: dataSource);
 });
 
 /// Stream of auth state changes
