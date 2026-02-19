@@ -28,6 +28,24 @@ class CVTemplate extends Equatable {
     );
   }
 
+  CVTemplate copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? thumbnailUrl,
+    bool? isPremium,
+    List<String>? tags,
+  }) {
+    return CVTemplate(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      isPremium: isPremium ?? this.isPremium,
+      tags: tags ?? this.tags,
+    );
+  }
+
   @override
   List<Object?> get props => [id, name, description, thumbnailUrl, isPremium, tags];
 }

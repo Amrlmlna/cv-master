@@ -14,6 +14,7 @@ import 'presentation/drafts/providers/draft_sync_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase
 
@@ -21,6 +22,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(); // Initialize Firebase
   
   // Check onboarding status and load master profile
