@@ -18,7 +18,7 @@ class JobInput extends Equatable {
     return {
       'jobTitle': jobTitle,
       'company': company ?? 'Unknown Company',
-      'jobDescription': jobDescription ?? '', // Consistent with field name
+      'jobDescription': jobDescription ?? '',
     };
   }
 

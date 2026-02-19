@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
 
-// Provides the "Master" profile data (persisted across sessions)
 final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
   return MasterProfileNotifier();
 });
@@ -19,14 +18,12 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   static const String _key = 'master_profile_data';
 
   Future<void> saveProfile(UserProfile profile) async {
-    // Wait for any pending load to finish so we don't get overwritten
     await _initFuture;
     state = profile;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_key, jsonEncode(profile.toJson()));
   }
 
-  // Method to manually re-load if needed (e.g. after clear)
   Future<void> loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_key);
@@ -37,9 +34,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     }
   }
 
-  /// Merges new profile data into the existing Master Profile.
-  /// 
-  /// Returns `true` if any data was actually updated/added, `false` otherwise.
   Future<bool> mergeProfile(UserProfile newProfile) async {
     if (state == null) {
       await saveProfile(newProfile);
@@ -49,7 +43,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final current = state!;
     bool hasChanges = false;
     
-    // 1. Personal Info - Explicit Check
     final newName = newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName;
     final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
     final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
@@ -70,7 +63,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       location: newLocation,
     );
 
-    // 2. Experience - Add only NEW items
     final List<Experience> mergedExperience = List.from(current.experience);
     for (final newExp in newProfile.experience) {
        final exists = mergedExperience.any((oldExp) => 
@@ -85,7 +77,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
        }
     }
 
-    // 3. Education - Add only NEW items
     final List<Education> mergedEducation = List.from(current.education);
     for (final newEdu in newProfile.education) {
        final exists = mergedEducation.any((oldEdu) => 
@@ -99,7 +90,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
        }
     }
 
-    // 4. Skills - Union
     final Set<String> uniqueSkills = Set.from(current.skills);
     final initialSkillCount = uniqueSkills.length;
     uniqueSkills.addAll(newProfile.skills);
@@ -108,7 +98,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       hasChanges = true;
     }
 
-    // 5. Certifications - Add only NEW items
     final List<Certification> mergedCertifications = List.from(current.certifications);
     for (final newCert in newProfile.certifications) {
        final exists = mergedCertifications.any((oldCert) => 

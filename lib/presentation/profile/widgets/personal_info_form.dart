@@ -8,6 +8,7 @@ class PersonalInfoForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController locationController;
+  final bool isDark;
 
   const PersonalInfoForm({
     super.key,
@@ -15,6 +16,7 @@ class PersonalInfoForm extends StatelessWidget {
     required this.emailController,
     required this.phoneController,
     required this.locationController,
+    this.isDark = true,
   });
 
   @override
@@ -27,7 +29,7 @@ class PersonalInfoForm extends StatelessWidget {
           prefixIcon: Icons.person_outline,
           validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           textInputAction: TextInputAction.next,
-          isDark: true,
+          isDark: isDark,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -37,7 +39,7 @@ class PersonalInfoForm extends StatelessWidget {
           validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
-          isDark: true,
+          isDark: isDark,
         ),
         const SizedBox(height: 16),
         CustomTextFormField(
@@ -46,13 +48,12 @@ class PersonalInfoForm extends StatelessWidget {
           prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
-          isDark: true,
+          isDark: isDark,
         ),
-        const SizedBox(height: 16),
         const SizedBox(height: 16),
         LocationPicker(
           controller: locationController,
-          isDark: true, // Personal info form in this context is usually on dark/light based on form but here we hardcode or pass prop
+          isDark: isDark,
         ),
       ],
     );
