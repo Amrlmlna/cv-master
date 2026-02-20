@@ -5,14 +5,15 @@ import 'package:uuid/uuid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
 import '../../../../domain/entities/cv_data.dart';
-import '../../../../core/services/mock_ad_service.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import '../../cv/providers/cv_download_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/utils/custom_snackbar.dart';
+import '../../../../core/services/ad_service.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class StyleSelectionPage extends ConsumerStatefulWidget {
@@ -23,7 +24,6 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 }
 
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
-  bool _isGenerating = false;
 
   Future<void> _exportPDF() async {
     final creationState = ref.read(cvCreationProvider);
@@ -33,57 +33,12 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
       return;
     }
 
-    setState(() {
-      _isGenerating = true;
-    });
+    final selectedStyleId = creationState.selectedStyle;
 
-    try {
-      final selectedStyle = ref.read(cvCreationProvider).selectedStyle;
-
-      await ref.read(draftsProvider.notifier).saveFromState(ref.read(cvCreationProvider));
-      
-      if (mounted) {
-         final creationState = ref.read(cvCreationProvider);
-         final cvData = CVData(
-            id: const Uuid().v4(), 
-            userProfile: creationState.userProfile!,
-            summary: creationState.summary!,
-            styleId: selectedStyle,
-            createdAt: DateTime.now(),
-            jobTitle: creationState.jobInput!.jobTitle,
-            jobDescription: creationState.jobInput!.jobDescription ?? '',
-         );
-         await MockAdService.showInterstitialAd(context);
-         
-         final pdfBytes = await ref.read(cvRepositoryProvider).downloadPDF(
-           cvData: cvData,
-           templateId: selectedStyle,
-         );
-
-         final output = await getTemporaryDirectory();
-         final file = File('${output.path}/cv_${selectedStyle.toLowerCase()}.pdf');
-         await file.writeAsBytes(pdfBytes);
-         final result = await OpenFilex.open(file.path);
-         
-         ref.invalidate(templatesProvider);
-         
-         if (result.type != ResultType.done) {
-            if (mounted) {
-              CustomSnackBar.showError(context, AppLocalizations.of(context)!.pdfOpenError(result.message));
-            }
-         }
-      }
-    } catch (e) {
-      if (mounted) {
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.pdfGenerateError(e.toString()));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isGenerating = false;
-        });
-      }
-    }
+    await ref.read(cvDownloadProvider.notifier).attemptDownload(
+      context: context,
+      styleId: selectedStyleId,
+    );
   }
 
   Future<void> _handleStyleSelection(String styleId) async {
@@ -108,6 +63,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final templatesAsync = ref.watch(templatesProvider);
+    final downloadState = ref.watch(cvDownloadProvider);
     
     return templatesAsync.when(
       data: (templates) {
@@ -128,7 +84,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               onStyleSelected: _handleStyleSelection,
               onExport: _exportPDF,
             ),
-            if (_isGenerating)
+            if (downloadState.status == DownloadStatus.generating || downloadState.status == DownloadStatus.loading)
                AppLoadingScreen(
                  badge: AppLocalizations.of(context)!.generatingPdfBadge,
                  messages: [

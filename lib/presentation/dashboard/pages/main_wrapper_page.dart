@@ -1,4 +1,5 @@
 import 'dart:ui';
+import '../../auth/utils/auth_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,7 +57,9 @@ class MainWrapperPage extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => context.push('/create/job-input'),
+          onTap: AuthGuard.protected(context, () {
+            context.push('/create/job-input');
+          }),
           customBorder: const CircleBorder(),
           child: const Icon(
             Icons.add,

@@ -40,7 +40,7 @@ class HomeQuickActions extends ConsumerWidget {
                       AppLocalizations.of(context)!.cvDataExists,
                     );
                   }
-                  context.push('/profile');
+                  context.go('/profile');
                 }
               },
             );

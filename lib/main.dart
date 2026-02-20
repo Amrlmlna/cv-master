@@ -15,6 +15,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'core/providers/locale_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'core/services/ad_service.dart';
 import 'core/services/payment_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +27,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
   await PaymentService.init();
+  await adService.init(); // Initialize AdMob
   
   final prefs = await SharedPreferences.getInstance();
   final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
