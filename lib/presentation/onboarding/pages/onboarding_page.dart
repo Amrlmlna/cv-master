@@ -59,7 +59,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   void _nextPage() {
     final notifier = ref.read(onboardingFormProvider.notifier);
     
-    // Validate locally for UI feedback if needed, but provider handles logic
     if (ref.read(onboardingFormProvider).currentPage == 0) {
        if (_nameController.text.isEmpty) {
         CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
@@ -68,9 +67,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     }
 
     if (notifier.nextPage()) {
-      // Animation handled by listener
     } else {
-       // Handle validation failure if provider returns false
     }
   }
 
@@ -91,7 +88,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final currentPage = state.currentPage;
     final isSaving = state.isSaving;
     
-    // Listen to page changes to animate
     ref.listen(onboardingFormProvider, (prev, next) {
       if (prev?.currentPage != next.currentPage) {
         _pageController.animateToPage(

@@ -8,7 +8,6 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dummy Data for now
     final notifications = [
       {
         'title': AppLocalizations.of(context)!.welcomeTitle,

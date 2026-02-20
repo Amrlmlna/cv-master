@@ -15,7 +15,6 @@ final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((ref) 
   return JobExtractionRepository(remoteDataSource: dataSource);
 });
 
-/// OCR State
 class OCRState {
   final bool isLoading;
   final JobInput? extractedData;
@@ -40,7 +39,6 @@ class OCRState {
   }
 }
 
-/// OCR Result
 enum OCRStatus { success, cancelled, noText, error }
 
 class OCRResult {
@@ -69,7 +67,6 @@ class OCRResult {
   );
 }
 
-/// OCR Notifier
 class OCRNotifier extends Notifier<OCRState> {
   late final OCRDataSource _ocrService;
   late final JobExtractionRepository _repository;
@@ -81,7 +78,6 @@ class OCRNotifier extends Notifier<OCRState> {
     return const OCRState();
   }
 
-  /// scanJobPosting method
   Future<OCRResult> scanJobPosting(
     ImageSource source, {
     VoidCallback? onProcessingStart,

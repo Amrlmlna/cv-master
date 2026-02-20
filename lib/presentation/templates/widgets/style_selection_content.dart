@@ -44,7 +44,7 @@ class StyleSelectionContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.7, // Aspect ratio for A4-ish preview + text
+                childAspectRatio: 0.7,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 24,
               ),
@@ -67,7 +67,7 @@ class StyleSelectionContent extends StatelessWidget {
                               color: isSelected ? Colors.black : Colors.transparent,
                               width: 3,
                             ),
-                            borderRadius: BorderRadius.circular(0), // Sharp corners for modern look
+                            borderRadius: BorderRadius.circular(0),
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
@@ -167,7 +167,7 @@ class StyleSelectionContent extends StatelessWidget {
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero, // Sharp button
+                      borderRadius: BorderRadius.zero,
                     ),
                   ),
                   child: Text(

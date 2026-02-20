@@ -28,8 +28,6 @@ class OnboardingNotifier extends StateNotifier<bool> {
   }
 }
 
-// --- Onboarding Form State & Logic ---
-
 class OnboardingState {
   final int currentPage;
   final UserProfile formData;
@@ -119,10 +117,9 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   }
 
   bool nextPage() {
-    // Current Page 0 Validation
     if (state.currentPage == 0) {
       if (state.formData.fullName.isEmpty) {
-        return false; // Invalid
+        return false; 
       }
     }
 
@@ -142,14 +139,10 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   Future<void> submit() async {
     state = state.copyWith(isSaving: true);
     
-    // Artificial delay for UX
     await Future.delayed(const Duration(seconds: 2));
 
     try {
-      // Save Master Profile
       await ref.read(masterProfileProvider.notifier).saveProfile(state.formData);
-
-      // Mark Onboarding as Completed
       await ref.read(onboardingProvider.notifier).completeOnboarding();
       
     } finally {

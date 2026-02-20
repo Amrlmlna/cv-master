@@ -31,7 +31,6 @@ class MainWrapperPage extends ConsumerWidget {
     );
   }
 
-  /// Overlapped center FAB with reduced elevation
   Widget _buildCenterFAB(BuildContext context) {
     return Container(
       width: 64,
@@ -48,9 +47,9 @@ class MainWrapperPage extends ConsumerWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1), // Reduced from 0.15
-            blurRadius: 6, // Reduced from 8
-            offset: const Offset(0, 2), // Reduced from 4
+            color: Colors.black.withValues(alpha: 0.1), 
+            blurRadius: 6, 
+            offset: const Offset(0, 2), 
           ),
         ],
       ),
@@ -69,14 +68,13 @@ class MainWrapperPage extends ConsumerWidget {
     );
   }
 
-  /// Bottom navigation with 2 items and glass effect
   Widget _buildBottomNav(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       decoration: BoxDecoration(
-        color: Colors.transparent, // Make outer layer transparent as requested
+        color: Colors.transparent, 
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -89,20 +87,17 @@ class MainWrapperPage extends ConsumerWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Glass blur
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), 
           child: Container(
-            color: (isDark ? const Color(0xFF1E1E1E) : Colors.black).withValues(alpha: 0.8), // Inner background color
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6), // Increased height (was 12)
+            color: (isDark ? const Color(0xFF1E1E1E) : Colors.black).withValues(alpha: 0.8), 
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6), 
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Home
                 _buildNavItem(context, ref, 0, Icons.home_rounded, 'Home'),
                 
-                // Spacer for center FAB
                 const SizedBox(width: 60), 
                 
-                // Profile
                 _buildNavItem(context, ref, 1, Icons.person_rounded, 'Profile'),
               ],
             ),
@@ -116,7 +111,6 @@ class MainWrapperPage extends ConsumerWidget {
     final isSelected = navigationShell.currentIndex == index;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Use pure white for selected, and transparent white for unselected
     final activeColor = Colors.white;
     final inactiveColor = Colors.white.withValues(alpha: 0.5);
 
@@ -124,9 +118,7 @@ class MainWrapperPage extends ConsumerWidget {
       message: label,
       child: InkWell(
         onTap: () async {
-          // Navigation Guard Logic
           if (index != navigationShell.currentIndex) {
-            // If trying to leave Profile (index 1 is Profile)
             if (navigationShell.currentIndex == 1) {
               final hasUnsavedChanges = ref.read(profileControllerProvider).hasChanges;
               
@@ -138,13 +130,13 @@ class MainWrapperPage extends ConsumerWidget {
                     content: Text(AppLocalizations.of(context)!.saveChangesMessage),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.pop(context, false), // Stay
+                        onPressed: () => Navigator.pop(context, false), 
                         child: Text(AppLocalizations.of(context)!.stayHere),
                       ),
                       TextButton(
                         onPressed: () {
                           ref.read(profileControllerProvider.notifier).discardChanges();
-                          Navigator.pop(context, true); // Leave
+                          Navigator.pop(context, true); 
                         },
                         style: TextButton.styleFrom(foregroundColor: Colors.red),
                         child: Text(AppLocalizations.of(context)!.exitWithoutSaving),
@@ -153,7 +145,7 @@ class MainWrapperPage extends ConsumerWidget {
                   ),
                 );
 
-                if (shouldLeave != true) return; // Cancel navigation
+                if (shouldLeave != true) return; 
               }
             }
           }
@@ -175,7 +167,7 @@ class MainWrapperPage extends ConsumerWidget {
           child: Icon(
             icon,
             color: isSelected ? activeColor : inactiveColor,
-            size: 26, // Slightly larger icons
+            size: 26, 
           ),
         ),
       ),
@@ -183,7 +175,6 @@ class MainWrapperPage extends ConsumerWidget {
   }
 }
 
-/// Custom FAB location that stays fixed and doesn't move for SnackBar
 class _CenterDockedFabLocation extends StandardFabLocation
     with FabCenterOffsetX, FabDockedOffsetY {
   const _CenterDockedFabLocation();
@@ -195,11 +186,8 @@ class _CenterDockedFabLocation extends StandardFabLocation
     final double fabHeight = scaffoldGeometry.floatingActionButtonSize.height;
     final double safeAreaBottom = scaffoldGeometry.minInsets.bottom;
     
-    // Position FAB relative to bottom safe area + nav bar height
-    // Scaffold Height - (Margin 24 + NavHeight 56 + Half FAB 32) + Adjustment
     double fabY = scaffoldGeometry.scaffoldSize.height - 120 - safeAreaBottom; 
     
-    // Only adjust for bottom sheet, not snackbar
     if (bottomSheetHeight > 0.0) {
       fabY = scaffoldGeometry.scaffoldSize.height - bottomSheetHeight - fabHeight - 16;
     }

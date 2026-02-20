@@ -17,9 +17,8 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
   final ScrollController _scrollController = ScrollController();
   late Ticker _ticker;
   
-  // State for Scroll-Driven Animation
-  double _currentFrame = 1.0;     // The visual frame (float)
-  double _targetFrame = 1.0;      // The target frame based on scroll
+  double _currentFrame = 1.0;     
+  double _targetFrame = 1.0;      
   
   final int _startFrame = 1;
   final int _frameCount = 192;
@@ -29,7 +28,6 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
     super.initState();
     _scrollController.addListener(_onScroll);
     
-    // Ticker ensures we update the animation frame smoothly even if scroll stops
     _ticker = createTicker(_tick);
     _ticker.start();
   }
@@ -43,14 +41,11 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with Sing
   }
 
   void _tick(Duration elapsed) {
-    // Linear Interpolation (Lerp) for Inertia / Decay Stop
-    // Moves currentFrame towards targetFrame by 10% each tick (approx 60fps)
     if ((_targetFrame - _currentFrame).abs() > 0.05) {
       setState(() {
         _currentFrame += (_targetFrame - _currentFrame) * 0.1;
       });
     } else if (_currentFrame != _targetFrame) {
-      // Snap to exact target if very close
       setState(() {
         _currentFrame = _targetFrame;
       });
