@@ -58,6 +58,7 @@ class FirebaseAuthRepository implements AuthRepository {
       
       if (userCredential.user != null) {
         await userCredential.user!.updateDisplayName(name);
+        await userCredential.user!.sendEmailVerification();
         await userCredential.user!.reload();
       }
       
@@ -78,17 +79,15 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<AppUser?> signInWithGoogle() async {
     try {
-      await _googleSignIn.initialize();
-      final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
-          ?? await _googleSignIn.authenticate();
+      // Standardize Google Sign-In for Flutter to avoid "canceled" issues
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       
       if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final authorization = await googleUser.authorizationClient.authorizeScopes([]);
       
       final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: authorization.accessToken,
+        accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
@@ -104,6 +103,24 @@ class FirebaseAuthRepository implements AuthRepository {
     try {
       await remoteDataSource.deleteAccount();
       await signOut();
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    try {
+      await _firebaseAuth.currentUser?.sendEmailVerification();
+    } catch (e) {
+      throw DataErrorMapper.map(e);
+    }
+  }
+
+  @override
+  Future<void> reloadUser() async {
+    try {
+      await _firebaseAuth.currentUser?.reload();
     } catch (e) {
       throw DataErrorMapper.map(e);
     }

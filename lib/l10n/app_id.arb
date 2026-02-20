@@ -280,5 +280,20 @@
   "readyToAchieve": "Siap mencapai tujuan karirmu?",
   "delete": "Hapus",
   "confirmDelete": "Konfirmasi Penghapusan",
-  "deleteConfirmation": "Apakah Anda yakin ingin menghapus item ini?"
+  "deleteConfirmation": "Apakah Anda yakin ingin menghapus item ini?",
+  "verifyYourEmail": "Verifikasi Email Anda",
+  "verificationSentTo": "Link verifikasi telah dikirim ke {email}. Silakan cek kotak masuk dan folder spam Anda.",
+  "@verificationSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "iHaveVerified": "SAYA SUDAH VERIFIKASI",
+  "resendEmail": "Kirim Ulang Email Verifikasi",
+  "backToLogin": "Kembali ke Login",
+  "sending": "Mengirim...",
+  "verificationEmailSent": "Email verifikasi terkirim!",
+  "emailNotVerifiedYet": "Email belum diverifikasi. Silakan cek kotak masuk Anda."
 }
