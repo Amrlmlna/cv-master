@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../profile/providers/profile_unsaved_changes_provider.dart';
+import '../../profile/providers/profile_controller.dart';
 
 class MainWrapperPage extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
@@ -128,7 +128,7 @@ class MainWrapperPage extends ConsumerWidget {
           if (index != navigationShell.currentIndex) {
             // If trying to leave Profile (index 1 is Profile)
             if (navigationShell.currentIndex == 1) {
-              final hasUnsavedChanges = ref.read(profileUnsavedChangesProvider);
+              final hasUnsavedChanges = ref.read(profileControllerProvider).hasChanges;
               
               if (hasUnsavedChanges) {
                 final shouldLeave = await showDialog<bool>(
@@ -143,9 +143,7 @@ class MainWrapperPage extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          // Clean up provider before leaving? 
-                          // Actually, we should probably reset it if they choose to exit without saving
-                          ref.read(profileUnsavedChangesProvider.notifier).state = false;
+                          ref.read(profileControllerProvider.notifier).discardChanges();
                           Navigator.pop(context, true); // Leave
                         },
                         style: TextButton.styleFrom(foregroundColor: Colors.red),

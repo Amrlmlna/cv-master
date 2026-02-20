@@ -45,7 +45,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       );
       
       if (user != null && mounted) {
-        // Sync Profile (Push local empty/filled profile to new cloud account)
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
@@ -53,7 +52,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         }
 
         CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.accountCreatedSuccess);
-        // Go to home after signup
         context.go('/');
       }
     } catch (e) {
@@ -106,7 +104,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // Name Field
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -125,7 +122,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Email Field
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -145,7 +141,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Password Field
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -178,7 +173,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // Signup Button
                 FilledButton(
                   onPressed: _isLoading ? null : _signup,
                   style: FilledButton.styleFrom(
@@ -204,13 +198,12 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 
                 const SizedBox(height: 24),
 
-                // Login Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                     TextButton(
-                      onPressed: () => context.go('/login'), // Use go to replace stack or push? standardized on login page
+                      onPressed: () => context.go('/login'),
                       child: Text(
                         AppLocalizations.of(context)!.logIn,
                         style: GoogleFonts.outfit(fontWeight: FontWeight.bold),

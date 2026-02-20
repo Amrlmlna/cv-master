@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DangerZone extends ConsumerWidget {
+class DangerZone extends StatelessWidget {
   final bool isSaving;
-  final Future<void> Function() onConfirmDeletion;
+  final VoidCallback onConfirmDeletion;
 
   const DangerZone({
     super.key,
@@ -12,26 +11,79 @@ class DangerZone extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        const Text(
-          'Deleting your account will remove all your data from our servers. This action cannot be undone.',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
+  Widget build(BuildContext context) {
+    // A nice warning card UI
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colorScheme.errorContainer.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.error.withOpacity(0.3),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: isSaving ? null : onConfirmDeletion,
-            icon: const Icon(Icons.delete_forever, color: Colors.red),
-            label: const Text('Delete Account', style: TextStyle(color: Colors.red)),
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.red),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: colorScheme.error,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Danger Zone',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: colorScheme.error,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Deleting your account is irreversible. All your data will be permanently removed.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isDark ? Colors.white70 : Colors.black87,
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: isSaving ? null : onConfirmDeletion,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.error,
+                foregroundColor: colorScheme.onError,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: isSaving 
+                ? SizedBox(
+                    width: 20, 
+                    height: 20, 
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2, 
+                      valueColor: AlwaysStoppedAnimation(colorScheme.onError),
+                    ),
+                  ) 
+                : const Icon(Icons.delete_forever_rounded),
+              label: Text(
+                isSaving ? 'Processing...' : 'Delete Account',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

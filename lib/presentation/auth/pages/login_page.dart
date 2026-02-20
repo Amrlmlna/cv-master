@@ -42,16 +42,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       );
       
       if (user != null && mounted) {
-        // Sync Profile
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
-          // Log error but allow login
           debugPrint("Sync failed on login: $e");
         }
 
         CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.welcomeBackSuccess);
-        // Navigation is handled by router redirect or manual pop
         if (context.canPop()) {
           context.pop();
         } else {
@@ -76,7 +73,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       final user = await authRepo.signInWithGoogle();
       
       if (user != null && mounted) {
-        // Sync Profile
         try {
           await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
         } catch (e) {
@@ -115,7 +111,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 16),
-                // Logo or Header
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(16),
@@ -150,7 +145,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 48),
 
-                // Email Field
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -170,7 +164,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Password Field
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -200,7 +193,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Login Button
                 FilledButton(
                   onPressed: _isLoading ? null : _login,
                   style: FilledButton.styleFrom(
@@ -225,7 +217,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Divider
                 Row(
                   children: [
                     const Expanded(child: Divider()),
@@ -238,7 +229,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Google Login Button
                 OutlinedButton.icon(
                   onPressed: _isLoading ? null : _loginWithGoogle,
                   style: OutlinedButton.styleFrom(
@@ -247,7 +237,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  icon: const Icon(Icons.g_mobiledata, size: 28), // Simplified Google Icon
+                  icon: const Icon(Icons.g_mobiledata, size: 28),
                   label: Text(
                     AppLocalizations.of(context)!.continueWithGoogle,
                     style: GoogleFonts.outfit(
@@ -258,7 +248,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Sign Up Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
