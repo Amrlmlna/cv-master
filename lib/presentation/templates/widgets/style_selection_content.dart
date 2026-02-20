@@ -35,6 +35,37 @@ class StyleSelectionContent extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          if (templates.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 24),
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.1)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.stars_rounded, size: 14, color: Colors.black),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${templates.first.userCredits}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
       body: Column(
         children: [
