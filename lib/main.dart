@@ -21,6 +21,7 @@ import 'core/services/permission_service.dart';
 import 'core/services/notification_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ void main() async {
   
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackgroundHandler);
   await PaymentService.init();
   await adService.init();
   await NotificationService.init();

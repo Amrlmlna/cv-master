@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'notification_controller.dart';
 
 class NotificationService {
   static Future<void> init() async {
     await AwesomeNotifications().initialize(
-      null,
+      'resource://drawable/notification_icon',
       [
         NotificationChannel(
           channelKey: 'cv_generation',
@@ -37,6 +38,48 @@ class NotificationService {
       onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
       onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
     );
+
+    await _initFirebaseMessaging();
+  }
+
+  static Future<void> _initFirebaseMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    debugPrint('User granted FCM permission: ${settings.authorizationStatus}');
+
+    String? token = await messaging.getToken();
+    debugPrint('FCM Token: $token');
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint('Got a message whilst in the foreground!');
+      debugPrint('Message data: ${message.data}');
+
+      String? title = message.notification?.title ?? message.data['title'];
+      String? body = message.notification?.body ?? message.data['body'];
+
+      if (title != null || body != null) {
+        showSimpleNotification(
+          title: title ?? 'New Notification',
+          body: body ?? '',
+          payload: message.data['route'],
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      debugPrint('A new onMessageOpenedApp event was published!');
+    });
+  }
+
+  @pragma('vm:entry-point')
+  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    debugPrint("Handling a background message: ${message.messageId}");
+    
   }
 
   static Future<void> showSimpleNotification({
