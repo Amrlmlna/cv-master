@@ -955,4 +955,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepFinish => 'Finish';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get wallet => 'Wallet';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get creditBalance => 'Credit Balance';
+
+  @override
+  String get credits => 'credits';
+
+  @override
+  String get usageHistoryComingSoon => 'Usage history coming soon';
 }

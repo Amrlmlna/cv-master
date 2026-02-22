@@ -14,6 +14,7 @@ import '../../presentation/profile/pages/profile_page.dart';
 import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
 import '../../presentation/stats/pages/stats_page.dart';
+import '../../presentation/wallet/pages/wallet_page.dart';
 import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/support/pages/help_page.dart';
 import '../../presentation/support/pages/feedback_page.dart';
@@ -91,6 +92,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return MainWrapperPage(navigationShell: navigationShell);
         },
         branches: [
+          // Branch 0: Home
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -106,6 +108,25 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          // Branch 1: Drafts (My CVs)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.drafts,
+                builder: (context, state) => const DraftsPage(),
+              ),
+            ],
+          ),
+          // Branch 2: Wallet
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.wallet,
+                builder: (context, state) => const WalletPage(),
+              ),
+            ],
+          ),
+          // Branch 3: Profile
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -132,10 +153,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.legal,
         builder: (context, state) => const LegalPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.drafts,
-        builder: (context, state) => const DraftsPage(),
       ),
       GoRoute(
         path: AppRoutes.stats,

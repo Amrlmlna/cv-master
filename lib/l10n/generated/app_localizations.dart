@@ -1883,6 +1883,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Finish'**
   String get stepFinish;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @creditBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit Balance'**
+  String get creditBalance;
+
+  /// No description provided for @credits.
+  ///
+  /// In en, this message translates to:
+  /// **'credits'**
+  String get credits;
+
+  /// No description provided for @usageHistoryComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage history coming soon'**
+  String get usageHistoryComingSoon;
 }
 
 class _AppLocalizationsDelegate

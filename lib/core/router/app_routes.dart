@@ -19,6 +19,7 @@ class AppRoutes {
   // Content
   static const String drafts = '/drafts';
   static const String stats = '/stats';
+  static const String wallet = '/wallet';
 
   // CV Creation Flow
   static const String createJobInput = '/create/job-input';

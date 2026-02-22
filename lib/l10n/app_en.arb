@@ -310,5 +310,12 @@
   "stepEducation": "Education",
   "stepCertifications": "Certifications",
   "stepSkills": "Skills",
-  "stepFinish": "Finish"
+  "stepFinish": "Finish",
+
+  "home": "Home",
+  "wallet": "Wallet",
+  "profile": "Profile",
+  "creditBalance": "Credit Balance",
+  "credits": "credits",
+  "usageHistoryComingSoon": "Usage history coming soon"
 }

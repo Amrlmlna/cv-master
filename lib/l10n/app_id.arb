@@ -310,5 +310,12 @@
   "stepEducation": "Pendidikan",
   "stepCertifications": "Sertifikasi",
   "stepSkills": "Keahlian",
-  "stepFinish": "Selesai"
+  "stepFinish": "Selesai",
+
+  "home": "Beranda",
+  "wallet": "Dompet",
+  "profile": "Profil",
+  "creditBalance": "Saldo Kredit",
+  "credits": "kredit",
+  "usageHistoryComingSoon": "Riwayat penggunaan segera hadir"
 }

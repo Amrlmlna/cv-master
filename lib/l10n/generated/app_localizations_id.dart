@@ -961,4 +961,22 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get stepFinish => 'Selesai';
+
+  @override
+  String get home => 'Beranda';
+
+  @override
+  String get wallet => 'Dompet';
+
+  @override
+  String get profile => 'Profil';
+
+  @override
+  String get creditBalance => 'Saldo Kredit';
+
+  @override
+  String get credits => 'kredit';
+
+  @override
+  String get usageHistoryComingSoon => 'Riwayat penggunaan segera hadir';
 }
