@@ -1919,6 +1919,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Usage history coming soon'**
   String get usageHistoryComingSoon;
+
+  /// No description provided for @myCVs.
+  ///
+  /// In en, this message translates to:
+  /// **'My CVs'**
+  String get myCVs;
+
+  /// No description provided for @drafts.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts'**
+  String get drafts;
+
+  /// No description provided for @generated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get generated;
+
+  /// No description provided for @noCompletedCVs.
+  ///
+  /// In en, this message translates to:
+  /// **'No generated CVs yet'**
+  String get noCompletedCVs;
+
+  /// No description provided for @generateCVFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate your first CV to see it here'**
+  String get generateCVFirst;
+
+  /// No description provided for @openPDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Open PDF'**
+  String get openPDF;
 }
 
 class _AppLocalizationsDelegate

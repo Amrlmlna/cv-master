@@ -973,4 +973,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get usageHistoryComingSoon => 'Usage history coming soon';
+
+  @override
+  String get myCVs => 'My CVs';
+
+  @override
+  String get drafts => 'Drafts';
+
+  @override
+  String get generated => 'Generated';
+
+  @override
+  String get noCompletedCVs => 'No generated CVs yet';
+
+  @override
+  String get generateCVFirst => 'Generate your first CV to see it here';
+
+  @override
+  String get openPDF => 'Open PDF';
 }

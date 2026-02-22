@@ -1,19 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:pdfx/pdfx.dart';
 
 import '../../../core/services/ad_service.dart';
 import '../../../core/services/payment_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import '../../auth/utils/auth_guard.dart';
 import '../../../domain/entities/cv_data.dart';
+import '../../../domain/entities/completed_cv.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
+import '../../drafts/providers/completed_cv_provider.dart';
 import '../../templates/providers/template_provider.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -121,8 +124,9 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       await ref.read(draftsProvider.notifier).saveFromState(creationState);
 
+      final cvId = const Uuid().v4();
       final cvData = CVData(
-        id: const Uuid().v4(),
+        id: cvId,
         userProfile: creationState.userProfile!,
         summary: creationState.summary!,
         styleId: styleId,
@@ -140,16 +144,48 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.');
       }
 
-      final output = await getTemporaryDirectory();
+      final cvDir = await CompletedCVNotifier.getStorageDir();
       final safeId = styleId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_').toLowerCase();
       final fileName = 'cv_${safeId}_${DateTime.now().millisecondsSinceEpoch}.pdf';
-      final file = File('${output.path}/$fileName');
+      final pdfFile = File('${cvDir.path}/$fileName');
+      await pdfFile.writeAsBytes(pdfBytes, flush: true);
+
+      String? thumbnailPath;
+      try {
+        final thumbDir = await CompletedCVNotifier.getThumbnailDir();
+        final thumbFile = File('${thumbDir.path}/${cvId}_thumb.png');
+        
+        final document = await PdfDocument.openData(Uint8List.fromList(pdfBytes));
+        final page = await document.getPage(1);
+        final pageImage = await page.render(
+          width: page.width * 0.5,
+          height: page.height * 0.5,
+          format: PdfPageImageFormat.png,
+          backgroundColor: '#FFFFFF',
+        );
+        if (pageImage != null) {
+          await thumbFile.writeAsBytes(pageImage.bytes);
+          thumbnailPath = thumbFile.path;
+        }
+        await page.close();
+        await document.close();
+      } catch (e) {
+        debugPrint('Thumbnail generation failed: $e');
+      }
+
+      final completedCV = CompletedCV(
+        id: cvId,
+        jobTitle: cvData.jobTitle,
+        templateId: styleId,
+        pdfPath: pdfFile.path,
+        thumbnailPath: thumbnailPath,
+        generatedAt: DateTime.now(),
+      );
+      await ref.read(completedCVProvider.notifier).addCompletedCV(completedCV);
       
-      await file.writeAsBytes(pdfBytes, flush: true);
+      final result = await OpenFilex.open(pdfFile.path);
       
-      final result = await OpenFilex.open(file.path);
-      
-      _localCache[_buildCacheKey(styleId)] = file.path;
+      _localCache[_buildCacheKey(styleId)] = pdfFile.path;
       
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);

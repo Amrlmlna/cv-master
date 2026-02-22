@@ -40,64 +40,59 @@ class DraftsContent extends StatelessWidget {
            onFolderSelected(null);
         }
       },
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (selectedFolderName == null) ...[
-                Text(
-                  AppLocalizations.of(context)!.myDrafts,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 16),
                 TextField(
                   controller: TextEditingController(text: searchQuery)
                     ..selection = TextSelection.fromPosition(TextPosition(offset: searchQuery.length)),
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)!.searchJob,
-                    prefixIcon: const Icon(Icons.search),
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
                     filled: true,
-                    fillColor: Colors.grey[100],
+                    fillColor: Colors.white.withValues(alpha: 0.06),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
                   ),
+                  style: const TextStyle(color: Colors.white),
                   onChanged: onSearchChanged,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
               ] else ...[
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => onFolderSelected(null),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         selectedFolderName!,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 12),
               ],
-              const SizedBox(height: 24),
               Expanded(
                 child: _buildContent(context),
               ),
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -130,9 +125,9 @@ class DraftsContent extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1.1,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 1.3,
       ),
       itemCount: keys.length,
       itemBuilder: (context, index) {
@@ -141,36 +136,48 @@ class DraftsContent extends StatelessWidget {
         
         return InkWell(
           onTap: () => onFolderSelected(title),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           child: Container(
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).cardTheme.color,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context).brightness == Brightness.dark 
-                    ? Colors.white.withValues(alpha: 0.1) 
-                    : Colors.grey.shade200
-              ),
+              color: Colors.white.withValues(alpha: 0.04),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.folder, size: 48, color: Colors.amber[400]),
-                const SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 4),
                 Text(
-                  '$count draft',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '$count draft${count != 1 ? 's' : ''}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Icon(Icons.chevron_right, size: 16, color: Colors.grey[600]),
+                  ],
                 ),
               ],
             ),

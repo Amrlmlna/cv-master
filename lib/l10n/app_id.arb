@@ -317,5 +317,13 @@
   "profile": "Profil",
   "creditBalance": "Saldo Kredit",
   "credits": "kredit",
-  "usageHistoryComingSoon": "Riwayat penggunaan segera hadir"
+  "usageHistoryComingSoon": "Riwayat penggunaan segera hadir",
+
+  "myCVs": "CV Saya",
+  "drafts": "Draf",
+  "generated": "Dihasilkan",
+  "noCompletedCVs": "Belum ada CV yang dihasilkan",
+  "generateCVFirst": "Buat CV pertama Anda untuk melihatnya di sini",
+  "openPDF": "Buka PDF",
+  "delete": "Hapus"
 }

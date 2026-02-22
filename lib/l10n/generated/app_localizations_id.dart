@@ -979,4 +979,22 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get usageHistoryComingSoon => 'Riwayat penggunaan segera hadir';
+
+  @override
+  String get myCVs => 'CV Saya';
+
+  @override
+  String get drafts => 'Draf';
+
+  @override
+  String get generated => 'Dihasilkan';
+
+  @override
+  String get noCompletedCVs => 'Belum ada CV yang dihasilkan';
+
+  @override
+  String get generateCVFirst => 'Buat CV pertama Anda untuk melihatnya di sini';
+
+  @override
+  String get openPDF => 'Buka PDF';
 }
