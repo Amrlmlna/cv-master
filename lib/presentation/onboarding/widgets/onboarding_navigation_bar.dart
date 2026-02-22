@@ -12,6 +12,8 @@ class OnboardingNavigationBar extends StatelessWidget {
   final VoidCallback onBack;
   final bool isLastPage;
   final bool isLoading;
+  final bool isSkippable;
+  final VoidCallback? onSkip;
 
   const OnboardingNavigationBar({
     super.key,
@@ -20,6 +22,8 @@ class OnboardingNavigationBar extends StatelessWidget {
     required this.onBack,
     this.isLastPage = false,
     this.isLoading = false,
+    this.isSkippable = false,
+    this.onSkip,
   });
 
   @override
@@ -117,6 +121,15 @@ class OnboardingNavigationBar extends StatelessWidget {
 
           if (currentPage > 0) ...[
             const SizedBox(height: 12),
+            if (isSkippable && onSkip != null) ...[
+              TextButton(
+                onPressed: onSkip,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white38,
+                ),
+                child: Text(AppLocalizations.of(context)!.skipForNow, style: const TextStyle(fontSize: 13)),
+              ),
+            ],
             TextButton(
               onPressed: onBack,
               style: TextButton.styleFrom(

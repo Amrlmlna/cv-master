@@ -123,11 +123,18 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
       }
     }
 
-    if (state.currentPage < 5) {
+    if (state.currentPage < 6) {
       state = state.copyWith(currentPage: state.currentPage + 1);
       return true;
     }
     return true;
+  }
+
+  void populateFromImport(UserProfile profile) {
+    state = state.copyWith(formData: profile);
+  }
+  void skipToFinal() {
+    state = state.copyWith(currentPage: 6);
   }
 
   void prevPage() {

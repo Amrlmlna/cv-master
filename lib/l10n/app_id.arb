@@ -295,5 +295,20 @@
   "backToLogin": "Kembali ke Login",
   "sending": "Mengirim...",
   "verificationEmailSent": "Email verifikasi terkirim!",
-  "emailNotVerifiedYet": "Email belum diverifikasi. Silakan cek kotak masuk Anda."
+  "emailNotVerifiedYet": "Email belum diverifikasi. Silakan cek kotak masuk Anda.",
+  "alreadyHaveCV": "Sudah punya CV?",
+  "alreadyHaveCVSubtitle": "Percepat prosesnya! Import CV yang sudah ada, semua data langsung terisi otomatis.",
+  "importExistingCV": "Import CV Saya",
+  "importExistingCVDesc": "Upload PDF atau foto — AI isi sisanya.",
+  "startFromScratch": "Mulai dari Awal",
+  "startFromScratchDesc": "Isi setiap bagian secara manual, langkah demi langkah.",
+  "skipForNow": "Lewati dulu",
+  "stepLabel": "Langkah {current} dari {total} — {label}",
+  "stepPersonalInfo": "Info Pribadi",
+  "stepImportCV": "Setup Cepat",
+  "stepExperience": "Pengalaman",
+  "stepEducation": "Pendidikan",
+  "stepCertifications": "Sertifikasi",
+  "stepSkills": "Keahlian",
+  "stepFinish": "Selesai"
 }

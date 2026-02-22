@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -44,12 +46,22 @@ class CVDownloadState {
 }
 
 class CVDownloadNotifier extends Notifier<CVDownloadState> {
-  // Simple session cache: templateId -> localFilePath
   final Map<String, String> _localCache = {};
 
   @override
   CVDownloadState build() {
     return const CVDownloadState();
+  }
+
+  String _buildCacheKey(String styleId) {
+    final creationState = ref.read(cvCreationProvider);
+    final raw = jsonEncode({
+      'profile': creationState.userProfile?.toJson(),
+      'summary': creationState.summary,
+      'jobInput': creationState.jobInput?.toJson(),
+      'styleId': styleId,
+    });
+    return md5.convert(utf8.encode(raw)).toString();
   }
 
   Future<void> attemptDownload({
@@ -61,8 +73,10 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       return;
     }
 
-    if (_localCache.containsKey(styleId)) {
-      final file = File(_localCache[styleId]!);
+    final cacheKey = _buildCacheKey(styleId);
+
+    if (_localCache.containsKey(cacheKey)) {
+      final file = File(_localCache[cacheKey]!);
       if (await file.exists()) {
         debugPrint('Opening cached PDF from: ${file.path}');
         await OpenFilex.open(file.path);
@@ -135,7 +149,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       final result = await OpenFilex.open(file.path);
       
-      _localCache[styleId] = file.path;
+      _localCache[_buildCacheKey(styleId)] = file.path;
       
       ref.invalidate(templatesProvider);
       state = state.copyWith(status: DownloadStatus.success);

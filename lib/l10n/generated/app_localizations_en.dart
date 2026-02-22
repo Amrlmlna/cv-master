@@ -905,4 +905,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get emailNotVerifiedYet =>
       'Email not verified yet. Please check your inbox.';
+
+  @override
+  String get alreadyHaveCV => 'Already have a CV?';
+
+  @override
+  String get alreadyHaveCVSubtitle =>
+      'Speed things up! Import your existing CV and we\'ll fill everything in for you.';
+
+  @override
+  String get importExistingCV => 'Import My CV';
+
+  @override
+  String get importExistingCVDesc =>
+      'Upload a PDF or take a photo — AI fills in the rest.';
+
+  @override
+  String get startFromScratch => 'Start From Scratch';
+
+  @override
+  String get startFromScratchDesc =>
+      'Fill in each section manually, step by step.';
+
+  @override
+  String get skipForNow => 'Skip for now';
+
+  @override
+  String stepLabel(Object current, Object label, Object total) {
+    return 'Step $current of $total — $label';
+  }
+
+  @override
+  String get stepPersonalInfo => 'Personal Info';
+
+  @override
+  String get stepImportCV => 'Quick Setup';
+
+  @override
+  String get stepExperience => 'Experience';
+
+  @override
+  String get stepEducation => 'Education';
+
+  @override
+  String get stepCertifications => 'Certifications';
+
+  @override
+  String get stepSkills => 'Skills';
+
+  @override
+  String get stepFinish => 'Finish';
 }

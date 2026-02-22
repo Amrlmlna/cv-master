@@ -1793,6 +1793,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email not verified yet. Please check your inbox.'**
   String get emailNotVerifiedYet;
+
+  /// No description provided for @alreadyHaveCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have a CV?'**
+  String get alreadyHaveCV;
+
+  /// No description provided for @alreadyHaveCVSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed things up! Import your existing CV and we\'ll fill everything in for you.'**
+  String get alreadyHaveCVSubtitle;
+
+  /// No description provided for @importExistingCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Import My CV'**
+  String get importExistingCV;
+
+  /// No description provided for @importExistingCVDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a PDF or take a photo — AI fills in the rest.'**
+  String get importExistingCVDesc;
+
+  /// No description provided for @startFromScratch.
+  ///
+  /// In en, this message translates to:
+  /// **'Start From Scratch'**
+  String get startFromScratch;
+
+  /// No description provided for @startFromScratchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in each section manually, step by step.'**
+  String get startFromScratchDesc;
+
+  /// No description provided for @skipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get skipForNow;
+
+  /// No description provided for @stepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total} — {label}'**
+  String stepLabel(Object current, Object label, Object total);
+
+  /// No description provided for @stepPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Info'**
+  String get stepPersonalInfo;
+
+  /// No description provided for @stepImportCV.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Setup'**
+  String get stepImportCV;
+
+  /// No description provided for @stepExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience'**
+  String get stepExperience;
+
+  /// No description provided for @stepEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get stepEducation;
+
+  /// No description provided for @stepCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Certifications'**
+  String get stepCertifications;
+
+  /// No description provided for @stepSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get stepSkills;
+
+  /// No description provided for @stepFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get stepFinish;
 }
 
 class _AppLocalizationsDelegate

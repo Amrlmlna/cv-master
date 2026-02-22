@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/payment_service.dart';
 import '../../templates/providers/template_provider.dart';
-import '../providers/home_state_provider.dart';
 import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 

@@ -22,7 +22,6 @@ import '../../presentation/common/pages/error_page.dart';
 import '../../presentation/auth/pages/login_page.dart';
 import '../../presentation/auth/pages/signup_page.dart';
 import '../../domain/entities/tailored_cv_result.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:clever/l10n/generated/app_localizations.dart';
 import 'app_routes.dart';
 

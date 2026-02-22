@@ -912,4 +912,53 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get emailNotVerifiedYet =>
       'Email belum diverifikasi. Silakan cek kotak masuk Anda.';
+
+  @override
+  String get alreadyHaveCV => 'Sudah punya CV?';
+
+  @override
+  String get alreadyHaveCVSubtitle =>
+      'Percepat prosesnya! Import CV yang sudah ada, semua data langsung terisi otomatis.';
+
+  @override
+  String get importExistingCV => 'Import CV Saya';
+
+  @override
+  String get importExistingCVDesc => 'Upload PDF atau foto — AI isi sisanya.';
+
+  @override
+  String get startFromScratch => 'Mulai dari Awal';
+
+  @override
+  String get startFromScratchDesc =>
+      'Isi setiap bagian secara manual, langkah demi langkah.';
+
+  @override
+  String get skipForNow => 'Lewati dulu';
+
+  @override
+  String stepLabel(Object current, Object label, Object total) {
+    return 'Langkah $current dari $total — $label';
+  }
+
+  @override
+  String get stepPersonalInfo => 'Info Pribadi';
+
+  @override
+  String get stepImportCV => 'Setup Cepat';
+
+  @override
+  String get stepExperience => 'Pengalaman';
+
+  @override
+  String get stepEducation => 'Pendidikan';
+
+  @override
+  String get stepCertifications => 'Sertifikasi';
+
+  @override
+  String get stepSkills => 'Keahlian';
+
+  @override
+  String get stepFinish => 'Selesai';
 }

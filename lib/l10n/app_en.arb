@@ -295,5 +295,20 @@
   "backToLogin": "Back to Login",
   "sending": "Sending...",
   "verificationEmailSent": "Verification email sent!",
-  "emailNotVerifiedYet": "Email not verified yet. Please check your inbox."
+  "emailNotVerifiedYet": "Email not verified yet. Please check your inbox.",
+  "alreadyHaveCV": "Already have a CV?",
+  "alreadyHaveCVSubtitle": "Speed things up! Import your existing CV and we'll fill everything in for you.",
+  "importExistingCV": "Import My CV",
+  "importExistingCVDesc": "Upload a PDF or take a photo — AI fills in the rest.",
+  "startFromScratch": "Start From Scratch",
+  "startFromScratchDesc": "Fill in each section manually, step by step.",
+  "skipForNow": "Skip for now",
+  "stepLabel": "Step {current} of {total} — {label}",
+  "stepPersonalInfo": "Personal Info",
+  "stepImportCV": "Quick Setup",
+  "stepExperience": "Experience",
+  "stepEducation": "Education",
+  "stepCertifications": "Certifications",
+  "stepSkills": "Skills",
+  "stepFinish": "Finish"
 }

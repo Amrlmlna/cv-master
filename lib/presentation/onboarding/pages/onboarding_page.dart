@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/onboarding_provider.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 import '../widgets/onboarding_personal_step.dart';
+import '../widgets/onboarding_import_step.dart';
 import '../widgets/onboarding_experience_step.dart';
 import '../widgets/onboarding_education_step.dart';
 import '../widgets/onboarding_certification_step.dart';
@@ -42,6 +44,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _emailController.addListener(() => ref.read(onboardingFormProvider.notifier).updateEmail(_emailController.text));
     _phoneController.addListener(() => ref.read(onboardingFormProvider.notifier).updatePhone(_phoneController.text));
     _locationController.addListener(() => ref.read(onboardingFormProvider.notifier).updateLocation(_locationController.text));
+
+    _prefillFromAuth();
+  }
+
+  void _prefillFromAuth() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      if (user.displayName != null && user.displayName!.isNotEmpty) {
+        _nameController.text = user.displayName!;
+      }
+      if (user.email != null && user.email!.isNotEmpty) {
+        _emailController.text = user.email!;
+      }
+    }
   }
 
   @override
@@ -73,6 +89,30 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     ref.read(onboardingFormProvider.notifier).prevPage();
   }
 
+  void _handleImportSuccess(profile) {
+    final notifier = ref.read(onboardingFormProvider.notifier);
+    
+    notifier.populateFromImport(profile);
+    
+    _nameController.text = profile.fullName;
+    _emailController.text = profile.email;
+    _phoneController.text = profile.phoneNumber ?? '';
+    _locationController.text = profile.location ?? '';
+    
+    notifier.skipToFinal();
+    
+    if (mounted) {
+      CustomSnackBar.showSuccess(
+        context,
+        AppLocalizations.of(context)!.cvImportedSuccess,
+      );
+    }
+  }
+
+  void _handleManualEntry() {
+    ref.read(onboardingFormProvider.notifier).nextPage();
+  }
+
   Future<void> _finishOnboarding() async {
      await ref.read(onboardingFormProvider.notifier).submit();
      if (mounted) {
@@ -86,6 +126,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final currentPage = state.currentPage;
     final isSaving = state.isSaving;
     
+    final bool isImportStep = currentPage == 1;
+    final bool isLastPage = currentPage == 6;
+
+    final bool isSkippable = currentPage >= 2 && currentPage <= 5;
+    
     ref.listen(onboardingFormProvider, (prev, next) {
       if (prev?.currentPage != next.currentPage) {
         _pageController.animateToPage(
@@ -98,7 +143,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
     return OnboardingShell(
       currentPage: currentPage,
-      totalSteps: 6,
+      totalSteps: 7,
       child: Column(
         children: [
           Expanded(
@@ -113,6 +158,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     emailController: _emailController,
                     phoneController: _phoneController,
                     locationController: _locationController,
+                  ),
+                  OnboardingImportStep(
+                    onManualEntry: _handleManualEntry,
+                    onImportSuccess: _handleImportSuccess,
                   ),
                   OnboardingExperienceStep(
                     experiences: state.formData.experience,
@@ -136,13 +185,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
           ),
 
-          OnboardingNavigationBar(
-            currentPage: currentPage,
-            isLastPage: currentPage == 5,
-            isLoading: isSaving,
-            onNext: currentPage < 5 ? _nextPage : _finishOnboarding,
-            onBack: _prevPage,
-          ),
+          if (!isImportStep)
+            OnboardingNavigationBar(
+              currentPage: currentPage,
+              isLastPage: isLastPage,
+              isLoading: isSaving,
+              onNext: currentPage < 6 ? _nextPage : _finishOnboarding,
+              onBack: _prevPage,
+              isSkippable: isSkippable,
+              onSkip: isSkippable ? _nextPage : null,
+            ),
         ],
       ),
     );
