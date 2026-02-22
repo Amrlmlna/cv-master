@@ -170,7 +170,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
           );
           if (context.mounted) {
             CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.accountDeletedGoodbye);
-            context.go('/login');
+            context.go('/signup');
           }
         } catch (e) {
           if (context.mounted) {

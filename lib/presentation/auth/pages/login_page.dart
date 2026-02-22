@@ -6,6 +6,8 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../providers/auth_state_provider.dart';
+import '../widgets/gradient_button.dart';
+import '../widgets/social_login_button.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -35,6 +37,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     setState(() => _isLoading = true);
 
+    bool loadingScreenPopped = false;
+    void popLoadingScreen() {
+      if (!loadingScreenPopped && mounted) {
+        Navigator.of(context).pop();
+        loadingScreenPopped = true;
+      }
+    }
+
     Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
@@ -57,10 +67,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         _emailController.text.trim(),
         _passwordController.text,
       );
-      
-      if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen
-      }
+
+      popLoadingScreen();
 
       if (user != null && mounted) {
         try {
@@ -77,8 +85,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         }
       }
     } catch (e) {
+      popLoadingScreen();
       if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen
         CustomSnackBar.showError(context, e.toString());
       }
     } finally {
@@ -90,6 +98,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _loginWithGoogle() async {
     setState(() => _isLoading = true);
+
+    bool loadingScreenPopped = false;
+    void popLoadingScreen() {
+      if (!loadingScreenPopped && mounted) {
+        Navigator.of(context).pop();
+        loadingScreenPopped = true;
+      }
+    }
 
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -111,9 +127,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signInWithGoogle();
       
-      if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen
-      }
+      popLoadingScreen();
 
       if (user != null && mounted) {
         try {
@@ -130,8 +144,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         }
       }
     } catch (e) {
+      popLoadingScreen();
       if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen
         CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
       }
     } finally {
@@ -155,27 +169,27 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
-                      shape: BoxShape.circle,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icon/app_logo.png', height: 40),
+                    const SizedBox(width: 12),
+                    Text(
+                      'clever',
+                      style: GoogleFonts.outfit(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Icon(
-                      Icons.lock_person_outlined,
-                      size: 48,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 48),
                 Text(
                   AppLocalizations.of(context)!.welcomeBack,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -195,8 +209,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -214,6 +231,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -225,7 +244,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       },
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -237,52 +257,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
 
-                FilledButton(
+                GradientButton(
                   onPressed: _isLoading ? null : _login,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                          AppLocalizations.of(context)!.login,
-                          style: GoogleFonts.outfit(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  text: AppLocalizations.of(context)!.login,
+                  icon: const Icon(Icons.email_outlined, color: Colors.white),
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: 24),
 
                 Row(
                   children: [
-                    const Expanded(child: Divider()),
+                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey.shade600)),
                     ),
-                    const Expanded(child: Divider()),
+                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
                   ],
                 ),
                 const SizedBox(height: 24),
 
-                OutlinedButton.icon(
+                SocialLoginButton(
                   onPressed: _isLoading ? null : _loginWithGoogle,
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  icon: const Icon(Icons.g_mobiledata, size: 28),
-                  label: Text(
-                          AppLocalizations.of(context)!.continueWithGoogle,
-                          style: GoogleFonts.outfit(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                  text: AppLocalizations.of(context)!.continueWithGoogle,
+                  icon: Image.asset('assets/images/google_logo.png', height: 24),
+                  isLoading: _isLoading && false, // Add specific loading state for google if needed
                 ),
                 const SizedBox(height: 24),
 

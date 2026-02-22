@@ -7,6 +7,8 @@ import '../../profile/providers/profile_sync_provider.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/auth_state_provider.dart';
 import '../widgets/email_verification_bottom_sheet.dart';
+import '../widgets/gradient_button.dart';
+import '../widgets/social_login_button.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -38,6 +40,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
     setState(() => _isLoading = true);
 
+    bool loadingScreenPopped = false;
+    void popLoadingScreen() {
+      if (!loadingScreenPopped && mounted) {
+        Navigator.of(context).pop();
+        loadingScreenPopped = true;
+      }
+    }
+
     Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
@@ -62,13 +72,13 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         _passwordController.text,
         _nameController.text.trim(),
       );
-      
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
 
       if (user != null && mounted) {
         await authRepo.sendEmailVerification();
+        
+        popLoadingScreen();
+        // Wait for the loading screen to animate out before opening the bottom sheet
+        await Future.delayed(const Duration(milliseconds: 300));
         
         if (mounted) {
           EmailVerificationBottomSheet.show(context, onVerified: () async {
@@ -82,11 +92,69 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             }
           });
         }
+      } else {
+        popLoadingScreen();
       }
     } catch (e) {
+      popLoadingScreen();
       if (mounted) {
-        Navigator.of(context).pop();
         CustomSnackBar.showError(context, e.toString());
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signupWithGoogle() async {
+    setState(() => _isLoading = true);
+
+    bool loadingScreenPopped = false;
+    void popLoadingScreen() {
+      if (!loadingScreenPopped && mounted) {
+        Navigator.of(context).pop();
+        loadingScreenPopped = true;
+      }
+    }
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
+          messages: [
+            AppLocalizations.of(context)!.googleSignInSuccess,
+            AppLocalizations.of(context)!.finalizing,
+            AppLocalizations.of(context)!.ready,
+          ],
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+
+    try {
+      final authRepo = ref.read(authRepositoryProvider);
+      final user = await authRepo.signInWithGoogle();
+      
+      popLoadingScreen();
+
+      if (user != null && mounted) {
+        try {
+          await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
+        } catch (e) {
+          debugPrint("Sync failed after google signin: $e");
+        }
+        if (mounted) {
+          context.go('/');
+        }
+      }
+    } catch (e) {
+      popLoadingScreen();
+      if (mounted) {
+        CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
       }
     } finally {
       if (mounted) {
@@ -117,16 +185,33 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icon/app_logo.png', height: 40),
+                    const SizedBox(width: 12),
+                    Text(
+                      'clever',
+                      style: GoogleFonts.outfit(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 48),
                 Text(
                   AppLocalizations.of(context)!.createAccount,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)!.createAccountSubtitle,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.outfit(
                     color: Colors.grey,
                     fontSize: 16,
@@ -139,8 +224,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.fullName,
                     prefixIcon: const Icon(Icons.person_outline),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -158,8 +246,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -177,6 +268,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -188,7 +281,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       },
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
@@ -203,21 +297,31 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 const SizedBox(height: 32),
 
-                FilledButton(
+                GradientButton(
                   onPressed: _isLoading ? null : _signup,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  text: AppLocalizations.of(context)!.createAccount,
+                  icon: const Icon(Icons.email_outlined, color: Colors.white),
+                  isLoading: _isLoading,
+                ),
+                const SizedBox(height: 24),
+
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey.shade600)),
                     ),
-                  ),
-                  child: Text(
-                          AppLocalizations.of(context)!.createAccount,
-                          style: GoogleFonts.outfit(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                SocialLoginButton(
+                  onPressed: _isLoading ? null : _signupWithGoogle,
+                  text: AppLocalizations.of(context)!.continueWithGoogle,
+                  icon: Image.asset('assets/images/google_logo.png', height: 24),
+                  isLoading: false,
                 ),
                 
                 const SizedBox(height: 24),

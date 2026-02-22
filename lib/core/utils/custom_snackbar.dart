@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 /// Custom SnackBar utilities for consistent app-wide notifications
 class CustomSnackBar {
@@ -24,12 +25,44 @@ class CustomSnackBar {
     _show(context, message, Icons.warning_amber_rounded);
   }
 
-  /// Internal method to show styled snackbar (Black & White Theme)
+  static String _normalizeErrorMessage(String errorMsg) {
+    if (errorMsg.contains('firebase_auth/email-already-in-use')) {
+      return 'This email address is already in use by another account.';
+    }
+    if (errorMsg.contains('firebase_auth/invalid-credential') || errorMsg.contains('firebase_auth/wrong-password')) {
+      return 'Invalid email or password. Please try again.';
+    }
+    if (errorMsg.contains('firebase_auth/weak-password')) {
+      return 'The password provided is too weak.';
+    }
+    if (errorMsg.contains('firebase_auth/too-many-requests')) {
+      return 'Too many login attempts. Please try again later.';
+    }
+    if (errorMsg.contains('firebase_auth/user-not-found')) {
+      return 'No user found with this email address.';
+    }
+    if (errorMsg.contains('firebase_auth/network-request-failed')) {
+      return 'Network error. Please check your internet connection.';
+    }
+    
+    // Strip out the bracketed Firebase specific error codes if present
+    final regex = RegExp(r'\[.*?\] \s*');
+    final cleaned = errorMsg.replaceAll(regex, '').trim();
+    
+    if (cleaned.startsWith('Exception: ')) {
+      return cleaned.substring(11); // Remove leading 'Exception: '
+    }
+    return cleaned;
+  }
+
+  /// Internal method to show styled snackbar
   static void _show(
     BuildContext context,
     String message,
     IconData icon,
   ) {
+    final sanitizedMessage = _normalizeErrorMessage(message);
+
     // Remove existing if any
     _currentEntry?.remove();
     _currentEntry = null;
@@ -37,7 +70,7 @@ class CustomSnackBar {
     final overlay = Overlay.of(context);
     final entry = OverlayEntry(
       builder: (context) => _TopSnackBar(
-        message: message,
+        message: sanitizedMessage,
         icon: icon,
         onDismissed: () {
           _currentEntry?.remove();
@@ -135,51 +168,54 @@ class _TopSnackBarState extends State<_TopSnackBar>
             position: _offsetAnimation,
             child: FadeTransition(
               opacity: _fadeAnimation,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    width: 1,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 16,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 24.0, sigmaY: 24.0),
+                  child: CustomPaint(
+                    painter: _LiquidGlassSnackBarPainter(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
+                        // Very transparent dark base so the blur + highlights are visible
+                        color: Colors.black.withValues(alpha: 0.25),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Icon(
-                        widget.icon,
-                        color: Colors.white,
-                        size: 20,
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.12),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.2),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: Icon(
+                              widget.icon,
+                              color: Colors.white.withValues(alpha: 0.9),
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              widget.message,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Outfit',
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        widget.message,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Outfit',
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -188,4 +224,93 @@ class _TopSnackBarState extends State<_TopSnackBar>
       ),
     );
   }
+}
+
+/// Custom painter for liquid glass specular highlights and edge glow on the snackbar
+class _LiquidGlassSnackBarPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+
+    // Top-left specular highlight
+    final specularPaint = Paint()
+      ..shader = RadialGradient(
+        center: const Alignment(-0.5, -1.5),
+        radius: 1.5,
+        colors: [
+          Colors.white.withValues(alpha: 0.25),
+          Colors.white.withValues(alpha: 0.06),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.35, 1.0],
+      ).createShader(rect);
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
+      specularPaint,
+    );
+
+    // Bottom-right subtle warm glow
+    final warmGlowPaint = Paint()
+      ..shader = RadialGradient(
+        center: const Alignment(0.8, 1.2),
+        radius: 1.0,
+        colors: [
+          Colors.white.withValues(alpha: 0.08),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 1.0],
+      ).createShader(rect);
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
+      warmGlowPaint,
+    );
+
+    // Top edge thin reflection line
+    final topLinePaint = Paint()
+      ..shader = LinearGradient(
+        begin: const Alignment(-1, 0),
+        end: const Alignment(1, 0),
+        colors: [
+          Colors.transparent,
+          Colors.white.withValues(alpha: 0.3),
+          Colors.white.withValues(alpha: 0.4),
+          Colors.white.withValues(alpha: 0.3),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.25, 0.5, 0.75, 1.0],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, 2));
+
+    canvas.drawRRect(
+      RRect.fromRectAndCorners(
+        Rect.fromLTWH(size.width * 0.1, 0, size.width * 0.8, 1.0),
+        topLeft: const Radius.circular(1),
+        topRight: const Radius.circular(1),
+      ),
+      topLinePaint,
+    );
+
+    // Gradient border stroke
+    final borderPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.white.withValues(alpha: 0.3),
+          Colors.white.withValues(alpha: 0.08),
+          Colors.white.withValues(alpha: 0.15),
+        ],
+      ).createShader(rect);
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(16)),
+      borderPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

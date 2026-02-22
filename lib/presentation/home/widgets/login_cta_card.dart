@@ -14,7 +14,7 @@ class LoginCTACard extends ConsumerWidget {
     if (isLoggedIn) return const SizedBox.shrink();
 
     return GestureDetector(
-      onTap: () => context.push('/login'),
+      onTap: () => context.push('/signup'),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(

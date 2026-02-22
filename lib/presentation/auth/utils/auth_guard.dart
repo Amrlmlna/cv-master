@@ -6,7 +6,7 @@ class AuthGuard {
   static bool check(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      context.push('/login');
+      context.push('/signup');
       return false;
     }
     return true;
