@@ -332,19 +332,48 @@ class ProfileController extends StateNotifier<ProfileState> {
     state = state.copyWith(isSaving: true);
     try {
       await ref.read(masterProfileProvider.notifier).saveProfile(state.currentProfile);
-      state = state.copyWith(
-        initialProfile: state.currentProfile,
-        isSaving: false,
-      );
+      if (mounted) {
+        state = state.copyWith(
+          initialProfile: state.currentProfile,
+          isSaving: false,
+        );
+      }
       return true;
     } catch (e) {
-      state = state.copyWith(isSaving: false);
+      if (mounted) {
+        state = state.copyWith(isSaving: false);
+      }
       rethrow;
     }
   }
 
-  Future<void> deleteAccount() async {
-    // TODO: Implement fresh account deletion logic
+  Future<void> deleteAccount({required bool keepLocalData}) async {
+    state = state.copyWith(isSaving: true);
+    try {
+      await ref.read(authRepositoryProvider).deleteAccount();
+      
+      if (!keepLocalData) {
+        await ref.read(masterProfileProvider.notifier).clearProfile();
+      }
+      
+      if (mounted) {
+        state = state.copyWith(
+          initialProfile: keepLocalData ? state.initialProfile : null,
+          currentProfile: keepLocalData ? state.currentProfile : const UserProfile(
+            fullName: '',
+            email: '',
+            experience: [],
+            education: [],
+            skills: [],
+            certifications: [],
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        state = state.copyWith(isSaving: false);
+      }
+    }
   }
 
   void discardChanges() {

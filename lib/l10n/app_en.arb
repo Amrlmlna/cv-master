@@ -184,6 +184,9 @@
   "finalizing": "Finalizing...",
   "savingProfile": "Saving Profile...",
   "ready": "Ready!",
+  "checkingSystem": "Checking system...",
+  "validatingLink": "Validating link...",
+  "almostThere": "Almost there...",
   "startNow": "START NOW",
   "nextStep": "NEXT STEP",
   "back": "Back",
@@ -279,10 +282,27 @@
   "unknownErrorDesc": "Something went wrong, but we aren't sure what.",
   "readyToAchieve": "Ready to achieve your career goals?",
   "delete": "Delete",
+  "deleteAccount": "Delete Account",
+  "deleteMyData": "Delete My Data",
+  "deleteAccountQuestion": "Delete Account?",
+  "deleteAccountWarning": "This action is irreversible. All your data, including generated CVs and credits, will be permanently deleted.",
+  "accountDeletedGoodbye": "Account successfully deleted. Goodbye!",
+  "accountDeleteError": "Failed to delete account: {error}",
+  "keepLocalData": "Keep my local data (Master Profile)",
+  "clearLocalData": "Clear local data as well (Full Reset)",
+  "creditWarning": "Warning: You have {count} credits remaining. These are non-refundable.",
+  "@creditWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "confirmDelete": "Confirm Deletion",
   "deleteConfirmation": "Are you sure you want to delete this item?",
   "verifyYourEmail": "Verify Your Email",
   "verificationSentTo": "A verification link has been sent to {email}. Please check your inbox and spam folder.",
+  "checkSpamFolder": "Can't find it? Please check your Spam or Junk folder.",
   "@verificationSentTo": {
     "placeholders": {
       "email": {
@@ -295,6 +315,7 @@
   "backToLogin": "Back to Login",
   "sending": "Sending...",
   "verificationEmailSent": "Verification email sent!",
+  "emailVerifiedSuccess": "Email verified successfully!",
   "emailNotVerifiedYet": "Email not verified yet. Please check your inbox.",
   "alreadyHaveCV": "Already have a CV?",
   "alreadyHaveCVSubtitle": "Speed things up! Import your existing CV and we'll fill everything in for you.",

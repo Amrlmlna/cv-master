@@ -184,6 +184,9 @@
   "finalizing": "Memproses...",
   "savingProfile": "Menyimpan Profil...",
   "ready": "Siap!",
+  "checkingSystem": "Mengecek sistem...",
+  "validatingLink": "Memvalidasi link...",
+  "almostThere": "Sesaat lagi...",
   "startNow": "MULAI SEKARANG",
   "nextStep": "LANJUT",
   "back": "Kembali",
@@ -279,10 +282,27 @@
   "unknownErrorDesc": "Terjadi kesalahan, tapi kami tidak yakin apa penyebabnya.",
   "readyToAchieve": "Siap mencapai tujuan karirmu?",
   "delete": "Hapus",
+  "deleteAccount": "Hapus Akun",
+  "deleteMyData": "Hapus Data Saya",
+  "deleteAccountQuestion": "Hapus Akun?",
+  "deleteAccountWarning": "Tindakan ini tidak dapat dibatalkan. Semua data Anda, termasuk CV yang dihasilkan dan kredit, akan dihapus secara permanen.",
+  "accountDeletedGoodbye": "Akun berhasil dihapus. Sampai jumpa!",
+  "accountDeleteError": "Gagal menghapus akun: {error}",
+  "keepLocalData": "Simpan data lokal saya (Master Profile)",
+  "clearLocalData": "Hapus juga data lokal (Reset Total)",
+  "creditWarning": "Peringatan: Anda masih memiliki {count} kredit. Kredit ini tidak dapat diuangkan kembali.",
+  "@creditWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "confirmDelete": "Konfirmasi Penghapusan",
   "deleteConfirmation": "Apakah Anda yakin ingin menghapus item ini?",
   "verifyYourEmail": "Verifikasi Email Anda",
   "verificationSentTo": "Link verifikasi telah dikirim ke {email}. Silakan cek kotak masuk dan folder spam Anda.",
+  "checkSpamFolder": "Tidak ketemu? Coba cek folder Spam atau Junk kamu.",
   "@verificationSentTo": {
     "placeholders": {
       "email": {
@@ -295,6 +315,7 @@
   "backToLogin": "Kembali ke Login",
   "sending": "Mengirim...",
   "verificationEmailSent": "Email verifikasi terkirim!",
+  "emailVerifiedSuccess": "Email berhasil diverifikasi!",
   "emailNotVerifiedYet": "Email belum diverifikasi. Silakan cek kotak masuk Anda.",
   "alreadyHaveCV": "Sudah punya CV?",
   "alreadyHaveCVSubtitle": "Percepat prosesnya! Import CV yang sudah ada, semua data langsung terisi otomatis.",

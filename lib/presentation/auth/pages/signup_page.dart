@@ -6,6 +6,7 @@ import '../../../core/utils/custom_snackbar.dart';
 import '../../profile/providers/profile_sync_provider.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../providers/auth_state_provider.dart';
+import '../widgets/email_verification_bottom_sheet.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -63,22 +64,28 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       );
       
       if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen
+        Navigator.of(context).pop();
       }
 
       if (user != null && mounted) {
-        try {
-          await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
-        } catch (e) {
-          debugPrint("Sync failed on signup: $e");
+        await authRepo.sendEmailVerification();
+        
+        if (mounted) {
+          EmailVerificationBottomSheet.show(context, onVerified: () async {
+            try {
+              await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
+            } catch (e) {
+              debugPrint("Sync failed after verification: $e");
+            }
+            if (mounted) {
+              context.go('/');
+            }
+          });
         }
-
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.accountCreatedSuccess);
-        context.go('/');
       }
     } catch (e) {
       if (mounted) {
-        Navigator.of(context).pop(); // Dismiss loading screen if error
+        Navigator.of(context).pop();
         CustomSnackBar.showError(context, e.toString());
       }
     } finally {

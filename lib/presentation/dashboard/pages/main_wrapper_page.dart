@@ -6,7 +6,7 @@ import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../profile/providers/profile_provider.dart';
 
-import '../../auth/widgets/email_verification_dialog.dart';
+import '../../auth/widgets/email_verification_bottom_sheet.dart';
 import '../../auth/providers/auth_state_provider.dart';
 import '../../../domain/entities/app_user.dart';
 import '../../../core/services/notification_controller.dart';
@@ -26,7 +26,7 @@ class MainWrapperPage extends ConsumerStatefulWidget {
 }
 
 class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
-  bool _dialogShowing = false;
+  bool _sheetShowing = false;
 
   @override
   void initState() {
@@ -52,10 +52,10 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
     final firebaseUser = fb.FirebaseAuth.instance.currentUser;
     final isPasswordProvider = firebaseUser?.providerData.any((p) => p.providerId == 'password') ?? false;
     
-    if (isPasswordProvider && !firebaseUser!.emailVerified && !_dialogShowing) {
-      _dialogShowing = true;
-      EmailVerificationDialog.show(context).then((_) {
-        _dialogShowing = false;
+    if (isPasswordProvider && !firebaseUser!.emailVerified && !_sheetShowing) {
+      _sheetShowing = true;
+      EmailVerificationBottomSheet.show(context).then((_) {
+        _sheetShowing = false;
       });
     }
   }

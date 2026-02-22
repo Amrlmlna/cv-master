@@ -566,6 +566,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ready => 'Ready!';
 
   @override
+  String get checkingSystem => 'Checking system...';
+
+  @override
+  String get validatingLink => 'Validating link...';
+
+  @override
+  String get almostThere => 'Almost there...';
+
+  @override
   String get nextStep => 'NEXT STEP';
 
   @override
@@ -874,6 +883,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete => 'Delete';
 
   @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteMyData => 'Delete My Data';
+
+  @override
+  String get deleteAccountQuestion => 'Delete Account?';
+
+  @override
+  String get deleteAccountWarning =>
+      'This action is irreversible. All your data, including generated CVs and credits, will be permanently deleted.';
+
+  @override
+  String get accountDeletedGoodbye => 'Account successfully deleted. Goodbye!';
+
+  @override
+  String accountDeleteError(Object error) {
+    return 'Failed to delete account: $error';
+  }
+
+  @override
+  String get keepLocalData => 'Keep my local data (Master Profile)';
+
+  @override
+  String get clearLocalData => 'Clear local data as well (Full Reset)';
+
+  @override
+  String creditWarning(int count) {
+    return 'Warning: You have $count credits remaining. These are non-refundable.';
+  }
+
+  @override
   String get confirmDelete => 'Confirm Deletion';
 
   @override
@@ -886,6 +927,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String verificationSentTo(String email) {
     return 'A verification link has been sent to $email. Please check your inbox and spam folder.';
   }
+
+  @override
+  String get checkSpamFolder =>
+      'Can\'t find it? Please check your Spam or Junk folder.';
 
   @override
   String get iHaveVerified => 'I HAVE VERIFIED';
@@ -901,6 +946,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verificationEmailSent => 'Verification email sent!';
+
+  @override
+  String get emailVerifiedSuccess => 'Email verified successfully!';
 
   @override
   String get emailNotVerifiedYet =>

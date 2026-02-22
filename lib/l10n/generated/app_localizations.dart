@@ -1172,6 +1172,24 @@ abstract class AppLocalizations {
   /// **'Ready!'**
   String get ready;
 
+  /// No description provided for @checkingSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking system...'**
+  String get checkingSystem;
+
+  /// No description provided for @validatingLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Validating link...'**
+  String get validatingLink;
+
+  /// No description provided for @almostThere.
+  ///
+  /// In en, this message translates to:
+  /// **'Almost there...'**
+  String get almostThere;
+
   /// No description provided for @nextStep.
   ///
   /// In en, this message translates to:
@@ -1734,6 +1752,60 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get delete;
 
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteMyData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete My Data'**
+  String get deleteMyData;
+
+  /// No description provided for @deleteAccountQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account?'**
+  String get deleteAccountQuestion;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is irreversible. All your data, including generated CVs and credits, will be permanently deleted.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @accountDeletedGoodbye.
+  ///
+  /// In en, this message translates to:
+  /// **'Account successfully deleted. Goodbye!'**
+  String get accountDeletedGoodbye;
+
+  /// No description provided for @accountDeleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account: {error}'**
+  String accountDeleteError(Object error);
+
+  /// No description provided for @keepLocalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my local data (Master Profile)'**
+  String get keepLocalData;
+
+  /// No description provided for @clearLocalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear local data as well (Full Reset)'**
+  String get clearLocalData;
+
+  /// No description provided for @creditWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: You have {count} credits remaining. These are non-refundable.'**
+  String creditWarning(int count);
+
   /// No description provided for @confirmDelete.
   ///
   /// In en, this message translates to:
@@ -1757,6 +1829,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A verification link has been sent to {email}. Please check your inbox and spam folder.'**
   String verificationSentTo(String email);
+
+  /// No description provided for @checkSpamFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t find it? Please check your Spam or Junk folder.'**
+  String get checkSpamFolder;
 
   /// No description provided for @iHaveVerified.
   ///
@@ -1787,6 +1865,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verification email sent!'**
   String get verificationEmailSent;
+
+  /// No description provided for @emailVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully!'**
+  String get emailVerifiedSuccess;
 
   /// No description provided for @emailNotVerifiedYet.
   ///

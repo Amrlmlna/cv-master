@@ -570,6 +570,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get ready => 'Siap!';
 
   @override
+  String get checkingSystem => 'Mengecek sistem...';
+
+  @override
+  String get validatingLink => 'Memvalidasi link...';
+
+  @override
+  String get almostThere => 'Sesaat lagi...';
+
+  @override
   String get nextStep => 'LANJUT';
 
   @override
@@ -880,6 +889,38 @@ class AppLocalizationsId extends AppLocalizations {
   String get delete => 'Hapus';
 
   @override
+  String get deleteAccount => 'Hapus Akun';
+
+  @override
+  String get deleteMyData => 'Hapus Data Saya';
+
+  @override
+  String get deleteAccountQuestion => 'Hapus Akun?';
+
+  @override
+  String get deleteAccountWarning =>
+      'Tindakan ini tidak dapat dibatalkan. Semua data Anda, termasuk CV yang dihasilkan dan kredit, akan dihapus secara permanen.';
+
+  @override
+  String get accountDeletedGoodbye => 'Akun berhasil dihapus. Sampai jumpa!';
+
+  @override
+  String accountDeleteError(Object error) {
+    return 'Gagal menghapus akun: $error';
+  }
+
+  @override
+  String get keepLocalData => 'Simpan data lokal saya (Master Profile)';
+
+  @override
+  String get clearLocalData => 'Hapus juga data lokal (Reset Total)';
+
+  @override
+  String creditWarning(int count) {
+    return 'Peringatan: Anda masih memiliki $count kredit. Kredit ini tidak dapat diuangkan kembali.';
+  }
+
+  @override
   String get confirmDelete => 'Konfirmasi Penghapusan';
 
   @override
@@ -895,6 +936,10 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get checkSpamFolder =>
+      'Tidak ketemu? Coba cek folder Spam atau Junk kamu.';
+
+  @override
   String get iHaveVerified => 'SAYA SUDAH VERIFIKASI';
 
   @override
@@ -908,6 +953,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get verificationEmailSent => 'Email verifikasi terkirim!';
+
+  @override
+  String get emailVerifiedSuccess => 'Email berhasil diverifikasi!';
 
   @override
   String get emailNotVerifiedYet =>
