@@ -1097,4 +1097,65 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authWallSelectTemplateDesc =>
       'An account is required to choose a template';
+
+  @override
+  String get onboardingHeadline1 => 'Still editing your CV at 1AM?';
+
+  @override
+  String get onboardingSubtext1 =>
+      'Creating a \'universal\' CV doesn\'t work. Editing it manually for every application is exhausting. We get it.';
+
+  @override
+  String get onboardingHeadline2 => 'Qualified, but still getting rejected?';
+
+  @override
+  String get onboardingSubtext2 =>
+      'Your CV might be rejected before a human even sees it. If your format isn\'t ATS-friendly or lacks the exact keywords, the system blocks you.';
+
+  @override
+  String get onboardingHeadline3 => 'Don\'t start from zero.';
+
+  @override
+  String get onboardingSubtext3 =>
+      'Have pieces of your career scattered across old resumes? Upload a PDF, and we\'ll instantly extract and organize your entire history.';
+
+  @override
+  String get onboardingHeadline4 => 'Dump everything here.';
+
+  @override
+  String get onboardingSubtext4 =>
+      'Farmer. Paperboy. Software engineer. Co-founder. Put it all in. We\'ll handle relevance.';
+
+  @override
+  String get onboardingHeadline5 => 'Screenshot a job. Let AI do the rest.';
+
+  @override
+  String get onboardingSubtext5 =>
+      'Found a job poster? Screenshot it. Our AI analyzes the requirements and instantly highlights only your most relevant experience.';
+
+  @override
+  String get onboardingHeadline6 => 'One profile. Unlimited tailored CVs.';
+
+  @override
+  String get onboardingSubtext6 =>
+      'No expensive resume services. No manual redesign. Instantly switch between professional, ATS-optimized templates with generous usage limits.';
+
+  @override
+  String get onboardingHeadline7 => 'We want you to try Clever for free.';
+
+  @override
+  String get onboardingSubtext7 =>
+      'You\'ll never have to write a CV from scratch again. Ready to get hired?';
+
+  @override
+  String get takesLessThan3Min => 'Takes less than 3 minutes.';
+
+  @override
+  String get skipIntro => 'Skip Intro';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get next => 'Next';
 }

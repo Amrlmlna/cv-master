@@ -2141,6 +2141,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An account is required to choose a template'**
   String get authWallSelectTemplateDesc;
+
+  /// No description provided for @onboardingHeadline1.
+  ///
+  /// In en, this message translates to:
+  /// **'Still editing your CV at 1AM?'**
+  String get onboardingHeadline1;
+
+  /// No description provided for @onboardingSubtext1.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating a \'universal\' CV doesn\'t work. Editing it manually for every application is exhausting. We get it.'**
+  String get onboardingSubtext1;
+
+  /// No description provided for @onboardingHeadline2.
+  ///
+  /// In en, this message translates to:
+  /// **'Qualified, but still getting rejected?'**
+  String get onboardingHeadline2;
+
+  /// No description provided for @onboardingSubtext2.
+  ///
+  /// In en, this message translates to:
+  /// **'Your CV might be rejected before a human even sees it. If your format isn\'t ATS-friendly or lacks the exact keywords, the system blocks you.'**
+  String get onboardingSubtext2;
+
+  /// No description provided for @onboardingHeadline3.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t start from zero.'**
+  String get onboardingHeadline3;
+
+  /// No description provided for @onboardingSubtext3.
+  ///
+  /// In en, this message translates to:
+  /// **'Have pieces of your career scattered across old resumes? Upload a PDF, and we\'ll instantly extract and organize your entire history.'**
+  String get onboardingSubtext3;
+
+  /// No description provided for @onboardingHeadline4.
+  ///
+  /// In en, this message translates to:
+  /// **'Dump everything here.'**
+  String get onboardingHeadline4;
+
+  /// No description provided for @onboardingSubtext4.
+  ///
+  /// In en, this message translates to:
+  /// **'Farmer. Paperboy. Software engineer. Co-founder. Put it all in. We\'ll handle relevance.'**
+  String get onboardingSubtext4;
+
+  /// No description provided for @onboardingHeadline5.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot a job. Let AI do the rest.'**
+  String get onboardingHeadline5;
+
+  /// No description provided for @onboardingSubtext5.
+  ///
+  /// In en, this message translates to:
+  /// **'Found a job poster? Screenshot it. Our AI analyzes the requirements and instantly highlights only your most relevant experience.'**
+  String get onboardingSubtext5;
+
+  /// No description provided for @onboardingHeadline6.
+  ///
+  /// In en, this message translates to:
+  /// **'One profile. Unlimited tailored CVs.'**
+  String get onboardingHeadline6;
+
+  /// No description provided for @onboardingSubtext6.
+  ///
+  /// In en, this message translates to:
+  /// **'No expensive resume services. No manual redesign. Instantly switch between professional, ATS-optimized templates with generous usage limits.'**
+  String get onboardingSubtext6;
+
+  /// No description provided for @onboardingHeadline7.
+  ///
+  /// In en, this message translates to:
+  /// **'We want you to try Clever for free.'**
+  String get onboardingHeadline7;
+
+  /// No description provided for @onboardingSubtext7.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll never have to write a CV from scratch again. Ready to get hired?'**
+  String get onboardingSubtext7;
+
+  /// No description provided for @takesLessThan3Min.
+  ///
+  /// In en, this message translates to:
+  /// **'Takes less than 3 minutes.'**
+  String get takesLessThan3Min;
+
+  /// No description provided for @skipIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Intro'**
+  String get skipIntro;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 }
 
 class _AppLocalizationsDelegate

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/image_sequence_animator.dart';
-import 'onboarding_page.dart'; // Contains the form content
-import 'package:flutter/scheduler.dart';
+import '../../auth/widgets/gradient_button.dart';
+import '../widgets/onboarding_carousel_screen.dart';
+import 'onboarding_page.dart';
+import 'package:clever/l10n/generated/app_localizations.dart';
 
 class OnboardingWelcomePage extends StatefulWidget {
   const OnboardingWelcomePage({super.key});
@@ -11,131 +11,258 @@ class OnboardingWelcomePage extends StatefulWidget {
   State<OnboardingWelcomePage> createState() => _OnboardingWelcomePageState();
 }
 
+class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  bool _showForm = false;
 
-
-class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> with SingleTickerProviderStateMixin {
-  final ScrollController _scrollController = ScrollController();
-  late Ticker _ticker;
-  
-  double _currentFrame = 1.0;     
-  double _targetFrame = 1.0;      
-  
-  final int _startFrame = 1;
-  final int _frameCount = 192;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-    
-    _ticker = createTicker(_tick);
-    _ticker.start();
+  List<Map<String, dynamic>> _getScreens(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'headline': l10n.onboardingHeadline1,
+        'subtext': l10n.onboardingSubtext1,
+        'imageAsset': 'assets/images/onboarding_screen_1.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline2,
+        'subtext': l10n.onboardingSubtext2,
+        'imageAsset': 'assets/images/onboarding_screen_2.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline3,
+        'subtext': l10n.onboardingSubtext3,
+        'imageAsset': 'assets/images/onboarding_screen_3.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline4,
+        'subtext': l10n.onboardingSubtext4,
+        'imageAsset': 'assets/images/onboarding_master_profile.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline5,
+        'subtext': l10n.onboardingSubtext5,
+        'imageAsset': 'assets/images/onboarding_screen_5.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline6,
+        'subtext': l10n.onboardingSubtext6,
+        'imageAsset': 'assets/images/onboarding_screen_6.png',
+      },
+      {
+        'headline': l10n.onboardingHeadline7,
+        'subtext': l10n.onboardingSubtext7,
+        'imageAsset': 'assets/images/onboarding_screen_7.png',
+      },
+    ];
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
-  void _tick(Duration elapsed) {
-    if ((_targetFrame - _currentFrame).abs() > 0.05) {
+  void _onNext(int totalScreens) {
+    if (_currentPage < totalScreens - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+      );
+    } else {
       setState(() {
-        _currentFrame += (_targetFrame - _currentFrame) * 0.1;
-      });
-    } else if (_currentFrame != _targetFrame) {
-      setState(() {
-        _currentFrame = _targetFrame;
+        _showForm = true;
       });
     }
   }
 
-  void _onScroll() {
-    if (!_scrollController.hasClients) return;
+  void _onSkip() {
+    setState(() {
+      _showForm = true;
+    });
+  }
 
-    final offset = _scrollController.offset;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final maxAnimDist = screenHeight * 0.6; 
-
-    double progress = (offset / maxAnimDist).clamp(0.0, 1.0);
-    
-    _targetFrame = (_startFrame + (progress * (_frameCount - 1))).toDouble();
+  Widget _buildDotIndicator(int itemCount) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        itemCount,
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          height: 8,
+          width: _currentPage == index ? 24 : 8,
+          decoration: BoxDecoration(
+            color: _currentPage == index
+                ? Colors.white
+                : Colors.white.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    
     final height = MediaQuery.of(context).size.height;
-    
-    final int displayFrame = _currentFrame.round();
-    
+    final l10n = AppLocalizations.of(context)!;
+    final screens = _getScreens(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // Background Carousel
           Positioned.fill(
-            child: Image.asset(
-              'assets/sequence/ezgif-frame-001.jpg',
-              fit: BoxFit.cover,
-              gaplessPlayback: true,
-            ),
-          ),
-
-          Positioned.fill(
-             child: ImageSequenceAnimator(
-              folderPath: 'assets/sequence', 
-              fileNamePrefix: 'ezgif-frame-',     
-              fileExtension: 'jpg',
-              startFrame: _startFrame,
-              frameCount: _frameCount,
-              fps: 24,
-              explicitFrame: displayFrame,
-            ),
-          ),
-
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.3),
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.8),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          SingleChildScrollView(
-            controller: _scrollController,
-            physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
-                SizedBox(height: height * 0.7),
-
-                  Container(
-                    height: height * 0.85,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF1E1E1E),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-                     boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 20,
-                        offset: Offset(0, -5),
-                      ),
-                    ],
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemCount: screens.length,
+                    itemBuilder: (context, index) {
+                      final screen = screens[index];
+                      return OnboardingCarouselScreen(
+                        headline: screen['headline'] as String,
+                        subtext: screen['subtext'] as String,
+                        imageAsset: screen['imageAsset'] as String?,
+                      );
+                    },
                   ),
-                  child: const OnboardingPage(),
+                ),
+                
+                // Bottom Area with Dots and Buttons
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildDotIndicator(screens.length),
+                        const SizedBox(height: 48),
+                        
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          switchInCurve: Curves.easeOutCubic,
+                          switchOutCurve: Curves.easeInCubic,
+                          child: _currentPage == screens.length - 1
+                              ? Column(
+                                  key: const ValueKey('cta'),
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: GradientButton(
+                                        text: l10n.getStarted,
+                                        onPressed: () => _onNext(screens.length),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      l10n.takesLessThan3Min,
+                                      style: TextStyle(
+                                        color: Colors.white.withValues(alpha: 0.6),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  key: const ValueKey('nav'),
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: _onSkip,
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      ),
+                                      child: Text(
+                                        l10n.skipIntro,
+                                        style: TextStyle(
+                                          color: Colors.white.withValues(alpha: 0.6),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () => _onNext(screens.length),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white.withValues(alpha: 0.15),
+                                        foregroundColor: Colors.white,
+                                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(24),
+                                        ),
+                                        elevation: 0,
+                                      ),
+                                      child: Text(
+                                        l10n.next,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
+
+          // The Form (Sliding up from bottom)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.fastOutSlowIn,
+            top: _showForm ? height * 0.12 : height,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 40,
+                    offset: Offset(0, -10),
+                  ),
+                ],
+              ),
+              child: const OnboardingPage(),
+            ),
+          ),
+          
+          // Back button to collapse form
+          if (_showForm)
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 16,
+              left: 16, // Adjusted slightly for safety
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _showForm = false;
+                  });
+                },
+                icon: const Icon(Icons.arrow_downward, color: Colors.white),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.black45,
+                ),
+              ),
+            ),
         ],
       ),
     );

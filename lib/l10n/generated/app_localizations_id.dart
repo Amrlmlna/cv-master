@@ -1103,4 +1103,66 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get authWallSelectTemplateDesc =>
       'Kamu perlu login untuk bisa memilih template';
+
+  @override
+  String get onboardingHeadline1 => 'Masih ngedit CV jam 1 pagi?';
+
+  @override
+  String get onboardingSubtext1 =>
+      'Bikin satu CV \'sapu jagat\' itu gak mempan. Tapi ngedit manual buat tiap lamaran juga capek banget. Kami paham.';
+
+  @override
+  String get onboardingHeadline2 => 'Kualifikasi masuk, tapi tetep ditolak?';
+
+  @override
+  String get onboardingSubtext2 =>
+      'CV kamu mungkin udah ditolak sistem sebelum dibaca HR. Kalau formatnya gak ramah ATS atau kurang keyword persis, kamu otomatis gugur.';
+
+  @override
+  String get onboardingHeadline3 => 'Gak perlu mulai dari nol.';
+
+  @override
+  String get onboardingSubtext3 =>
+      'Punya riwayat karir yang berceceran di CV lama? Upload PDF-nya, kami akan ekstrak dan rapikan seluruh riwayatmu secara instan.';
+
+  @override
+  String get onboardingHeadline4 => 'Satukan semuanya di sini.';
+
+  @override
+  String get onboardingSubtext4 =>
+      'Barista. Kurir. Admin. Konten Kreator. Masukin aja semua pengalamanmu. Urusan relevansi biar kami yang atur.';
+
+  @override
+  String get onboardingHeadline5 => 'Screenshot loker. Biar AI yang kerja.';
+
+  @override
+  String get onboardingSubtext5 =>
+      'Nemu info loker? Screenshot aja. AI kami akan menganalisis syaratnya dan langsung menyorot pengalamanmu yang paling relevan.';
+
+  @override
+  String get onboardingHeadline6 => 'Satu profil. CV unlimited.';
+
+  @override
+  String get onboardingSubtext6 =>
+      'Gak perlu bayar jasa pembuat CV. Gak perlu desain manual. Langsung ganti ke template profesional ramah ATS dengan limit pemakaian yang banyak.';
+
+  @override
+  String get onboardingHeadline7 =>
+      'Kami pengen bantu kamu dengan clever secara gratis.';
+
+  @override
+  String get onboardingSubtext7 =>
+      'Kamu gak akan pernah ngetik CV dari nol lagi. Siap buat direkrut?';
+
+  @override
+  String get takesLessThan3Min => 'Cuma butuh waktu kurang dari 3 menit.';
+
+  @override
+  String get skipIntro => 'Lewati Intro';
+
+  @override
+  String get getStarted => 'Mulai Sekarang';
+
+  @override
+  String get next => 'Lanjut';
 }
