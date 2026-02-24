@@ -386,6 +386,7 @@
   "next": "Lanjut",
   "cvLanguage": "Bahasa CV",
   "previewCV": "Pratinjau CV",
+  "previewTemplate": "Pratinjau Template",
   "regenerateSummary": "Regenerasi Ringkasan",
   "summaryRegenerating": "Meregenerasi ringkasan..."
 }

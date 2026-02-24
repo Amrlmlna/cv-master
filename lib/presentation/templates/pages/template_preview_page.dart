@@ -5,6 +5,8 @@ import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
 import '../providers/template_provider.dart';
 import '../../../core/providers/locale_provider.dart';
+import '../../../../core/services/payment_service.dart';
+import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class TemplatePreviewPage extends ConsumerStatefulWidget {
@@ -15,13 +17,11 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
 }
 
 class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
-  String _selectedLocale = 'en';
+  String? _manualLocaleOverride;
 
   @override
   void initState() {
     super.initState();
-    final currentLocale = ref.read(localeNotifierProvider);
-    _selectedLocale = currentLocale.languageCode;
   }
 
   @override
@@ -32,23 +32,43 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
   Future<void> _handleDownload() async {
     final creationState = ref.read(cvCreationProvider);
     final selectedStyleId = creationState.selectedStyle;
+    final templates = ref.read(templatesProvider).value ?? [];
+    final template = templates.firstWhere(
+      (t) => t.id == selectedStyleId,
+      orElse: () => templates.first,
+    );
+
+    if (template.isLocked) {
+      if (mounted) {
+        if (!AuthGuard.check(context,
+            featureTitle: AppLocalizations.of(context)!.authWallBuyCredits,
+            featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc)) return;
+
+        final purchased = await PaymentService.presentPaywall();
+        if (purchased) {
+          ref.invalidate(templatesProvider);
+        }
+      }
+      return;
+    }
+
+    final globalLocale = ref.read(localeNotifierProvider).languageCode;
+    final effectiveLocale = _manualLocaleOverride ?? globalLocale;
 
     await ref.read(cvDownloadProvider.notifier).attemptDownload(
       context: context,
       styleId: selectedStyleId,
-      locale: _selectedLocale,
+      locale: effectiveLocale,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final templatesAsync = ref.watch(templatesProvider);
     final creationState = ref.watch(cvCreationProvider);
-    final templates = ref.watch(templatesProvider).value ?? [];
-    final template = templates.firstWhere(
-      (t) => t.id == creationState.selectedStyle,
-      orElse: () => templates.isNotEmpty ? templates.first : throw Exception('No template selected'),
-    );
     final downloadState = ref.watch(cvDownloadProvider);
+    final globalLocale = ref.watch(localeNotifierProvider).languageCode;
+    final effectiveLocale = _manualLocaleOverride ?? globalLocale;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -57,47 +77,76 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
         title: Text(AppLocalizations.of(context)!.previewCV),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AspectRatio(
-              aspectRatio: 0.7,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+      body: templatesAsync.when(
+        data: (templates) {
+          final template = templates.firstWhere(
+            (t) => t.id == creationState.selectedStyle,
+            orElse: () => templates.isNotEmpty ? templates.first : throw Exception('No template selected'),
+          );
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AspectRatio(
+                  aspectRatio: 0.7,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: template.thumbnailUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: CachedNetworkImage(
+                        imageUrl: template.thumbnailUrl,
+                        cacheKey: template.id,
+                        fit: BoxFit.cover,
+                        memCacheHeight: 600,
+                        maxHeightDiskCache: 800,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 32),
+                const SizedBox(height: 32),
 
-            // Language Selection
-            Text(
-              AppLocalizations.of(context)!.cvLanguage,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                // Language Selection
+                Text(
+                  AppLocalizations.of(context)!.cvLanguage,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                ),
+                const SizedBox(height: 12),
+                _buildLanguageSelector(),
+                const SizedBox(height: 100), // Space for bottom button
+              ],
             ),
-            const SizedBox(height: 12),
-            _buildLanguageSelector(),
-            const SizedBox(height: 100), // Space for bottom button
-          ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(AppLocalizations.of(context)!.templateLoadError(err.toString())),
+              ElevatedButton(
+                onPressed: () => ref.refresh(templatesProvider),
+                child: Text(AppLocalizations.of(context)!.retry),
+              ),
+            ],
+          ),
         ),
       ),
       bottomSheet: Container(
@@ -153,10 +202,11 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
   }
 
   Widget _buildLangOption(String code, String label) {
-    final isSelected = _selectedLocale == code;
+    final globalLocale = ref.watch(localeNotifierProvider).languageCode;
+    final isSelected = (_manualLocaleOverride ?? globalLocale) == code;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _selectedLocale = code),
+        onTap: () => setState(() => _manualLocaleOverride = code),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 12),

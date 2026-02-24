@@ -1173,6 +1173,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get previewCV => 'Pratinjau CV';
 
   @override
+  String get previewTemplate => 'Pratinjau Template';
+
+  @override
   String get regenerateSummary => 'Regenerasi Ringkasan';
 
   @override

@@ -2262,6 +2262,12 @@ abstract class AppLocalizations {
   /// **'Preview CV'**
   String get previewCV;
 
+  /// No description provided for @previewTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Template'**
+  String get previewTemplate;
+
   /// No description provided for @regenerateSummary.
   ///
   /// In en, this message translates to:

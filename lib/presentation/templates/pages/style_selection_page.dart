@@ -3,13 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
-import '../../drafts/providers/draft_provider.dart';
 import '../providers/template_provider.dart';
 import '../widgets/style_selection_content.dart';
 import '../../common/widgets/app_loading_screen.dart';
-import '../../../../core/services/payment_service.dart';
-import '../../../../core/utils/custom_snackbar.dart';
-import '../../auth/utils/auth_guard.dart';
+
 import '../../../../core/router/app_routes.dart';
 
 import 'package:clever/l10n/generated/app_localizations.dart';
@@ -23,13 +20,12 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
 
-  Future<void> _exportPDF() async {
+  Future<void> _navigateToPreview() async {
     context.push(AppRoutes.createTemplatePreview);
   }
 
   Future<void> _handleStyleSelection(String styleId) async {
     ref.read(cvCreationProvider.notifier).setStyle(styleId);
-    context.push(AppRoutes.createTemplatePreview);
   }
 
   @override
@@ -54,7 +50,7 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               templates: templates,
               selectedStyleId: selectedStyle,
               onStyleSelected: _handleStyleSelection,
-              onExport: _exportPDF,
+              onExport: _navigateToPreview,
             ),
             if (downloadState.status == DownloadStatus.generating || downloadState.status == DownloadStatus.loading)
                AppLoadingScreen(

@@ -202,7 +202,7 @@ class StyleSelectionContent extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.exportPdf,
+                    AppLocalizations.of(context)!.previewTemplate,
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.5,

@@ -386,6 +386,7 @@
   "next": "Next",
   "cvLanguage": "CV Language",
   "previewCV": "Preview CV",
+  "previewTemplate": "Preview Template",
   "regenerateSummary": "Regenerate Summary",
   "summaryRegenerating": "Regenerating summary..."
 }

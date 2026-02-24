@@ -98,27 +98,20 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
-    if (template.userCredits > 0) {
-      await _generateAndOpenPDF(context, styleId, locale: locale);
-      return;
-    }
-
-    if (template.currentUsage >= 2) {
-      if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallBuyCredits, featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc)) return;
-
-      final purchased = await PaymentService.presentPaywall();
-      if (purchased) {
-        ref.invalidate(templatesProvider);
+    // If it's a premium template and user has credits, or if it's free/ad-supported usage
+    if (template.userCredits > 0 || template.currentUsage < 2) {
+      if (template.userCredits > 0) {
+        await _generateAndOpenPDF(context, styleId, locale: locale);
+      } else {
+        await adService.showInterstitialAd(
+          context,
+          onAdClosed: () {
+            _generateAndOpenPDF(context, styleId, locale: locale);
+          },
+        );
       }
       return;
     }
-
-    await adService.showInterstitialAd(
-      context,
-      onAdClosed: () {
-        _generateAndOpenPDF(context, styleId, locale: locale);
-      },
-    );
   }
 
   Future<void> _generateAndOpenPDF(BuildContext context, String styleId, {String? locale}) async {
@@ -190,7 +183,6 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       
       final result = await OpenFilex.open(pdfFile.path);
       
-      final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
       _localCache[_buildCacheKey(styleId, effectiveLocale)] = pdfFile.path;
       
       ref.invalidate(templatesProvider);

@@ -1166,6 +1166,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewCV => 'Preview CV';
 
   @override
+  String get previewTemplate => 'Preview Template';
+
+  @override
   String get regenerateSummary => 'Regenerate Summary';
 
   @override
