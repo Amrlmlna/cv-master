@@ -37,22 +37,17 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
       {
         'headline': l10n.onboardingHeadline4,
         'subtext': l10n.onboardingSubtext4,
-        'imageAsset': 'assets/images/onboarding_master_profile.png',
-      },
-      {
-        'headline': l10n.onboardingHeadline5,
-        'subtext': l10n.onboardingSubtext5,
-        'imageAsset': 'assets/images/onboarding_screen_5.png',
+        'imageAsset': 'assets/images/onboarding_screen_4.png',
       },
       {
         'headline': l10n.onboardingHeadline6,
         'subtext': l10n.onboardingSubtext6,
-        'imageAsset': 'assets/images/onboarding_screen_6.png',
+        'imageAsset': 'assets/images/onboarding_screen_5.png',
       },
       {
         'headline': l10n.onboardingHeadline7,
         'subtext': l10n.onboardingSubtext7,
-        'imageAsset': 'assets/images/onboarding_screen_7.png',
+        'imageAsset': 'assets/images/onboarding_screen_6.png',
       },
     ];
   }
