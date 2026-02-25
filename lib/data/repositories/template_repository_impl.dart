@@ -17,7 +17,10 @@ class TemplateRepositoryImpl implements TemplateRepository {
         final template = CVTemplate.fromJson(json);
         if (template.thumbnailUrl.startsWith('/')) {
           final host = ApiConfig.baseUrl.replaceAll('/api', '');
-          return template.copyWith(thumbnailUrl: '$host${template.thumbnailUrl}');
+          return template.copyWith(
+            thumbnailUrl: '$host${template.thumbnailUrl}',
+            previewUrls: template.previewUrls.map((url) => url.startsWith('/') ? '$host$url' : url).toList(),
+          );
         }
         return template;
       }).toList();

@@ -1180,4 +1180,33 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get summaryRegenerating => 'Meregenerasi ringkasan...';
+
+  @override
+  String get photoSupported => 'Mendukung Foto';
+
+  @override
+  String get photoSettings => 'Pengaturan Foto';
+
+  @override
+  String get includeProfilePhoto => 'Sertakan Foto Profil';
+
+  @override
+  String get uploadingPhoto => 'Mengunggah foto...';
+
+  @override
+  String get noPhotoFound => 'Foto tidak ditemukan di Master Profile';
+
+  @override
+  String get usingMasterPhoto => 'Menggunakan foto Master Profile';
+
+  @override
+  String get photoUpdateSuccess => 'Foto profil berhasil diperbarui!';
+
+  @override
+  String photoUpdateError(String error) {
+    return 'Gagal mengunggah foto: $error';
+  }
+
+  @override
+  String get userNotLoggedIn => 'Pengguna tidak masuk';
 }

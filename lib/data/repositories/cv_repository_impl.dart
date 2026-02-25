@@ -76,12 +76,16 @@ class CVRepositoryImpl implements CVRepository {
     required CVData cvData,
     required String templateId,
     String? locale,
+    bool usePhoto = false,
+    String? photoUrl,
   }) async {
     try {
       return await remoteDataSource.downloadPDF(
         cvDataJson: cvData.toJson(),
         templateId: templateId,
         locale: locale,
+        usePhoto: usePhoto,
+        photoUrl: photoUrl,
       );
     } catch (e) {
       throw DataErrorMapper.map(e);

@@ -48,12 +48,14 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
     final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
     final newLocation = newProfile.location?.isNotEmpty == true ? newProfile.location : current.location;
+    final newPhoto = newProfile.photoUrl?.isNotEmpty == true ? newProfile.photoUrl : current.photoUrl;
     
     if (newName != current.fullName || 
         newEmail != current.email || 
         newPhone != current.phoneNumber || 
-        newLocation != current.location) {
-      print("[DEBUG] Personal Info Changed!");
+        newLocation != current.location ||
+        newPhoto != current.photoUrl) {
+      print("[DEBUG] Personal Info Changed (including photo)!");
       hasChanges = true;
     }
 
@@ -62,6 +64,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       email: newEmail,
       phoneNumber: newPhone,
       location: newLocation,
+      photoUrl: newPhoto,
     );
 
     final List<Experience> mergedExperience = List.from(current.experience);
@@ -164,6 +167,12 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
      if (state == null) return;
      final updated = state!.copyWith(skills: skills);
      saveProfile(updated);
+  }
+
+  void updatePhoto(String? photoUrl) {
+    if (state == null) return;
+    final updated = state!.copyWith(photoUrl: photoUrl);
+    saveProfile(updated);
   }
 
 
@@ -300,6 +309,12 @@ class ProfileController extends StateNotifier<ProfileState> {
   void updateCertifications(List<Certification> certifications) {
     state = state.copyWith(
       currentProfile: state.currentProfile.copyWith(certifications: certifications),
+    );
+  }
+
+  void updatePhoto(String? photoUrl) {
+    state = state.copyWith(
+      currentProfile: state.currentProfile.copyWith(photoUrl: photoUrl),
     );
   }
 

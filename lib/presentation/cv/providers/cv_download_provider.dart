@@ -9,13 +9,12 @@ import 'package:open_filex/open_filex.dart';
 import 'package:pdfx/pdfx.dart';
 
 import '../../../core/services/ad_service.dart';
-import '../../../core/services/payment_service.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/custom_snackbar.dart';
-import '../../auth/utils/auth_guard.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/completed_cv.dart';
 import '../../cv/providers/cv_generation_provider.dart';
+import '../../profile/providers/profile_provider.dart';
 import '../../drafts/providers/draft_provider.dart';
 import '../../drafts/providers/completed_cv_provider.dart';
 import '../../templates/providers/template_provider.dart';
@@ -58,15 +57,28 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     return const CVDownloadState();
   }
 
-  String _buildCacheKey(String styleId, String locale) {
+  String _buildCacheKey(String styleId, String locale, {bool usePhoto = false}) {
     final creationState = ref.read(cvCreationProvider);
-    final raw = jsonEncode({
-      'profile': creationState.userProfile?.toJson(),
-      'summary': creationState.summary,
-      'jobInput': creationState.jobInput?.toJson(),
-      'styleId': styleId,
+    final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
+    
+    final payload = {
+      'cvData': {
+        ...creationState.userProfile!.toJson(),
+        'summary': creationState.summary,
+        // jobTitle and jobDescription here for easy access in new templates
+        'jobTitle': creationState.jobInput?.jobTitle,
+        'jobDescription': creationState.jobInput?.jobDescription,
+        // BACKWARD COMPATIBILITY: Preserve styleId and jobInput nested for older templates
+        'styleId': styleId,
+        'jobInput': creationState.jobInput?.toJson(),
+      },
+      // Backend controller requires templateId at root for wallet/cache lookups
+      'templateId': styleId,
       'locale': locale,
-    });
+      'usePhoto': usePhoto,
+      if (usePhoto && photoUrl != null) 'photoUrl': photoUrl,
+    };
+    final raw = jsonEncode(payload);
     return md5.convert(utf8.encode(raw)).toString();
   }
 
@@ -74,6 +86,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     required BuildContext context,
     required String styleId,
     String? locale,
+    bool usePhoto = false,
   }) async {
     if (state.status == DownloadStatus.generating) {
       debugPrint('Download already in progress. Ignoring request.');
@@ -81,7 +94,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     }
 
     final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
-    final cacheKey = _buildCacheKey(styleId, effectiveLocale);
+    final cacheKey = _buildCacheKey(styleId, effectiveLocale, usePhoto: usePhoto);
 
     if (_localCache.containsKey(cacheKey)) {
       final file = File(_localCache[cacheKey]!);
@@ -100,13 +113,13 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
 
     // If it's a premium template and user has credits, or if it's free/ad-supported usage
     if (template.userCredits > 0 || template.currentUsage < 2) {
-      if (template.userCredits > 0) {
-        await _generateAndOpenPDF(context, styleId, locale: locale);
+        if (template.userCredits > 0) {
+        await _generateAndOpenPDF(context, styleId, locale: locale, usePhoto: usePhoto);
       } else {
         await adService.showInterstitialAd(
           context,
           onAdClosed: () {
-            _generateAndOpenPDF(context, styleId, locale: locale);
+            _generateAndOpenPDF(context, styleId, locale: locale, usePhoto: usePhoto);
           },
         );
       }
@@ -114,7 +127,12 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
     }
   }
 
-  Future<void> _generateAndOpenPDF(BuildContext context, String styleId, {String? locale}) async {
+  Future<void> _generateAndOpenPDF(
+    BuildContext context,
+    String styleId, {
+    String? locale,
+    bool usePhoto = false,
+  }) async {
     state = state.copyWith(status: DownloadStatus.generating);
     
     try {
@@ -133,10 +151,14 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
         jobDescription: creationState.jobInput!.jobDescription ?? '',
       );
       final effectiveLocale = locale ?? ref.read(localeNotifierProvider).languageCode;
+      final photoUrl = ref.read(profileControllerProvider).currentProfile.photoUrl;
+      
       final pdfBytes = await ref.read(cvRepositoryProvider).downloadPDF(
         cvData: cvData,
         templateId: styleId,
         locale: effectiveLocale,
+        usePhoto: usePhoto,
+        photoUrl: photoUrl,
       );
       if (pdfBytes.length < 1000) {
         throw Exception('Downloaded PDF is too small (${pdfBytes.length} bytes). It might be an error message.');

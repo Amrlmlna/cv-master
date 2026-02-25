@@ -23,5 +23,7 @@ abstract class CVRepository {
     required CVData cvData,
     required String templateId,
     String? locale,
+    bool usePhoto = false,
+    String? photoUrl,
   });
 }

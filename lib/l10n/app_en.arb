@@ -388,5 +388,21 @@
   "previewCV": "Preview CV",
   "previewTemplate": "Preview Template",
   "regenerateSummary": "Regenerate Summary",
-  "summaryRegenerating": "Regenerating summary..."
+  "summaryRegenerating": "Regenerating summary...",
+  "photoSupported": "Supports Photo",
+  "photoSettings": "Photo Settings",
+  "includeProfilePhoto": "Include Profile Photo",
+  "uploadingPhoto": "Uploading photo...",
+  "uploadInstruction": "Tap to upload your professional photo",
+  "usingMasterPhoto": "Using Master Profile photo",
+  "photoUpdateSuccess": "Profile photo updated successfully!",
+  "photoUpdateError": "Error uploading photo: {error}",
+  "@photoUpdateError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "userNotLoggedIn": "User not logged in"
 }

@@ -1173,4 +1173,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get summaryRegenerating => 'Regenerating summary...';
+
+  @override
+  String get photoSupported => 'Supports Photo';
+
+  @override
+  String get photoSettings => 'Photo Settings';
+
+  @override
+  String get includeProfilePhoto => 'Include Profile Photo';
+
+  @override
+  String get uploadingPhoto => 'Uploading photo...';
+
+  @override
+  String get noPhotoFound => 'No photo found in Master Profile';
+
+  @override
+  String get usingMasterPhoto => 'Using Master Profile photo';
+
+  @override
+  String get photoUpdateSuccess => 'Profile photo updated successfully!';
+
+  @override
+  String photoUpdateError(String error) {
+    return 'Error uploading photo: $error';
+  }
+
+  @override
+  String get userNotLoggedIn => 'User not logged in';
 }

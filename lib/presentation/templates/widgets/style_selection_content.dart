@@ -178,6 +178,19 @@ class StyleSelectionContent extends StatelessWidget {
                           ),
                         ),
                       ],
+                      if (template.supportsPhoto) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          AppLocalizations.of(context)!.photoSupported.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[800],
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 );

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../../cv/providers/cv_download_provider.dart';
 import '../providers/template_provider.dart';
+import '../../profile/providers/profile_provider.dart';
 import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+
+import '../widgets/template_carousel_preview.dart';
+import '../widgets/language_selector.dart';
+import '../widgets/photo_toggle_settings.dart';
 
 class TemplatePreviewPage extends ConsumerStatefulWidget {
   const TemplatePreviewPage({super.key});
@@ -18,14 +22,20 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
 
 class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
   String? _manualLocaleOverride;
+  bool _usePhoto = true;
+  bool _isUploading = false;
+
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
   }
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -59,6 +69,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
       context: context,
       styleId: selectedStyleId,
       locale: effectiveLocale,
+      usePhoto: _usePhoto,
     );
   }
 
@@ -67,8 +78,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     final templatesAsync = ref.watch(templatesProvider);
     final creationState = ref.watch(cvCreationProvider);
     final downloadState = ref.watch(cvDownloadProvider);
-    final globalLocale = ref.watch(localeNotifierProvider).languageCode;
-    final effectiveLocale = _manualLocaleOverride ?? globalLocale;
+    final photoUrl = ref.watch(profileControllerProvider).currentProfile.photoUrl;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -89,46 +99,54 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                AspectRatio(
-                  aspectRatio: 0.7,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
-                        imageUrl: template.thumbnailUrl,
-                        cacheKey: template.id,
-                        fit: BoxFit.cover,
-                        memCacheHeight: 600,
-                        maxHeightDiskCache: 800,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
-                        ),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
-                    ),
-                  ),
+                TemplateCarouselPreview(
+                  previewUrls: template.previewUrls,
+                  thumbnailUrl: template.thumbnailUrl,
+                  supportsPhoto: template.supportsPhoto,
+                  usePhoto: _usePhoto,
+                  pageController: _pageController,
+                  onPageChanged: (index) {
+                    if (template.supportsPhoto && template.previewUrls.length > 1) {
+                      setState(() => _usePhoto = (index == 1));
+                    }
+                  },
                 ),
                 const SizedBox(height: 32),
 
-                // Language Selection
                 Text(
                   AppLocalizations.of(context)!.cvLanguage,
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
                 ),
                 const SizedBox(height: 12),
-                _buildLanguageSelector(),
-                const SizedBox(height: 100), // Space for bottom button
+                LanguageSelector(
+                  manualLocaleOverride: _manualLocaleOverride,
+                  onLocaleChanged: (code) => setState(() => _manualLocaleOverride = code),
+                ),
+                const SizedBox(height: 24),
+
+                if (template.supportsPhoto) ...[
+                   Text(
+                    AppLocalizations.of(context)!.photoSettings,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                  ),
+                  const SizedBox(height: 12),
+                  PhotoToggleSettings(
+                    photoUrl: photoUrl,
+                    usePhoto: _usePhoto,
+                    onUploadingChanged: (val) => setState(() => _isUploading = val),
+                    onToggleChanged: (val) {
+                      setState(() => _usePhoto = val);
+                      if (template.supportsPhoto && template.previewUrls.length > 1) {
+                        _pageController.animateToPage(
+                          val ? 1 : 0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                  ),
+                ],
+                const SizedBox(height: 100),
               ],
             ),
           );
@@ -166,7 +184,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: downloadState.status == DownloadStatus.generating ? null : _handleDownload,
+              onPressed: (downloadState.status == DownloadStatus.generating || _isUploading) ? null : _handleDownload,
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? Colors.white : Colors.black,
                 foregroundColor: isDark ? Colors.black : Colors.white,
@@ -178,48 +196,6 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                     AppLocalizations.of(context)!.exportPdf,
                     style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
                   ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageSelector() {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        children: [
-          _buildLangOption('en', 'English'),
-          _buildLangOption('id', 'Bahasa Indonesia'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLangOption(String code, String label) {
-    final globalLocale = ref.watch(localeNotifierProvider).languageCode;
-    final isSelected = (_manualLocaleOverride ?? globalLocale) == code;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => setState(() => _manualLocaleOverride = code),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? Colors.black : Colors.transparent,
-            borderRadius: BorderRadius.circular(26),
-          ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black54,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ),

@@ -388,5 +388,21 @@
   "previewCV": "Pratinjau CV",
   "previewTemplate": "Pratinjau Template",
   "regenerateSummary": "Regenerasi Ringkasan",
-  "summaryRegenerating": "Meregenerasi ringkasan..."
+  "summaryRegenerating": "Meregenerasi ringkasan...",
+  "photoSupported": "Mendukung Foto",
+  "photoSettings": "Pengaturan Foto",
+  "includeProfilePhoto": "Sertakan Foto Profil",
+  "uploadingPhoto": "Mengunggah foto...",
+  "uploadInstruction": "Ketuk untuk mengunggah foto profesional Anda",
+  "usingMasterPhoto": "Menggunakan foto Master Profile",
+  "photoUpdateSuccess": "Foto profil berhasil diperbarui!",
+  "photoUpdateError": "Gagal mengunggah foto: {error}",
+  "@photoUpdateError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "userNotLoggedIn": "Pengguna tidak masuk"
 }

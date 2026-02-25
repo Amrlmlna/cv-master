@@ -2279,6 +2279,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Regenerating summary...'**
   String get summaryRegenerating;
+
+  /// No description provided for @photoSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports Photo'**
+  String get photoSupported;
+
+  /// No description provided for @photoSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Settings'**
+  String get photoSettings;
+
+  /// No description provided for @includeProfilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Include Profile Photo'**
+  String get includeProfilePhoto;
+
+  /// No description provided for @uploadingPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading photo...'**
+  String get uploadingPhoto;
+
+  /// No description provided for @noPhotoFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No photo found in Master Profile'**
+  String get noPhotoFound;
+
+  /// No description provided for @usingMasterPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Using Master Profile photo'**
+  String get usingMasterPhoto;
+
+  /// No description provided for @photoUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo updated successfully!'**
+  String get photoUpdateSuccess;
+
+  /// No description provided for @photoUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error uploading photo: {error}'**
+  String photoUpdateError(String error);
+
+  /// No description provided for @userNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'User not logged in'**
+  String get userNotLoggedIn;
 }
 
 class _AppLocalizationsDelegate

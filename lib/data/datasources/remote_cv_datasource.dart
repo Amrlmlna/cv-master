@@ -90,6 +90,8 @@ class RemoteCVDataSource {
     required Map<String, dynamic> cvDataJson,
     required String templateId,
     String? locale,
+    bool usePhoto = false,
+    String? photoUrl,
   }) async {
     final response = await _httpClient.post(
       Uri.parse('$_cvBaseUrl/generate'),
@@ -98,6 +100,8 @@ class RemoteCVDataSource {
         'cvData': cvDataJson,
         'templateId': templateId,
         if (locale != null) 'locale': locale,
+        'usePhoto': usePhoto,
+        if (usePhoto && photoUrl != null) 'photoUrl': photoUrl,
       }),
     );
 
