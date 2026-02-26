@@ -6,7 +6,7 @@ class AppTheme {
   static const Color secondaryColor = Colors.black87;
   static const Color backgroundColor = Colors.white;
   static const Color surfaceColor = Colors.white;
-  static const Color errorColor = Color(0xFFE53935);  
+  static const Color errorColor = Color(0xFFE53935);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -14,7 +14,7 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: primaryColor,
       scaffoldBackgroundColor: backgroundColor,
-      
+
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
         onPrimary: Colors.white,
@@ -44,17 +44,13 @@ class AppTheme {
           foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -62,9 +58,7 @@ class AppTheme {
           foregroundColor: primaryColor,
           side: const BorderSide(color: primaryColor),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
 
@@ -87,9 +81,12 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: errorColor, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
-      
+
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: backgroundColor,
         selectedItemColor: primaryColor,
@@ -108,6 +105,7 @@ class AppTheme {
       ),
     );
   }
+
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
@@ -115,7 +113,7 @@ class AppTheme {
       primaryColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFF121212),
       canvasColor: const Color(0xFF1E1E1E),
-      
+
       colorScheme: const ColorScheme.dark(
         primary: Colors.white,
         onPrimary: Colors.black,
@@ -127,10 +125,9 @@ class AppTheme {
         onError: Colors.white,
       ),
 
-      textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
-      ),
+      textTheme: GoogleFonts.outfitTextTheme(
+        ThemeData.dark().textTheme,
+      ).apply(bodyColor: Colors.white, displayColor: Colors.white),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         foregroundColor: Colors.white,
@@ -147,17 +144,13 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.outfit(
-            fontWeight: FontWeight.bold,
-          ),
+          textStyle: GoogleFonts.outfit(fontWeight: FontWeight.bold),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -192,9 +185,12 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: errorColor, width: 1.0),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
-      
+
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFF1E1E1E),
         selectedItemColor: Colors.white,
@@ -206,15 +202,10 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: const Color(0xFF1E1E1E),
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
-      
-      dividerTheme: DividerThemeData(
-        color: Colors.grey[800],
-        thickness: 1,
-      ),
+
+      dividerTheme: DividerThemeData(color: Colors.grey[800], thickness: 1),
       chipTheme: ChipThemeData(
         backgroundColor: Colors.white.withValues(alpha: 0.1),
         labelStyle: const TextStyle(color: Colors.white),
@@ -225,11 +216,11 @@ class AppTheme {
           side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
       ),
-      
+
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: ZoomPageTransitionsBuilder(
-            allowEnterRouteSnapshotting: false,  
+            allowEnterRouteSnapshotting: false,
           ),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },

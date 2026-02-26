@@ -23,7 +23,11 @@ class CompletedCVsGrid extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.picture_as_pdf_outlined, size: 48, color: Colors.grey[700]),
+                Icon(
+                  Icons.picture_as_pdf_outlined,
+                  size: 48,
+                  color: Colors.grey[700],
+                ),
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context)!.noCompletedCVs,
@@ -78,7 +82,9 @@ class _CompletedCVCard extends ConsumerWidget {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(13),
+                ),
                 child: _buildThumbnail(),
               ),
             ),
@@ -101,7 +107,10 @@ class _CompletedCVCard extends ConsumerWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(4),
@@ -118,10 +127,7 @@ class _CompletedCVCard extends ConsumerWidget {
                       const Spacer(),
                       Text(
                         timeago.format(cv.generatedAt),
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 9, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -150,7 +156,11 @@ class _CompletedCVCard extends ConsumerWidget {
     return Container(
       color: Colors.white.withValues(alpha: 0.02),
       child: Center(
-        child: Icon(Icons.picture_as_pdf_rounded, size: 36, color: Colors.grey[700]),
+        child: Icon(
+          Icons.picture_as_pdf_rounded,
+          size: 36,
+          color: Colors.grey[700],
+        ),
       ),
     );
   }
@@ -186,7 +196,10 @@ class _CompletedCVCard extends ConsumerWidget {
               const SizedBox(height: 16),
               ListTile(
                 leading: const Icon(Icons.open_in_new, color: Colors.white),
-                title: Text(AppLocalizations.of(context)!.openPDF, style: const TextStyle(color: Colors.white)),
+                title: Text(
+                  AppLocalizations.of(context)!.openPDF,
+                  style: const TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   _openPDF(context);
@@ -194,10 +207,15 @@ class _CompletedCVCard extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.delete_outline, color: Colors.red),
-                title: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red)),
+                title: Text(
+                  AppLocalizations.of(context)!.delete,
+                  style: const TextStyle(color: Colors.red),
+                ),
                 onTap: () {
                   Navigator.pop(context);
-                  ref.read(completedCVProvider.notifier).deleteCompletedCV(cv.id);
+                  ref
+                      .read(completedCVProvider.notifier)
+                      .deleteCompletedCV(cv.id);
                 },
               ),
             ],

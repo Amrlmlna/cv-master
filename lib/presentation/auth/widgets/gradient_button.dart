@@ -128,10 +128,7 @@ class _LiquidGlassPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
-        colors: [
-          Colors.white.withValues(alpha: 0.12),
-          Colors.transparent,
-        ],
+        colors: [Colors.white.withValues(alpha: 0.12), Colors.transparent],
         stops: const [0.0, 0.4],
       ).createShader(rect);
 

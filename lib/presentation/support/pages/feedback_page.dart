@@ -33,7 +33,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       AppLocalizations.of(context)!.other,
     ];
     if (!_types.contains(_feedbackType)) {
-       _feedbackType = _types.first;
+      _feedbackType = _types.first;
     }
   }
 
@@ -41,7 +41,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    
+
     await Future.delayed(const Duration(seconds: 1));
 
     try {
@@ -54,16 +54,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
           'contact': _contactController.text,
         }),
       );
-      
+
       if (response.statusCode != 200 && response.statusCode != 201) {
         debugPrint('Feedback API Error: ${response.statusCode}');
       }
     } catch (e) {
       debugPrint('Feedback Network Error: $e');
     }
-    AnalyticsService().trackEvent('feedback_sent', properties: {
-      'type': _feedbackType,
-    });
+    AnalyticsService().trackEvent(
+      'feedback_sent',
+      properties: {'type': _feedbackType},
+    );
 
     if (mounted) {
       setState(() => _isLoading = false);
@@ -75,11 +76,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(ctx); 
-                Navigator.pop(context); 
+                Navigator.pop(ctx);
+                Navigator.pop(context);
               },
               child: const Text('OK'),
-            )
+            ),
           ],
         ),
       );
@@ -108,7 +109,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
           children: [
             Text(
               AppLocalizations.of(context)!.howCanWeHelp,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black, fontFamily: 'Outfit'),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black,
+                fontFamily: 'Outfit',
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -131,47 +137,68 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ],
               ),
               child: Theme(
-                data: Theme.of(context).copyWith(brightness: Brightness.light), 
+                data: Theme.of(context).copyWith(brightness: Brightness.light),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(AppLocalizations.of(context)!.category, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text(
+                        AppLocalizations.of(context)!.category,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
-                           border: Border.all(color: Colors.grey.shade300),
-                           borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: _feedbackType,
                             isExpanded: true,
                             dropdownColor: Colors.white,
-                            style: const TextStyle(color: Colors.black, fontSize: 16),
-                            items: _types.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                            onChanged: (val) => setState(() => _feedbackType = val!),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            items: _types
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(e),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (val) =>
+                                setState(() => _feedbackType = val!),
                           ),
                         ),
                       ),
                       const SizedBox(height: 24),
-    
+
                       CustomTextFormField(
                         controller: _msgController,
                         labelText: AppLocalizations.of(context)!.messageDetail,
                         maxLines: 5,
-                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.writeSomething : null,
+                        validator: (v) => v!.isEmpty
+                            ? AppLocalizations.of(context)!.writeSomething
+                            : null,
                       ),
                       const SizedBox(height: 24),
-    
+
                       CustomTextFormField(
                         controller: _contactController,
-                        labelText: AppLocalizations.of(context)!.contactOptional,
+                        labelText: AppLocalizations.of(
+                          context,
+                        )!.contactOptional,
                         hintText: AppLocalizations.of(context)!.contactHint,
                       ),
-    
+
                       const SizedBox(height: 32),
                       SizedBox(
                         width: double.infinity,
@@ -181,12 +208,26 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 18),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                             elevation: 0,
                           ),
-                          child: _isLoading 
-                            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                            : Text(AppLocalizations.of(context)!.sendFeedback, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)!.sendFeedback,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ],

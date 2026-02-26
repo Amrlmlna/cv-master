@@ -14,7 +14,7 @@ import '../../auth/widgets/delete_account_verification_content.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String? title;
-  
+
   const CustomAppBar({super.key, this.title});
 
   @override
@@ -35,11 +35,16 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             else
               Consumer(
                 builder: (context, ref, child) {
-                  final unreadCount = ref.watch(unreadNotificationCountProvider);
+                  final unreadCount = ref.watch(
+                    unreadNotificationCountProvider,
+                  );
                   return Stack(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                        icon: const Icon(
+                          Icons.notifications_none_rounded,
+                          color: Colors.white,
+                        ),
                         onPressed: () => context.push(AppRoutes.notifications),
                       ),
                       if (unreadCount > 0)
@@ -97,7 +102,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 }
               },
               offset: const Offset(0, 48),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               itemBuilder: (context) => [
                 PopupMenuItem(
                   value: 'sync',
@@ -123,9 +130,15 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   value: 'delete',
                   child: Row(
                     children: [
-                      const Icon(Icons.delete_forever_rounded, color: Colors.red),
+                      const Icon(
+                        Icons.delete_forever_rounded,
+                        color: Colors.red,
+                      ),
                       const SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)!.deleteAccount, style: const TextStyle(color: Colors.red)),
+                      Text(
+                        AppLocalizations.of(context)!.deleteAccount,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                     ],
                   ),
                 ),
@@ -135,9 +148,11 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 child: CircleAvatar(
                   radius: 16,
                   backgroundColor: Colors.white.withValues(alpha: 0.1),
-                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-                  child: photoUrl == null 
-                      ? const Icon(Icons.person, size: 20, color: Colors.white) 
+                  backgroundImage: photoUrl != null
+                      ? NetworkImage(photoUrl)
+                      : null,
+                  child: photoUrl == null
+                      ? const Icon(Icons.person, size: 20, color: Colors.white)
                       : null,
                 ),
               ),
@@ -147,7 +162,10 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  Future<void> _handleAccountDeletion(BuildContext context, WidgetRef ref) async {
+  Future<void> _handleAccountDeletion(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     bool keepData = true;
 
     await EmailVerificationBottomSheet.show(
@@ -156,25 +174,32 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
       description: AppLocalizations.of(context)!.deleteAccountWarning,
       icon: Icons.delete_sweep_rounded,
       extensionContent: StatefulBuilder(
-        builder: (context, setInternalState) => DeleteAccountVerificationContent(
-          keepLocalData: keepData,
-          onRetentionChanged: (val) {
-            setInternalState(() => keepData = val);
-          },
-        ),
+        builder: (context, setInternalState) =>
+            DeleteAccountVerificationContent(
+              keepLocalData: keepData,
+              onRetentionChanged: (val) {
+                setInternalState(() => keepData = val);
+              },
+            ),
       ),
       onVerified: () async {
         try {
-          await ref.read(profileControllerProvider.notifier).deleteAccount(
-            keepLocalData: keepData,
-          );
+          await ref
+              .read(profileControllerProvider.notifier)
+              .deleteAccount(keepLocalData: keepData);
           if (context.mounted) {
-            CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.accountDeletedGoodbye);
+            CustomSnackBar.showSuccess(
+              context,
+              AppLocalizations.of(context)!.accountDeletedGoodbye,
+            );
             context.go('/signup');
           }
         } catch (e) {
           if (context.mounted) {
-            CustomSnackBar.showError(context, AppLocalizations.of(context)!.accountDeleteError(e.toString()));
+            CustomSnackBar.showError(
+              context,
+              AppLocalizations.of(context)!.accountDeleteError(e.toString()),
+            );
           }
         }
       },

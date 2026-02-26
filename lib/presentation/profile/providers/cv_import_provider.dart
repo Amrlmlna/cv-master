@@ -86,9 +86,7 @@ class CVImportNotifier extends Notifier<CVImportState> {
     }
   }
 
-  Future<CVImportState> importFromPDF({
-    Function()? onProcessingStart,
-  }) async {
+  Future<CVImportState> importFromPDF({Function()? onProcessingStart}) async {
     final cvText = await _ocrService.extractTextFromPDF();
 
     if (cvText == null) {

@@ -5,15 +5,9 @@ class TailoredCVResult extends Equatable {
   final UserProfile profile;
   final String summary;
 
-  const TailoredCVResult({
-    required this.profile,
-    required this.summary,
-  });
+  const TailoredCVResult({required this.profile, required this.summary});
 
-  TailoredCVResult copyWith({
-    UserProfile? profile,
-    String? summary,
-  }) {
+  TailoredCVResult copyWith({UserProfile? profile, String? summary}) {
     return TailoredCVResult(
       profile: profile ?? this.profile,
       summary: summary ?? this.summary,

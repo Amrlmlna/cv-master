@@ -76,7 +76,10 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
 
   Future<void> _rewriteDescription() async {
     if (_descCtrl.text.isEmpty) {
-      CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillDescriptionFirst);
+      CustomSnackBar.showWarning(
+        context,
+        AppLocalizations.of(context)!.fillDescriptionFirst,
+      );
       return;
     }
 
@@ -91,7 +94,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
         _descCtrl.text,
         locale: locale.languageCode,
       );
-      
+
       if (mounted) {
         setState(() {
           _descCtrl.text = newText;
@@ -109,13 +112,15 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFF1E1E1E), 
+      backgroundColor: const Color(0xFF1E1E1E),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        widget.existing == null ? AppLocalizations.of(context)!.addExperience : AppLocalizations.of(context)!.editExperienceTitle,
+        widget.existing == null
+            ? AppLocalizations.of(context)!.addExperience
+            : AppLocalizations.of(context)!.editExperienceTitle,
         style: const TextStyle(
-          color: Colors.white, 
-          fontWeight: FontWeight.w900, 
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
           fontSize: 18,
           letterSpacing: 1.0,
         ),
@@ -133,7 +138,9 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                   labelText: AppLocalizations.of(context)!.jobTitle,
                   hintText: 'Software Engineer',
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                  validator: (v) => v!.isEmpty
+                      ? AppLocalizations.of(context)!.requiredField
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextFormField(
@@ -141,10 +148,12 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                   labelText: AppLocalizations.of(context)!.company,
                   hintText: AppLocalizations.of(context)!.companyPlaceholder,
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                  validator: (v) => v!.isEmpty
+                      ? AppLocalizations.of(context)!.requiredField
+                      : null,
                 ),
                 const SizedBox(height: 16),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -156,7 +165,9 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                         readOnly: true,
                         prefixIcon: Icons.calendar_today,
                         onTap: () => _pickDate(_startCtrl),
-                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                        validator: (v) => v!.isEmpty
+                            ? AppLocalizations.of(context)!.requiredField
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -173,60 +184,72 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(AppLocalizations.of(context)!.shortDescription, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                    _isRewriting 
-                    ? SizedBox(
-                        height: 16,
-                        width: 100,
-                        child: SpinningTextLoader(
-                          texts: [
-                            AppLocalizations.of(context)!.improving,
-                            AppLocalizations.of(context)!.rephrasing,
-                            AppLocalizations.of(context)!.polishing,
-                          ],
-                          style: GoogleFonts.outfit(
-                            color: Colors.white, 
-                            fontSize: 12, 
-                            fontWeight: FontWeight.bold
-                          ),
-                          interval: const Duration(milliseconds: 800),
-                        ),
-                      )
-                    : TextButton.icon(
-                      onPressed: _rewriteDescription,
-                      icon: const Icon(Icons.auto_awesome, size: 12, color: Colors.white),
-                      label: Text(
-                        AppLocalizations.of(context)!.rewriteAI, 
-                        style: GoogleFonts.outfit(
-                          color: Colors.white, 
-                          fontSize: 12, 
-                          fontWeight: FontWeight.bold
-                        )
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero, 
-                        minimumSize: const Size(0,0), 
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        overlayColor: Colors.white.withValues(alpha: 0.1),
+                    Text(
+                      AppLocalizations.of(context)!.shortDescription,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
                       ),
                     ),
+                    _isRewriting
+                        ? SizedBox(
+                            height: 16,
+                            width: 100,
+                            child: SpinningTextLoader(
+                              texts: [
+                                AppLocalizations.of(context)!.improving,
+                                AppLocalizations.of(context)!.rephrasing,
+                                AppLocalizations.of(context)!.polishing,
+                              ],
+                              style: GoogleFonts.outfit(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              interval: const Duration(milliseconds: 800),
+                            ),
+                          )
+                        : TextButton.icon(
+                            onPressed: _rewriteDescription,
+                            icon: const Icon(
+                              Icons.auto_awesome,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              AppLocalizations.of(context)!.rewriteAI,
+                              style: GoogleFonts.outfit(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              overlayColor: Colors.white.withValues(alpha: 0.1),
+                            ),
+                          ),
                   ],
                 ),
                 const SizedBox(height: 6),
-                
+
                 CustomTextFormField(
                   controller: _descCtrl,
-                  labelText: '', 
+                  labelText: '',
                   hintText: AppLocalizations.of(context)!.descriptionHint,
                   isDark: true,
                   maxLines: 4,
-                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                  validator: (v) => v!.isEmpty
+                      ? AppLocalizations.of(context)!.requiredField
+                      : null,
                 ),
               ],
             ),
@@ -236,7 +259,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
       actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context), 
+          onPressed: () => Navigator.pop(context),
           style: TextButton.styleFrom(foregroundColor: Colors.white54),
           child: Text(AppLocalizations.of(context)!.cancelAllCaps),
         ),
@@ -244,7 +267,9 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final exp = Experience(
-                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+                id:
+                    widget.existing?.id ??
+                    DateTime.now().millisecondsSinceEpoch.toString(),
                 jobTitle: _titleCtrl.text,
                 companyName: _companyCtrl.text,
                 startDate: _startCtrl.text,
@@ -258,9 +283,14 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          child: Text(AppLocalizations.of(context)!.saveAllCaps, style: const TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(
+            AppLocalizations.of(context)!.saveAllCaps,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );

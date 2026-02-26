@@ -29,19 +29,23 @@ class _CertificationListFormState extends State<CertificationListForm> {
 
     if (result != null) {
       final newList = List<Certification>.from(widget.certifications);
-      
+
       if (index != null) {
         newList[index] = result;
         widget.onChanged(newList);
       } else {
-        final isDuplicate = newList.any((cert) => 
-          cert.name.toLowerCase() == result.name.toLowerCase() &&
-          cert.issuer.toLowerCase() == result.issuer.toLowerCase()
+        final isDuplicate = newList.any(
+          (cert) =>
+              cert.name.toLowerCase() == result.name.toLowerCase() &&
+              cert.issuer.toLowerCase() == result.issuer.toLowerCase(),
         );
 
         if (isDuplicate) {
           if (mounted) {
-            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+            CustomSnackBar.showWarning(
+              context,
+              AppLocalizations.of(context)!.cvDataExists,
+            );
           }
         } else {
           newList.add(result);
@@ -82,7 +86,8 @@ class _CertificationListFormState extends State<CertificationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+    final effectiveIsDark =
+        widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,14 +95,37 @@ class _CertificationListFormState extends State<CertificationListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(AppLocalizations.of(context)!.certificationsLicenses, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(
+              AppLocalizations.of(context)!.certificationsLicenses,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: effectiveIsDark ? Colors.white : Colors.black,
+              ),
+            ),
             TextButton.icon(
               onPressed: () => _editCertification(),
-              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              icon: Icon(
+                Icons.add,
+                color: effectiveIsDark
+                    ? Colors.white
+                    : Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                AppLocalizations.of(context)!.add,
+                style: TextStyle(
+                  color: effectiveIsDark
+                      ? Colors.white
+                      : Theme.of(context).primaryColor,
+                ),
+              ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                backgroundColor: effectiveIsDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ],
@@ -105,7 +133,12 @@ class _CertificationListFormState extends State<CertificationListForm> {
         if (widget.certifications.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(AppLocalizations.of(context)!.noCertifications, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(
+              AppLocalizations.of(context)!.noCertifications,
+              style: TextStyle(
+                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+              ),
+            ),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -118,8 +151,19 @@ class _CertificationListFormState extends State<CertificationListForm> {
               margin: EdgeInsets.zero,
               color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white,
               child: ListTile(
-                title: Text(cert.name, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
-                subtitle: Text('${cert.issuer} • ${cert.date.year}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
+                title: Text(
+                  cert.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: effectiveIsDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                subtitle: Text(
+                  '${cert.issuer} • ${cert.date.year}',
+                  style: TextStyle(
+                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                   onPressed: () => _removeCertification(index),

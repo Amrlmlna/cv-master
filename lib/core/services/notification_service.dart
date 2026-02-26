@@ -16,7 +16,8 @@ class NotificationService {
         NotificationChannel(
           channelKey: 'cv_generation',
           channelName: cvChannelName ?? 'CV Generation',
-          channelDescription: cvChannelDesc ?? 'Notifications for CV generation updates',
+          channelDescription:
+              cvChannelDesc ?? 'Notifications for CV generation updates',
           defaultColor: const Color(0xFF1E1E1E),
           importance: NotificationImportance.High,
           channelShowBadge: true,
@@ -39,9 +40,12 @@ class NotificationService {
 
     await AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationController.onActionReceivedMethod,
-      onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationController.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:
+          NotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:
+          NotificationController.onDismissActionReceivedMethod,
     );
 
     await _initFirebaseMessaging();
@@ -114,9 +118,10 @@ class NotificationService {
   }
 
   @pragma('vm:entry-point')
-  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  static Future<void> firebaseMessagingBackgroundHandler(
+    RemoteMessage message,
+  ) async {
     debugPrint("Handling a background message: ${message.messageId}");
-    
   }
 
   static Future<void> showSimpleNotification({

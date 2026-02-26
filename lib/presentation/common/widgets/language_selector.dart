@@ -13,8 +13,8 @@ class LanguageSelector extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark 
-            ? colorScheme.surfaceContainerHighest 
+        color: theme.brightness == Brightness.dark
+            ? colorScheme.surfaceContainerHighest
             : colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
       ),
@@ -25,12 +25,16 @@ class LanguageSelector extends ConsumerWidget {
           _LanguageButton(
             label: 'ID',
             isSelected: currentLocale.languageCode == 'id',
-            onTap: () => ref.read(localeNotifierProvider.notifier).setLocale(const Locale('id')),
+            onTap: () => ref
+                .read(localeNotifierProvider.notifier)
+                .setLocale(const Locale('id')),
           ),
           _LanguageButton(
             label: 'EN',
             isSelected: currentLocale.languageCode == 'en',
-            onTap: () => ref.read(localeNotifierProvider.notifier).setLocale(const Locale('en')),
+            onTap: () => ref
+                .read(localeNotifierProvider.notifier)
+                .setLocale(const Locale('en')),
           ),
         ],
       ),
@@ -60,15 +64,13 @@ class _LanguageButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected 
-              ? colorScheme.primary 
-              : Colors.transparent,
+          color: isSelected ? colorScheme.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected 
+            color: isSelected
                 ? colorScheme.onPrimary
                 : colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.bold,

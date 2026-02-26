@@ -12,7 +12,7 @@ abstract class CVRepository {
   });
 
   Future<String> rewriteContent(String originalText, {String? locale});
-  
+
   Future<TailoredCVResult> tailorProfile({
     required UserProfile masterProfile,
     required JobInput jobInput,

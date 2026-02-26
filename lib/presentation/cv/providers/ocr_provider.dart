@@ -10,7 +10,9 @@ final remoteJobDataSourceProvider = Provider<RemoteJobDataSource>((ref) {
   return RemoteJobDataSource();
 });
 
-final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((ref) {
+final jobExtractionRepositoryProvider = Provider<JobExtractionRepository>((
+  ref,
+) {
   final dataSource = ref.watch(remoteJobDataSourceProvider);
   return JobExtractionRepository(remoteDataSource: dataSource);
 });
@@ -20,17 +22,9 @@ class OCRState {
   final JobInput? extractedData;
   final String? error;
 
-  const OCRState({
-    this.isLoading = false,
-    this.extractedData,
-    this.error,
-  });
+  const OCRState({this.isLoading = false, this.extractedData, this.error});
 
-  OCRState copyWith({
-    bool? isLoading,
-    JobInput? extractedData,
-    String? error,
-  }) {
+  OCRState copyWith({bool? isLoading, JobInput? extractedData, String? error}) {
     return OCRState(
       isLoading: isLoading ?? this.isLoading,
       extractedData: extractedData ?? this.extractedData,
@@ -46,25 +40,17 @@ class OCRResult {
   final JobInput? jobInput;
   final String? errorMessage;
 
-  const OCRResult({
-    required this.status,
-    this.jobInput,
-    this.errorMessage,
-  });
+  const OCRResult({required this.status, this.jobInput, this.errorMessage});
 
-  factory OCRResult.success(JobInput jobInput) => OCRResult(
-    status: OCRStatus.success,
-    jobInput: jobInput,
-  );
+  factory OCRResult.success(JobInput jobInput) =>
+      OCRResult(status: OCRStatus.success, jobInput: jobInput);
 
   factory OCRResult.cancelled() => const OCRResult(status: OCRStatus.cancelled);
 
   factory OCRResult.noText() => const OCRResult(status: OCRStatus.noText);
 
-  factory OCRResult.error(String message) => OCRResult(
-    status: OCRStatus.error,
-    errorMessage: message,
-  );
+  factory OCRResult.error(String message) =>
+      OCRResult(status: OCRStatus.error, errorMessage: message);
 }
 
 class OCRNotifier extends Notifier<OCRState> {
@@ -83,11 +69,11 @@ class OCRNotifier extends Notifier<OCRState> {
     VoidCallback? onProcessingStart,
   }) async {
     final extractedText = await _pickAndExtractText(source);
-    
+
     if (extractedText == null) {
       return OCRResult.cancelled();
     }
-    
+
     if (extractedText.isEmpty) {
       return OCRResult.noText();
     }
@@ -108,10 +94,7 @@ class OCRNotifier extends Notifier<OCRState> {
       return OCRResult.success(jobInput);
     } catch (e) {
       final errorMsg = e.toString();
-      state = state.copyWith(
-        isLoading: false,
-        error: errorMsg,
-      );
+      state = state.copyWith(isLoading: false, error: errorMsg);
       return OCRResult.error(errorMsg);
     }
   }

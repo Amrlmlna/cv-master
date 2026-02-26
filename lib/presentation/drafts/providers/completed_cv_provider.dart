@@ -18,7 +18,7 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
     if (jsonString == null || jsonString.isEmpty) return [];
 
     final cvs = CompletedCV.listFromJsonString(jsonString);
-    
+
     // Filter out CVs whose PDF files no longer exist
     final validCVs = <CompletedCV>[];
     for (final cv in cvs) {
@@ -26,11 +26,11 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
         validCVs.add(cv);
       }
     }
-    
+
     if (validCVs.length != cvs.length) {
       await _saveToStorage(validCVs);
     }
-    
+
     return validCVs;
   }
 
@@ -49,14 +49,14 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
   Future<void> deleteCompletedCV(String id) async {
     final current = state.value ?? [];
     final cv = current.firstWhere((c) => c.id == id);
-    
+
     final pdfFile = File(cv.pdfPath);
     if (await pdfFile.exists()) await pdfFile.delete();
     if (cv.thumbnailPath != null) {
       final thumbFile = File(cv.thumbnailPath!);
       if (await thumbFile.exists()) await thumbFile.delete();
     }
-    
+
     final updated = current.where((c) => c.id != id).toList();
     await _saveToStorage(updated);
     state = AsyncData(updated);
@@ -81,6 +81,7 @@ class CompletedCVNotifier extends AsyncNotifier<List<CompletedCV>> {
   }
 }
 
-final completedCVProvider = AsyncNotifierProvider<CompletedCVNotifier, List<CompletedCV>>(
-  CompletedCVNotifier.new,
-);
+final completedCVProvider =
+    AsyncNotifierProvider<CompletedCVNotifier, List<CompletedCV>>(
+      CompletedCVNotifier.new,
+    );

@@ -21,15 +21,15 @@ class ErrorPageArgs {
 class ErrorPage extends StatelessWidget {
   final ErrorPageArgs args;
 
-  const ErrorPage({
-    super.key,
-    required this.args,
-  });
+  const ErrorPage({super.key, required this.args});
 
   void _copyToClipboard(BuildContext context) {
     if (args.technicalDetails != null) {
       Clipboard.setData(ClipboardData(text: args.technicalDetails!));
-      CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.errorDetailsCopied);
+      CustomSnackBar.showSuccess(
+        context,
+        AppLocalizations.of(context)!.errorDetailsCopied,
+      );
     }
   }
 
@@ -38,7 +38,9 @@ class ErrorPage extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF121212) : const Color(0xFFF9FAFB),
+      backgroundColor: isDark
+          ? const Color(0xFF121212)
+          : const Color(0xFFF9FAFB),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -46,7 +48,7 @@ class ErrorPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              
+
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -82,7 +84,7 @@ class ErrorPage extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              
+
               if (args.technicalDetails != null) ...[
                 const SizedBox(height: 32),
                 Container(
@@ -91,7 +93,9 @@ class ErrorPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark ? Colors.black26 : Colors.grey[200],
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: isDark ? Colors.white10 : Colors.grey[300]!),
+                    border: Border.all(
+                      color: isDark ? Colors.white10 : Colors.grey[300]!,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +114,11 @@ class ErrorPage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () => _copyToClipboard(context),
-                            child: const Icon(Icons.copy, size: 14, color: Colors.grey),
+                            child: const Icon(
+                              Icons.copy,
+                              size: 14,
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -136,24 +144,28 @@ class ErrorPage extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                         if (context.canPop()) {
-                           context.pop(); 
-                         } else {
-                           context.go('/'); 
-                         }
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go('/');
+                        }
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(color: isDark ? Colors.grey[700]! : Colors.grey[300]!),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        side: BorderSide(
+                          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         foregroundColor: isDark ? Colors.white : Colors.black,
                       ),
                       child: Text(AppLocalizations.of(context)!.goHome),
                     ),
                   ),
-                  
+
                   if (args.onRetry != null || true) ...[
-                     const SizedBox(width: 0), 
+                    const SizedBox(width: 0),
                   ],
                 ],
               ),

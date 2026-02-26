@@ -27,7 +27,7 @@ class HomeQuickActions extends ConsumerWidget {
                 final hasChanges = await ref
                     .read(masterProfileProvider.notifier)
                     .mergeProfile(importedProfile);
-                
+
                 if (context.mounted) {
                   if (hasChanges) {
                     CustomSnackBar.showSuccess(
@@ -63,9 +63,16 @@ class HomeQuickActions extends ConsumerWidget {
         _QuickActionCircle(
           icon: Icons.add_circle_outline,
           label: AppLocalizations.of(context)!.createCV,
-          onTap: AuthGuard.protected(context, () {
-            context.push('/create/job-input');
-          }, featureTitle: AppLocalizations.of(context)!.authWallCreateCV, featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc),
+          onTap: AuthGuard.protected(
+            context,
+            () {
+              context.push('/create/job-input');
+            },
+            featureTitle: AppLocalizations.of(context)!.authWallCreateCV,
+            featureDescription: AppLocalizations.of(
+              context,
+            )!.authWallCreateCVDesc,
+          ),
         ),
       ],
     );
@@ -100,11 +107,7 @@ class _QuickActionCircle extends StatelessWidget {
                 width: 1,
               ),
             ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 28,
-            ),
+            child: Icon(icon, color: Colors.white, size: 28),
           ),
           const SizedBox(height: 8),
           Text(

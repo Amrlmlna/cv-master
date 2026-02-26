@@ -4,15 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../auth/providers/auth_state_provider.dart';
 
-final masterProfileProvider = StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
-  return MasterProfileNotifier();
-});
+final masterProfileProvider =
+    StateNotifierProvider<MasterProfileNotifier, UserProfile?>((ref) {
+      return MasterProfileNotifier();
+    });
 
 class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   late Future<void> _initFuture;
 
-  MasterProfileNotifier({UserProfile? initialState}) 
-      : super(initialState) {
+  MasterProfileNotifier({UserProfile? initialState}) : super(initialState) {
     _initFuture = loadProfile();
   }
 
@@ -43,16 +43,26 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final current = state!;
     bool hasChanges = false;
-    
-    final newName = newProfile.fullName.isNotEmpty ? newProfile.fullName : current.fullName;
-    final newEmail = newProfile.email.isNotEmpty ? newProfile.email : current.email;
-    final newPhone = newProfile.phoneNumber?.isNotEmpty == true ? newProfile.phoneNumber : current.phoneNumber;
-    final newLocation = newProfile.location?.isNotEmpty == true ? newProfile.location : current.location;
-    final newPhoto = newProfile.photoUrl?.isNotEmpty == true ? newProfile.photoUrl : current.photoUrl;
-    
-    if (newName != current.fullName || 
-        newEmail != current.email || 
-        newPhone != current.phoneNumber || 
+
+    final newName = newProfile.fullName.isNotEmpty
+        ? newProfile.fullName
+        : current.fullName;
+    final newEmail = newProfile.email.isNotEmpty
+        ? newProfile.email
+        : current.email;
+    final newPhone = newProfile.phoneNumber?.isNotEmpty == true
+        ? newProfile.phoneNumber
+        : current.phoneNumber;
+    final newLocation = newProfile.location?.isNotEmpty == true
+        ? newProfile.location
+        : current.location;
+    final newPhoto = newProfile.photoUrl?.isNotEmpty == true
+        ? newProfile.photoUrl
+        : current.photoUrl;
+
+    if (newName != current.fullName ||
+        newEmail != current.email ||
+        newPhone != current.phoneNumber ||
         newLocation != current.location ||
         newPhoto != current.photoUrl) {
       print("[DEBUG] Personal Info Changed (including photo)!");
@@ -69,52 +79,59 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
 
     final List<Experience> mergedExperience = List.from(current.experience);
     for (final newExp in newProfile.experience) {
-       final exists = mergedExperience.any((oldExp) => 
-          oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
-          oldExp.companyName.toLowerCase() == newExp.companyName.toLowerCase() && 
-          oldExp.startDate == newExp.startDate
-       );
-       
-       if (!exists) {
-         mergedExperience.add(newExp);
-         hasChanges = true;
-       }
+      final exists = mergedExperience.any(
+        (oldExp) =>
+            oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
+            oldExp.companyName.toLowerCase() ==
+                newExp.companyName.toLowerCase() &&
+            oldExp.startDate == newExp.startDate,
+      );
+
+      if (!exists) {
+        mergedExperience.add(newExp);
+        hasChanges = true;
+      }
     }
 
     final List<Education> mergedEducation = List.from(current.education);
     for (final newEdu in newProfile.education) {
-       final exists = mergedEducation.any((oldEdu) => 
-          oldEdu.schoolName.toLowerCase() == newEdu.schoolName.toLowerCase() &&
-          oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase()
-       );
-       
-       if (!exists) {
-         mergedEducation.add(newEdu);
-         hasChanges = true;
-       }
+      final exists = mergedEducation.any(
+        (oldEdu) =>
+            oldEdu.schoolName.toLowerCase() ==
+                newEdu.schoolName.toLowerCase() &&
+            oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase(),
+      );
+
+      if (!exists) {
+        mergedEducation.add(newEdu);
+        hasChanges = true;
+      }
     }
 
     final Set<String> uniqueSkills = Set.from(current.skills);
     final initialSkillCount = uniqueSkills.length;
     uniqueSkills.addAll(newProfile.skills);
-    
+
     if (uniqueSkills.length != initialSkillCount) {
       hasChanges = true;
     }
 
-    final List<Certification> mergedCertifications = List.from(current.certifications);
+    final List<Certification> mergedCertifications = List.from(
+      current.certifications,
+    );
     for (final newCert in newProfile.certifications) {
-       final exists = mergedCertifications.any((oldCert) => 
-          oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
-          oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase()
-       );
-       
-       if (!exists) {
-         mergedCertifications.add(newCert);
-         hasChanges = true;
-       }
+      final exists = mergedCertifications.any(
+        (oldCert) =>
+            oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
+            oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase(),
+      );
+
+      if (!exists) {
+        mergedCertifications.add(newCert);
+        hasChanges = true;
+      }
     }
-    
+
     if (hasChanges) {
       final finalProfile = updatedInfo.copyWith(
         experience: mergedExperience,
@@ -124,7 +141,7 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
       );
       await saveProfile(finalProfile);
     }
-    
+
     return hasChanges;
   }
 
@@ -134,13 +151,15 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     required String phoneNumber,
     required String location,
   }) {
-    final current = state ?? const UserProfile(
-      fullName: '', 
-      email: '',
-      experience: [],
-      education: [],
-      skills: [],
-    );
+    final current =
+        state ??
+        const UserProfile(
+          fullName: '',
+          email: '',
+          experience: [],
+          education: [],
+          skills: [],
+        );
 
     final updated = current.copyWith(
       fullName: fullName,
@@ -152,21 +171,21 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   void updateExperience(List<Experience> experience) {
-     if (state == null) return;
-     final updated = state!.copyWith(experience: experience);
-     saveProfile(updated);
+    if (state == null) return;
+    final updated = state!.copyWith(experience: experience);
+    saveProfile(updated);
   }
 
   void updateEducation(List<Education> education) {
-     if (state == null) return;
-     final updated = state!.copyWith(education: education);
-     saveProfile(updated);
+    if (state == null) return;
+    final updated = state!.copyWith(education: education);
+    saveProfile(updated);
   }
-  
+
   void updateSkills(List<String> skills) {
-     if (state == null) return;
-     final updated = state!.copyWith(skills: skills);
-     saveProfile(updated);
+    if (state == null) return;
+    final updated = state!.copyWith(skills: skills);
+    saveProfile(updated);
   }
 
   void updatePhoto(String? photoUrl) {
@@ -174,7 +193,6 @@ class MasterProfileNotifier extends StateNotifier<UserProfile?> {
     final updated = state!.copyWith(photoUrl: photoUrl);
     saveProfile(updated);
   }
-
 
   Future<void> clearProfile() async {
     state = null;
@@ -227,7 +245,8 @@ class ProfileController extends StateNotifier<ProfileState> {
   final Ref ref;
 
   ProfileController(this.ref)
-      : super(ProfileState(
+    : super(
+        ProfileState(
           initialProfile: null,
           currentProfile: const UserProfile(
             fullName: '',
@@ -237,7 +256,8 @@ class ProfileController extends StateNotifier<ProfileState> {
             skills: [],
             certifications: [],
           ),
-        )) {
+        ),
+      ) {
     _init();
   }
 
@@ -249,16 +269,13 @@ class ProfileController extends StateNotifier<ProfileState> {
         currentProfile: masterProfile,
       );
     }
-    
+
     ref.listen(masterProfileProvider, (previous, next) {
       if (next != null && next != state.initialProfile) {
         if (!state.hasChanges) {
-           state = state.copyWith(
-            initialProfile: next,
-            currentProfile: next,
-          );
+          state = state.copyWith(initialProfile: next, currentProfile: next);
         } else {
-           state = state.copyWith(initialProfile: next);
+          state = state.copyWith(initialProfile: next);
         }
       }
     });
@@ -308,7 +325,9 @@ class ProfileController extends StateNotifier<ProfileState> {
 
   void updateCertifications(List<Certification> certifications) {
     state = state.copyWith(
-      currentProfile: state.currentProfile.copyWith(certifications: certifications),
+      currentProfile: state.currentProfile.copyWith(
+        certifications: certifications,
+      ),
     );
   }
 
@@ -320,37 +339,47 @@ class ProfileController extends StateNotifier<ProfileState> {
 
   void importProfile(UserProfile importedProfile) {
     final current = state.currentProfile;
-    
+
     final List<Experience> dedupedExp = List.from(current.experience);
     for (final newExp in importedProfile.experience) {
-      final exists = dedupedExp.any((oldExp) =>
-          oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
-          oldExp.companyName.toLowerCase() == newExp.companyName.toLowerCase() &&
-          oldExp.startDate == newExp.startDate);
+      final exists = dedupedExp.any(
+        (oldExp) =>
+            oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
+            oldExp.companyName.toLowerCase() ==
+                newExp.companyName.toLowerCase() &&
+            oldExp.startDate == newExp.startDate,
+      );
       if (!exists) dedupedExp.add(newExp);
     }
 
     final List<Education> dedupedEdu = List.from(current.education);
     for (final newEdu in importedProfile.education) {
-      final exists = dedupedEdu.any((oldEdu) =>
-          oldEdu.schoolName.toLowerCase() == newEdu.schoolName.toLowerCase() &&
-          oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase());
+      final exists = dedupedEdu.any(
+        (oldEdu) =>
+            oldEdu.schoolName.toLowerCase() ==
+                newEdu.schoolName.toLowerCase() &&
+            oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase(),
+      );
       if (!exists) dedupedEdu.add(newEdu);
     }
 
     final List<Certification> dedupedCert = List.from(current.certifications);
     for (final newCert in importedProfile.certifications) {
-      final exists = dedupedCert.any((oldCert) =>
-          oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
-          oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase());
+      final exists = dedupedCert.any(
+        (oldCert) =>
+            oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
+            oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase(),
+      );
       if (!exists) dedupedCert.add(newCert);
     }
-    
+
     final newProfile = current.copyWith(
-      fullName: current.fullName.isEmpty ? importedProfile.fullName : current.fullName,
+      fullName: current.fullName.isEmpty
+          ? importedProfile.fullName
+          : current.fullName,
       email: current.email.isEmpty ? importedProfile.email : current.email,
-      phoneNumber: (current.phoneNumber == null || current.phoneNumber!.isEmpty) 
-          ? importedProfile.phoneNumber 
+      phoneNumber: (current.phoneNumber == null || current.phoneNumber!.isEmpty)
+          ? importedProfile.phoneNumber
           : current.phoneNumber,
       location: (current.location == null || current.location!.isEmpty)
           ? importedProfile.location
@@ -371,7 +400,9 @@ class ProfileController extends StateNotifier<ProfileState> {
 
     state = state.copyWith(isSaving: true);
     try {
-      await ref.read(masterProfileProvider.notifier).saveProfile(state.currentProfile);
+      await ref
+          .read(masterProfileProvider.notifier)
+          .saveProfile(state.currentProfile);
       if (mounted) {
         state = state.copyWith(
           initialProfile: state.currentProfile,
@@ -391,22 +422,24 @@ class ProfileController extends StateNotifier<ProfileState> {
     state = state.copyWith(isSaving: true);
     try {
       await ref.read(authRepositoryProvider).deleteAccount();
-      
+
       if (!keepLocalData) {
         await ref.read(masterProfileProvider.notifier).clearProfile();
       }
-      
+
       if (mounted) {
         state = state.copyWith(
           initialProfile: keepLocalData ? state.initialProfile : null,
-          currentProfile: keepLocalData ? state.currentProfile : const UserProfile(
-            fullName: '',
-            email: '',
-            experience: [],
-            education: [],
-            skills: [],
-            certifications: [],
-          ),
+          currentProfile: keepLocalData
+              ? state.currentProfile
+              : const UserProfile(
+                  fullName: '',
+                  email: '',
+                  experience: [],
+                  education: [],
+                  skills: [],
+                  certifications: [],
+                ),
         );
       }
     } finally {
@@ -417,12 +450,11 @@ class ProfileController extends StateNotifier<ProfileState> {
   }
 
   void discardChanges() {
-    state = state.copyWith(
-      currentProfile: state.initialProfile,
-    );
+    state = state.copyWith(currentProfile: state.initialProfile);
   }
 }
 
-final profileControllerProvider = StateNotifierProvider.autoDispose<ProfileController, ProfileState>((ref) {
-  return ProfileController(ref);
-});
+final profileControllerProvider =
+    StateNotifierProvider.autoDispose<ProfileController, ProfileState>((ref) {
+      return ProfileController(ref);
+    });

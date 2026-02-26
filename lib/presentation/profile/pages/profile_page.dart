@@ -32,12 +32,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void initState() {
     super.initState();
     final initialProfile = ref.read(profileControllerProvider).currentProfile;
-    
+
     _nameController = TextEditingController(text: initialProfile.fullName);
     _emailController = TextEditingController(text: initialProfile.email);
-    _phoneController = TextEditingController(text: initialProfile.phoneNumber ?? '');
-    _locationController = TextEditingController(text: initialProfile.location ?? '');
-    
+    _phoneController = TextEditingController(
+      text: initialProfile.phoneNumber ?? '',
+    );
+    _locationController = TextEditingController(
+      text: initialProfile.location ?? '',
+    );
+
     _nameController.addListener(_onNameChanged);
     _emailController.addListener(_onEmailChanged);
     _phoneController.addListener(_onPhoneChanged);
@@ -45,19 +49,27 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void _onNameChanged() {
-    ref.read(profileControllerProvider.notifier).updateName(_nameController.text);
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateName(_nameController.text);
   }
 
   void _onEmailChanged() {
-    ref.read(profileControllerProvider.notifier).updateEmail(_emailController.text);
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateEmail(_emailController.text);
   }
 
   void _onPhoneChanged() {
-    ref.read(profileControllerProvider.notifier).updatePhone(_phoneController.text);
+    ref
+        .read(profileControllerProvider.notifier)
+        .updatePhone(_phoneController.text);
   }
 
   void _onLocationChanged() {
-    ref.read(profileControllerProvider.notifier).updateLocation(_locationController.text);
+    ref
+        .read(profileControllerProvider.notifier)
+        .updateLocation(_locationController.text);
   }
 
   @override
@@ -68,7 +80,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _locationController.dispose();
     super.dispose();
   }
-  
+
   void _syncControllers(UserProfile profile) {
     if (_nameController.text != profile.fullName) {
       _nameController.text = profile.fullName;
@@ -93,7 +105,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(AppLocalizations.of(context)!.exitWithoutSaving, style: const TextStyle(color: Colors.red)),
+            child: Text(
+              AppLocalizations.of(context)!.exitWithoutSaving,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, false),
@@ -107,7 +122,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   void _handleImportSuccess(UserProfile importedProfile) {
     ref.read(profileControllerProvider.notifier).importProfile(importedProfile);
-    
+
     CustomSnackBar.showSuccess(
       context,
       AppLocalizations.of(context)!.importSuccessMessage(
@@ -120,13 +135,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   Future<void> _saveProfile() async {
     try {
-      final success = await ref.read(profileControllerProvider.notifier).saveProfile();
+      final success = await ref
+          .read(profileControllerProvider.notifier)
+          .saveProfile();
       if (success && mounted) {
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.profileSavedSuccess);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.profileSavedSuccess,
+        );
       }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.profileSaveError(e.toString()));
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.profileSaveError(e.toString()),
+        );
       }
     }
   }
@@ -140,7 +163,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     ref.listen(profileControllerProvider, (prev, next) {
       if (prev?.currentProfile != next.currentProfile) {
-         _syncControllers(next.currentProfile);
+        _syncControllers(next.currentProfile);
       }
     });
 
@@ -156,13 +179,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         },
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
             child: Column(
               children: [
                 const SizedBox(height: 16),
-                ImportCVButton(
-                  onImportSuccess: _handleImportSuccess,
-                ),
+                ImportCVButton(onImportSuccess: _handleImportSuccess),
                 const SizedBox(height: 32),
                 SectionCard(
                   title: AppLocalizations.of(context)!.personalInfo,
@@ -180,7 +204,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   icon: Icons.work_outline,
                   child: ExperienceListForm(
                     experiences: currentProfile.experience,
-                    onChanged: (val) => ref.read(profileControllerProvider.notifier).updateExperience(val),
+                    onChanged: (val) => ref
+                        .read(profileControllerProvider.notifier)
+                        .updateExperience(val),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -189,7 +215,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   icon: Icons.school_outlined,
                   child: EducationListForm(
                     education: currentProfile.education,
-                    onChanged: (val) => ref.read(profileControllerProvider.notifier).updateEducation(val),
+                    onChanged: (val) => ref
+                        .read(profileControllerProvider.notifier)
+                        .updateEducation(val),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -198,7 +226,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   icon: Icons.card_membership,
                   child: CertificationListForm(
                     certifications: currentProfile.certifications,
-                    onChanged: (val) => ref.read(profileControllerProvider.notifier).updateCertifications(val),
+                    onChanged: (val) => ref
+                        .read(profileControllerProvider.notifier)
+                        .updateCertifications(val),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -207,7 +237,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   icon: Icons.code,
                   child: SkillsInputForm(
                     skills: currentProfile.skills,
-                    onChanged: (val) => ref.read(profileControllerProvider.notifier).updateSkills(val),
+                    onChanged: (val) => ref
+                        .read(profileControllerProvider.notifier)
+                        .updateSkills(val),
                   ),
                 ),
                 const SizedBox(height: 24),

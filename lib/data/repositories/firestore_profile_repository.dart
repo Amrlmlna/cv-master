@@ -10,10 +10,10 @@ class FirestoreProfileRepository {
 
   Future<void> saveProfile(String uid, UserProfile profile) async {
     try {
-      await dataSource.collection('users').doc(uid).set(
-            profile.toJson(),
-            SetOptions(merge: true),
-          );
+      await dataSource
+          .collection('users')
+          .doc(uid)
+          .set(profile.toJson(), SetOptions(merge: true));
     } catch (e) {
       throw DataErrorMapper.map(e);
     }

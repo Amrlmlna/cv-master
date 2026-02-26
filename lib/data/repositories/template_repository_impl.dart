@@ -19,7 +19,9 @@ class TemplateRepositoryImpl implements TemplateRepository {
           final host = ApiConfig.baseUrl.replaceAll('/api', '');
           return template.copyWith(
             thumbnailUrl: '$host${template.thumbnailUrl}',
-            previewUrls: template.previewUrls.map((url) => url.startsWith('/') ? '$host$url' : url).toList(),
+            previewUrls: template.previewUrls
+                .map((url) => url.startsWith('/') ? '$host$url' : url)
+                .toList(),
           );
         }
         return template;
@@ -39,4 +41,3 @@ class TemplateRepositoryImpl implements TemplateRepository {
     }
   }
 }
-

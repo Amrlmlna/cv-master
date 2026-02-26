@@ -31,19 +31,23 @@ class _EducationListFormState extends State<EducationListForm> {
 
     if (result != null) {
       final newList = List<Education>.from(widget.education);
-      
+
       if (index != null) {
         newList[index] = result;
         widget.onChanged(newList);
       } else {
-        final isDuplicate = newList.any((edu) => 
-          edu.schoolName.toLowerCase() == result.schoolName.toLowerCase() &&
-          edu.degree.toLowerCase() == result.degree.toLowerCase()
+        final isDuplicate = newList.any(
+          (edu) =>
+              edu.schoolName.toLowerCase() == result.schoolName.toLowerCase() &&
+              edu.degree.toLowerCase() == result.degree.toLowerCase(),
         );
 
         if (isDuplicate) {
           if (mounted) {
-            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+            CustomSnackBar.showWarning(
+              context,
+              AppLocalizations.of(context)!.cvDataExists,
+            );
           }
         } else {
           newList.add(result);
@@ -84,7 +88,8 @@ class _EducationListFormState extends State<EducationListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+    final effectiveIsDark =
+        widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,14 +97,37 @@ class _EducationListFormState extends State<EducationListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(AppLocalizations.of(context)!.educationHistory, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(
+              AppLocalizations.of(context)!.educationHistory,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: effectiveIsDark ? Colors.white : Colors.black,
+              ),
+            ),
             TextButton.icon(
               onPressed: () => _editEducation(),
-              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              icon: Icon(
+                Icons.add,
+                color: effectiveIsDark
+                    ? Colors.white
+                    : Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                AppLocalizations.of(context)!.add,
+                style: TextStyle(
+                  color: effectiveIsDark
+                      ? Colors.white
+                      : Theme.of(context).primaryColor,
+                ),
+              ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                backgroundColor: effectiveIsDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ],
@@ -107,7 +135,12 @@ class _EducationListFormState extends State<EducationListForm> {
         if (widget.education.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(AppLocalizations.of(context)!.noEducation, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(
+              AppLocalizations.of(context)!.noEducation,
+              style: TextStyle(
+                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+              ),
+            ),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -118,10 +151,23 @@ class _EducationListFormState extends State<EducationListForm> {
             final edu = widget.education[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, // Explicit card color for contrast
+              color: effectiveIsDark
+                  ? const Color(0xFF2C2C2C)
+                  : Colors.white, // Explicit card color for contrast
               child: ListTile(
-                title: Text(edu.schoolName, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
-                subtitle: Text('${edu.degree}\n${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
+                title: Text(
+                  edu.schoolName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: effectiveIsDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                subtitle: Text(
+                  '${edu.degree}\n${edu.startDate} - ${edu.endDate ?? AppLocalizations.of(context)!.present}',
+                  style: TextStyle(
+                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -136,8 +182,6 @@ class _EducationListFormState extends State<EducationListForm> {
     );
   }
 }
-
-
 
 class _EducationDialog extends StatefulWidget {
   final Education? existing;
@@ -204,11 +248,13 @@ class _EducationDialogState extends State<_EducationDialog> {
       backgroundColor: const Color(0xFF1E1E1E), // Dark Card
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        widget.existing == null ? AppLocalizations.of(context)!.addEducation : AppLocalizations.of(context)!.editEducation,
+        widget.existing == null
+            ? AppLocalizations.of(context)!.addEducation
+            : AppLocalizations.of(context)!.editEducation,
         style: const TextStyle(
-          color: Colors.white, 
-          fontWeight: FontWeight.w900, 
-          fontSize: 18, 
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 18,
           letterSpacing: 1.0,
         ),
       ),
@@ -220,20 +266,19 @@ class _EducationDialogState extends State<_EducationDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                UniversityPicker(
-                  controller: _schoolCtrl,
-                  isDark: true,
-                ),
+                UniversityPicker(controller: _schoolCtrl, isDark: true),
                 const SizedBox(height: 16),
                 CustomTextFormField(
                   controller: _degreeCtrl,
                   labelText: AppLocalizations.of(context)!.degree,
                   hintText: AppLocalizations.of(context)!.degreeHint,
                   isDark: true,
-                  validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                  validator: (v) => v!.isEmpty
+                      ? AppLocalizations.of(context)!.requiredField
+                      : null,
                 ),
                 const SizedBox(height: 16),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -245,7 +290,9 @@ class _EducationDialogState extends State<_EducationDialog> {
                         readOnly: true,
                         prefixIcon: Icons.calendar_today,
                         onTap: () => _pickDate(_startCtrl),
-                        validator: (v) => v!.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                        validator: (v) => v!.isEmpty
+                            ? AppLocalizations.of(context)!.requiredField
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -270,7 +317,7 @@ class _EducationDialogState extends State<_EducationDialog> {
       actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context), 
+          onPressed: () => Navigator.pop(context),
           style: TextButton.styleFrom(foregroundColor: Colors.white54),
           child: Text(AppLocalizations.of(context)!.cancelAllCaps),
         ),
@@ -278,7 +325,9 @@ class _EducationDialogState extends State<_EducationDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final edu = Education(
-                id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+                id:
+                    widget.existing?.id ??
+                    DateTime.now().millisecondsSinceEpoch.toString(),
                 schoolName: _schoolCtrl.text,
                 degree: _degreeCtrl.text,
                 startDate: _startCtrl.text,
@@ -291,9 +340,14 @@ class _EducationDialogState extends State<_EducationDialog> {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          child: Text(AppLocalizations.of(context)!.saveAllCaps, style: const TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(
+            AppLocalizations.of(context)!.saveAllCaps,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );

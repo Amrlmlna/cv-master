@@ -10,7 +10,7 @@ class LoginCTACard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoggedIn = ref.watch(isLoggedInProvider);
-    
+
     if (isLoggedIn) return const SizedBox.shrink();
 
     return GestureDetector(
@@ -21,15 +21,10 @@ class LoginCTACard extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.grey.shade900,
-              Colors.grey.shade800,
-            ],
+            colors: [Colors.grey.shade900, Colors.grey.shade800],
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.15),
-          ),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
         ),
         child: Row(
           children: [
@@ -46,9 +41,9 @@ class LoginCTACard extends ConsumerWidget {
                 size: 24,
               ),
             ),
-            
+
             const SizedBox(width: 16),
-            
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,17 +59,14 @@ class LoginCTACard extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     AppLocalizations.of(context)!.syncAnywhere,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey.shade400,
-                    ),
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
                   ),
                 ],
               ),
             ),
-            
+
             const SizedBox(width: 12),
-            
+
             Icon(
               Icons.arrow_forward_ios,
               color: Colors.grey.shade400,

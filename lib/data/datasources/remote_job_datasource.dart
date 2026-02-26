@@ -5,8 +5,8 @@ import '../../core/config/api_config.dart';
 class RemoteJobDataSource {
   final http.Client _httpClient;
 
-  RemoteJobDataSource({http.Client? httpClient}) 
-      : _httpClient = httpClient ?? http.Client();
+  RemoteJobDataSource({http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   static String get _jobBaseUrl => '${ApiConfig.baseUrl}/job';
 
@@ -20,7 +20,10 @@ class RemoteJobDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException('Failed to extract job posting: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to extract job posting: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 }

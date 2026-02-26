@@ -32,12 +32,14 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingCompleted = ref.watch(onboardingProvider);
-  
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.home,
     redirect: (context, state) {
-      final isGoingToOnboarding = state.uri.toString().startsWith(AppRoutes.onboarding);
+      final isGoingToOnboarding = state.uri.toString().startsWith(
+        AppRoutes.onboarding,
+      );
       if (!onboardingCompleted && !isGoingToOnboarding) {
         return AppRoutes.onboarding;
       }
@@ -48,9 +50,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
-    observers: [
-      PosthogObserver(),
-    ],
+    observers: [PosthogObserver()],
     routes: [
       // Auth Routes
       GoRoute(
@@ -61,21 +61,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.signup,
         builder: (context, state) => const SignupPage(),
       ),
-      
 
       GoRoute(
         path: AppRoutes.error,
         builder: (context, state) {
           final args = state.extra as ErrorPageArgs?;
           return ErrorPage(
-            args: args ?? ErrorPageArgs(
-              title: AppLocalizations.of(context)!.unknownError,
-              message: AppLocalizations.of(context)!.unknownErrorDesc,
-            ),
+            args:
+                args ??
+                ErrorPageArgs(
+                  title: AppLocalizations.of(context)!.unknownError,
+                  message: AppLocalizations.of(context)!.unknownErrorDesc,
+                ),
           );
         },
       ),
-      
+
       // Onboarding Flow
       GoRoute(
         path: AppRoutes.onboarding,
@@ -87,7 +88,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      
+
       // Main Application Shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -146,7 +147,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      
+
       GoRoute(
         path: AppRoutes.notifications,
         builder: (context, state) => const NotificationPage(),
@@ -164,7 +165,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.stats,
         builder: (context, state) => const StatsPage(),
       ),
-      
+
       // CV Generation Flow
       GoRoute(
         path: AppRoutes.createJobInput,

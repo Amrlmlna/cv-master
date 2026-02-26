@@ -6,10 +6,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class AdService {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
-  
+
   // Test Ad Unit IDs
-  static const String _androidTestAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
-  static const String _iosTestAdUnitId = 'ca-app-pub-3940256099942544/4411468910';
+  static const String _androidTestAdUnitId =
+      'ca-app-pub-3940256099942544/1033173712';
+  static const String _iosTestAdUnitId =
+      'ca-app-pub-3940256099942544/4411468910';
 
   String get _adUnitId {
     if (Platform.isAndroid) {
@@ -33,7 +35,7 @@ class AdService {
         onAdLoaded: (ad) {
           _interstitialAd = ad;
           _isAdLoaded = true;
-          
+
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
@@ -52,7 +54,10 @@ class AdService {
     );
   }
 
-  Future<void> showInterstitialAd(BuildContext context, {required VoidCallback onAdClosed}) async {
+  Future<void> showInterstitialAd(
+    BuildContext context, {
+    required VoidCallback onAdClosed,
+  }) async {
     if (_isAdLoaded && _interstitialAd != null) {
       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
@@ -66,16 +71,16 @@ class AdService {
           onAdClosed(); // Proceed even if ad fails
         },
       );
-      
+
       await _interstitialAd!.show();
       _isAdLoaded = false;
     } else {
       // If ad isn't ready, just proceed
-       onAdClosed();
-       _loadInterstitialAd(); // Try loading again for next time
+      onAdClosed();
+      _loadInterstitialAd(); // Try loading again for next time
     }
   }
-  
+
   void dispose() {
     _interstitialAd?.dispose();
   }

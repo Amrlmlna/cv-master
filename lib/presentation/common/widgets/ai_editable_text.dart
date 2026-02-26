@@ -73,17 +73,21 @@ class _AIEditableTextState extends State<AIEditableText> {
       );
       _controller.value = TextEditingValue(
         text: newText,
-        selection: TextSelection.collapsed(offset: selection.end + (pattern.length * 2)),
+        selection: TextSelection.collapsed(
+          offset: selection.end + (pattern.length * 2),
+        ),
       );
     } else {
-       final newText = text.replaceRange(
+      final newText = text.replaceRange(
         selection.baseOffset,
         selection.baseOffset,
         '$pattern$pattern',
       );
       _controller.value = TextEditingValue(
         text: newText,
-        selection: TextSelection.collapsed(offset: selection.baseOffset + pattern.length),
+        selection: TextSelection.collapsed(
+          offset: selection.baseOffset + pattern.length,
+        ),
       );
     }
   }
@@ -91,15 +95,15 @@ class _AIEditableTextState extends State<AIEditableText> {
   void _applyHeader() {
     final text = _controller.text;
     final selection = _controller.selection;
-     final newText = text.replaceRange(
-        selection.baseOffset,
-        selection.baseOffset,
-        '# ',
-      );
-      _controller.value = TextEditingValue(
-        text: newText,
-        selection: TextSelection.collapsed(offset: selection.baseOffset + 2),
-      );
+    final newText = text.replaceRange(
+      selection.baseOffset,
+      selection.baseOffset,
+      '# ',
+    );
+    _controller.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: selection.baseOffset + 2),
+    );
   }
 
   void _save() {
@@ -122,7 +126,7 @@ class _AIEditableTextState extends State<AIEditableText> {
               color: Colors.blueAccent.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
         child: Column(
@@ -131,24 +135,36 @@ class _AIEditableTextState extends State<AIEditableText> {
             Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.format_bold, size: 20, color: isDark ? Colors.white70 : Colors.black87),
+                  icon: Icon(
+                    Icons.format_bold,
+                    size: 20,
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
                   onPressed: () => _applyFormatting('**'),
                   tooltip: AppLocalizations.of(context)!.bold,
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
-                  icon: Icon(Icons.format_italic, size: 20, color: isDark ? Colors.white70 : Colors.black87),
+                  icon: Icon(
+                    Icons.format_italic,
+                    size: 20,
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
                   onPressed: () => _applyFormatting('_'),
                   tooltip: AppLocalizations.of(context)!.italic,
-                   constraints: const BoxConstraints(),
+                  constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 IconButton(
-                  icon: Icon(Icons.title, size: 20, color: isDark ? Colors.white70 : Colors.black87),
+                  icon: Icon(
+                    Icons.title,
+                    size: 20,
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
                   onPressed: _applyHeader,
                   tooltip: AppLocalizations.of(context)!.header,
-                   constraints: const BoxConstraints(),
+                  constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(8),
                 ),
                 const Spacer(),
@@ -162,14 +178,17 @@ class _AIEditableTextState extends State<AIEditableText> {
                   TextButton.icon(
                     onPressed: _handleRewrite,
                     icon: const Icon(Icons.auto_awesome, size: 16),
-                    label: Text(AppLocalizations.of(context)!.rewrite, style: const TextStyle(fontSize: 12)),
+                    label: Text(
+                      AppLocalizations.of(context)!.rewrite,
+                      style: const TextStyle(fontSize: 12),
+                    ),
                     style: TextButton.styleFrom(foregroundColor: Colors.purple),
                   ),
               ],
             ),
             const Divider(height: 1),
             const SizedBox(height: 8),
-            
+
             TextField(
               controller: _controller,
               maxLines: widget.maxLines ?? 6,
@@ -180,9 +199,13 @@ class _AIEditableTextState extends State<AIEditableText> {
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 hintText: AppLocalizations.of(context)!.typeHere,
-                hintStyle: TextStyle(color: isDark ? Colors.grey[600] : Colors.grey[400]),
+                hintStyle: TextStyle(
+                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                ),
               ),
-              style: widget.style ?? TextStyle(color: isDark ? Colors.white : Colors.black),
+              style:
+                  widget.style ??
+                  TextStyle(color: isDark ? Colors.white : Colors.black),
             ),
             const SizedBox(height: 12),
             Row(
@@ -195,16 +218,25 @@ class _AIEditableTextState extends State<AIEditableText> {
                       _controller.text = widget.initialText; // Revert
                     });
                   },
-                  child: Text(AppLocalizations.of(context)!.cancel, style: const TextStyle(fontSize: 12)),
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: _save,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 0,
+                    ),
                     minimumSize: const Size(0, 32),
                   ),
-                  child: Text(AppLocalizations.of(context)!.save, style: const TextStyle(fontSize: 12)),
+                  child: Text(
+                    AppLocalizations.of(context)!.save,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ),
               ],
             ),
@@ -224,9 +256,9 @@ class _AIEditableTextState extends State<AIEditableText> {
             Expanded(
               child: MarkdownBody(
                 data: widget.initialText,
-                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                   p: widget.style,
-                ),
+                styleSheet: MarkdownStyleSheet.fromTheme(
+                  Theme.of(context),
+                ).copyWith(p: widget.style),
               ),
             ),
             const SizedBox(width: 8),
@@ -245,12 +277,19 @@ class MarkdownSyntaxController extends TextEditingController {
   MarkdownSyntaxController({super.text});
 
   @override
-  TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {
+  TextSpan buildTextSpan({
+    required BuildContext context,
+    TextStyle? style,
+    required bool withComposing,
+  }) {
     final List<TextSpan> children = [];
-    final pattern = RegExp(r'(\*\*.*?\*\*)|(\_.*?\_)|(^\s*#.*)', multiLine: true);
-    
+    final pattern = RegExp(
+      r'(\*\*.*?\*\*)|(\_.*?\_)|(^\s*#.*)',
+      multiLine: true,
+    );
+
     String currentText = text;
-    
+
     if (currentText.isEmpty) {
       return TextSpan(style: style, text: "");
     }
@@ -262,19 +301,22 @@ class MarkdownSyntaxController extends TextEditingController {
         TextStyle? matchStyle = style;
 
         if (matchText.startsWith('**')) {
-           matchStyle = style?.copyWith(fontWeight: FontWeight.bold);
+          matchStyle = style?.copyWith(fontWeight: FontWeight.bold);
         } else if (matchText.startsWith('_')) {
-           matchStyle = style?.copyWith(fontStyle: FontStyle.italic);
+          matchStyle = style?.copyWith(fontStyle: FontStyle.italic);
         } else if (matchText.trim().startsWith('#')) {
-           matchStyle = style?.copyWith(fontSize: (style.fontSize ?? 14) * 1.5, fontWeight: FontWeight.bold);
+          matchStyle = style?.copyWith(
+            fontSize: (style.fontSize ?? 14) * 1.5,
+            fontWeight: FontWeight.bold,
+          );
         }
 
         children.add(TextSpan(text: matchText, style: matchStyle));
         return matchText;
       },
       onNonMatch: (String nonMatch) {
-         children.add(TextSpan(text: nonMatch, style: style));
-         return nonMatch;
+        children.add(TextSpan(text: nonMatch, style: style));
+        return nonMatch;
       },
     );
 

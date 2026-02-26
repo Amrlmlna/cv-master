@@ -43,7 +43,9 @@ class Education extends Equatable {
 
   factory Education.fromJson(Map<String, dynamic> json) {
     return Education(
-      id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id:
+          json['id'] as String? ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       degree: json['degree'] as String,
       schoolName: json['schoolName'] as String,
       startDate: json['startDate'] as String,

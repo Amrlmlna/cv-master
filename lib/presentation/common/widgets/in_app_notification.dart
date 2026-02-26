@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class InAppNotificationOverlay {
-  static void show(BuildContext context, {required String title, required String body}) {
+  static void show(
+    BuildContext context, {
+    required String title,
+    required String body,
+  }) {
     final overlayState = Overlay.of(context);
     late OverlayEntry overlayEntry;
 
@@ -35,10 +39,12 @@ class _InAppNotificationWidget extends StatefulWidget {
   });
 
   @override
-  State<_InAppNotificationWidget> createState() => _InAppNotificationWidgetState();
+  State<_InAppNotificationWidget> createState() =>
+      _InAppNotificationWidgetState();
 }
 
-class _InAppNotificationWidgetState extends State<_InAppNotificationWidget> with SingleTickerProviderStateMixin {
+class _InAppNotificationWidgetState extends State<_InAppNotificationWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
 
@@ -53,10 +59,7 @@ class _InAppNotificationWidgetState extends State<_InAppNotificationWidget> with
     _offsetAnimation = Tween<Offset>(
       begin: const Offset(0.0, -1.5),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _controller.forward();
   }
@@ -95,13 +98,17 @@ class _InAppNotificationWidgetState extends State<_InAppNotificationWidget> with
               ),
               child: Row(
                 children: [
-                   Container(
+                  Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.blue.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.notifications_active, color: Colors.blue, size: 20),
+                    child: const Icon(
+                      Icons.notifications_active,
+                      color: Colors.blue,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(

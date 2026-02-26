@@ -131,17 +131,20 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                     },
                   ),
                 ),
-                
+
                 // Bottom Area with Dots and Buttons
                 SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 16.0,
+                    ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         _buildDotIndicator(screens.length),
                         const SizedBox(height: 48),
-                        
+
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 400),
                           switchInCurve: Curves.easeOutCubic,
@@ -154,14 +157,17 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                       width: double.infinity,
                                       child: GradientButton(
                                         text: l10n.getStarted,
-                                        onPressed: () => _onNext(screens.length),
+                                        onPressed: () =>
+                                            _onNext(screens.length),
                                       ),
                                     ),
                                     const SizedBox(height: 16),
                                     Text(
                                       l10n.takesLessThan3Min,
                                       style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.6),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.6,
+                                        ),
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -170,17 +176,23 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                 )
                               : Row(
                                   key: const ValueKey('nav'),
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextButton(
                                       onPressed: _onSkip,
                                       style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
                                       ),
                                       child: Text(
                                         l10n.skipIntro,
                                         style: TextStyle(
-                                          color: Colors.white.withValues(alpha: 0.6),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.6,
+                                          ),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -189,11 +201,17 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                                     ElevatedButton(
                                       onPressed: () => _onNext(screens.length),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white.withValues(alpha: 0.15),
+                                        backgroundColor: Colors.white
+                                            .withValues(alpha: 0.15),
                                         foregroundColor: Colors.white,
-                                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 32,
+                                          vertical: 16,
+                                        ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(24),
+                                          borderRadius: BorderRadius.circular(
+                                            24,
+                                          ),
                                         ),
                                         elevation: 0,
                                       ),
@@ -240,7 +258,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
               child: const OnboardingPage(),
             ),
           ),
-          
+
           // Back button to collapse form
           if (_showForm)
             Positioned(
@@ -253,9 +271,7 @@ class _OnboardingWelcomePageState extends State<OnboardingWelcomePage> {
                   });
                 },
                 icon: const Icon(Icons.arrow_downward, color: Colors.white),
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.black45,
-                ),
+                style: IconButton.styleFrom(backgroundColor: Colors.black45),
               ),
             ),
         ],

@@ -4,12 +4,14 @@ import '../../../core/services/analytics_service.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/providers/profile_provider.dart';
 
-final onboardingProvider = StateNotifierProvider<OnboardingNotifier, bool>((ref) {
+final onboardingProvider = StateNotifierProvider<OnboardingNotifier, bool>((
+  ref,
+) {
   return OnboardingNotifier();
 });
 
 class OnboardingNotifier extends StateNotifier<bool> {
-  OnboardingNotifier({bool initialState = false}) : super(initialState); 
+  OnboardingNotifier({bool initialState = false}) : super(initialState);
 
   static const String _key = 'onboarding_completed';
 
@@ -23,7 +25,7 @@ class OnboardingNotifier extends StateNotifier<bool> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_key, true);
     state = true;
-    
+
     AnalyticsService().trackEvent('onboarding_completed');
   }
 }
@@ -56,7 +58,8 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   final Ref ref;
 
   OnboardingFormNotifier(this.ref)
-      : super(OnboardingState(
+    : super(
+        OnboardingState(
           currentPage: 0,
           formData: const UserProfile(
             fullName: '',
@@ -66,18 +69,15 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
             skills: [],
             certifications: [],
           ),
-        ));
+        ),
+      );
 
   void updateName(String name) {
-    state = state.copyWith(
-      formData: state.formData.copyWith(fullName: name),
-    );
+    state = state.copyWith(formData: state.formData.copyWith(fullName: name));
   }
 
   void updateEmail(String email) {
-    state = state.copyWith(
-      formData: state.formData.copyWith(email: email),
-    );
+    state = state.copyWith(formData: state.formData.copyWith(email: email));
   }
 
   void updatePhone(String phone) {
@@ -105,9 +105,7 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   }
 
   void updateSkills(List<String> skills) {
-    state = state.copyWith(
-      formData: state.formData.copyWith(skills: skills),
-    );
+    state = state.copyWith(formData: state.formData.copyWith(skills: skills));
   }
 
   void updateCertifications(List<Certification> certifications) {
@@ -119,7 +117,7 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   bool nextPage() {
     if (state.currentPage == 0) {
       if (state.formData.fullName.isEmpty) {
-        return false; 
+        return false;
       }
     }
 
@@ -133,6 +131,7 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   void populateFromImport(UserProfile profile) {
     state = state.copyWith(formData: profile);
   }
+
   void skipToFinal() {
     state = state.copyWith(currentPage: 6);
   }
@@ -145,13 +144,14 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
 
   Future<void> submit() async {
     state = state.copyWith(isSaving: true);
-    
+
     await Future.delayed(const Duration(seconds: 2));
 
     try {
-      await ref.read(masterProfileProvider.notifier).saveProfile(state.formData);
+      await ref
+          .read(masterProfileProvider.notifier)
+          .saveProfile(state.formData);
       await ref.read(onboardingProvider.notifier).completeOnboarding();
-      
     } finally {
       if (mounted) {
         state = state.copyWith(isSaving: false);
@@ -160,6 +160,9 @@ class OnboardingFormNotifier extends StateNotifier<OnboardingState> {
   }
 }
 
-final onboardingFormProvider = StateNotifierProvider.autoDispose<OnboardingFormNotifier, OnboardingState>((ref) {
-  return OnboardingFormNotifier(ref);
-});
+final onboardingFormProvider =
+    StateNotifierProvider.autoDispose<OnboardingFormNotifier, OnboardingState>((
+      ref,
+    ) {
+      return OnboardingFormNotifier(ref);
+    });

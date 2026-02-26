@@ -19,7 +19,6 @@ class StyleSelectionPage extends ConsumerStatefulWidget {
 }
 
 class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
-
   Future<void> _navigateToPreview() async {
     context.push(AppRoutes.createTemplatePreview);
   }
@@ -32,16 +31,17 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
   Widget build(BuildContext context) {
     final templatesAsync = ref.watch(templatesProvider);
     final downloadState = ref.watch(cvDownloadProvider);
-    
+
     return templatesAsync.when(
       data: (templates) {
         final creationState = ref.watch(cvCreationProvider);
         final selectedStyle = creationState.selectedStyle;
-        
-        if (templates.isNotEmpty && !templates.any((t) => t.id == selectedStyle)) {
-             WidgetsBinding.instance.addPostFrameCallback((_) {
-                 ref.read(cvCreationProvider.notifier).setStyle(templates.first.id);
-             });
+
+        if (templates.isNotEmpty &&
+            !templates.any((t) => t.id == selectedStyle)) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ref.read(cvCreationProvider.notifier).setStyle(templates.first.id);
+          });
         }
 
         return Stack(
@@ -52,16 +52,17 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
               onStyleSelected: _handleStyleSelection,
               onExport: _navigateToPreview,
             ),
-            if (downloadState.status == DownloadStatus.generating || downloadState.status == DownloadStatus.loading)
-               AppLoadingScreen(
-                 badge: AppLocalizations.of(context)!.generatingPdfBadge,
-                 messages: [
-                   AppLocalizations.of(context)!.processingData,
-                   AppLocalizations.of(context)!.applyingDesign,
-                   AppLocalizations.of(context)!.creatingPages,
-                   AppLocalizations.of(context)!.finalizingPdf,
-                 ],
-               ),
+            if (downloadState.status == DownloadStatus.generating ||
+                downloadState.status == DownloadStatus.loading)
+              AppLoadingScreen(
+                badge: AppLocalizations.of(context)!.generatingPdfBadge,
+                messages: [
+                  AppLocalizations.of(context)!.processingData,
+                  AppLocalizations.of(context)!.applyingDesign,
+                  AppLocalizations.of(context)!.creatingPages,
+                  AppLocalizations.of(context)!.finalizingPdf,
+                ],
+              ),
           ],
         );
       },
@@ -76,16 +77,18 @@ class _StyleSelectionPageState extends ConsumerState<StyleSelectionPage> {
       error: (err, stack) => Scaffold(
         body: Center(
           child: Column(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-               const Icon(Icons.error_outline, size: 48, color: Colors.red),
-               const SizedBox(height: 16),
-               Text(AppLocalizations.of(context)!.templateLoadError(err.toString())),
-               ElevatedButton(
-                 onPressed: () => ref.refresh(templatesProvider),
-                 child: Text(AppLocalizations.of(context)!.retry),
-               )
-             ]
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(
+                AppLocalizations.of(context)!.templateLoadError(err.toString()),
+              ),
+              ElevatedButton(
+                onPressed: () => ref.refresh(templatesProvider),
+                child: Text(AppLocalizations.of(context)!.retry),
+              ),
+            ],
           ),
         ),
       ),

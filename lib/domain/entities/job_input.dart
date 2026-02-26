@@ -5,11 +5,7 @@ class JobInput extends Equatable {
   final String? company;
   final String? jobDescription;
 
-  const JobInput({
-    required this.jobTitle,
-    this.company,
-    this.jobDescription,
-  });
+  const JobInput({required this.jobTitle, this.company, this.jobDescription});
 
   @override
   List<Object?> get props => [jobTitle, company, jobDescription];

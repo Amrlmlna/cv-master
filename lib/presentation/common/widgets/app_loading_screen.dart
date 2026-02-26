@@ -4,7 +4,7 @@ import 'spinning_text_loader.dart';
 
 /// Unified loading screen widget following DRY principle
 /// This is the ONLY loading screen you should use across the app
-/// 
+///
 /// Usage examples:
 /// ```dart
 /// // OCR Scanning
@@ -12,13 +12,13 @@ import 'spinning_text_loader.dart';
 ///   badge: "OCR SCANNING",
 ///   messages: ["Membaca gambar...", "Mengekstrak teks..."],
 /// )
-/// 
+///
 /// // CV Generation
 /// AppLoadingScreen(
 ///   badge: "AI PROCESSING",
 ///   messages: ["Menganalisa Profil...", "Menyusun Struktur..."],
 /// )
-/// 
+///
 /// // Simple loading
 /// AppLoadingScreen(
 ///   messages: ["Loading..."],
@@ -59,11 +59,14 @@ class AppLoadingScreen extends StatelessWidget {
           children: [
             if (badge != null) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
-                  color: isDark 
-                    ? Colors.white.withValues(alpha: 0.1) 
-                    : Colors.black.withValues(alpha: 0.05),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
@@ -77,12 +80,14 @@ class AppLoadingScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       badge!,
-                      style: badgeStyle ?? GoogleFonts.outfit(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        color: isDark ? Colors.white70 : Colors.black54,
-                      ),
+                      style:
+                          badgeStyle ??
+                          GoogleFonts.outfit(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            color: isDark ? Colors.white70 : Colors.black54,
+                          ),
                     ),
                   ],
                 ),
@@ -94,11 +99,13 @@ class AppLoadingScreen extends StatelessWidget {
               height: 40,
               child: SpinningTextLoader(
                 texts: messages,
-                style: messageStyle ?? GoogleFonts.outfit(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w300,
-                  color: textColor,
-                ),
+                style:
+                    messageStyle ??
+                    GoogleFonts.outfit(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w300,
+                      color: textColor,
+                    ),
                 interval: messageDuration,
               ),
             ),

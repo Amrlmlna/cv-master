@@ -25,7 +25,11 @@ class NotificationPage extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.notifications_none_outlined, size: 64, color: Colors.grey[700]),
+          Icon(
+            Icons.notifications_none_outlined,
+            size: 64,
+            color: Colors.grey[700],
+          ),
           const SizedBox(height: 16),
           Text(
             AppLocalizations.of(context)!.noNotifications,
@@ -36,7 +40,11 @@ class NotificationPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildNotificationList(BuildContext context, WidgetRef ref, List notifications) {
+  Widget _buildNotificationList(
+    BuildContext context,
+    WidgetRef ref,
+    List notifications,
+  ) {
     return ListView.builder(
       itemCount: notifications.length,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -46,7 +54,7 @@ class NotificationPage extends ConsumerWidget {
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: notification.isRead 
+              color: notification.isRead
                   ? Colors.white.withValues(alpha: 0.04)
                   : Colors.blue.withValues(alpha: 0.1),
               shape: BoxShape.circle,
@@ -62,7 +70,9 @@ class NotificationPage extends ConsumerWidget {
                 ? AppLocalizations.of(context)!.notificationNew
                 : notification.title!,
             style: TextStyle(
-              fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+              fontWeight: notification.isRead
+                  ? FontWeight.normal
+                  : FontWeight.bold,
               color: Colors.white,
             ),
           ),

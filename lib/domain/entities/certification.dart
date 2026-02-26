@@ -17,7 +17,9 @@ class Certification extends Equatable {
 
   factory Certification.fromJson(Map<String, dynamic> json) {
     return Certification(
-      id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id:
+          json['id'] as String? ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       name: json['name'] as String,
       issuer: json['issuer'] as String,
       date: DateTime.tryParse(json['date'] as String? ?? '') ?? DateTime.now(),

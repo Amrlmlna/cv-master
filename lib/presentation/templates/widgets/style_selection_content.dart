@@ -41,16 +41,25 @@ class StyleSelectionContent extends StatelessWidget {
               padding: const EdgeInsets.only(right: 24),
               child: Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.black.withValues(alpha: 0.1)),
+                    border: Border.all(
+                      color: Colors.black.withValues(alpha: 0.1),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.stars_rounded, size: 14, color: Colors.black),
+                      const Icon(
+                        Icons.stars_rounded,
+                        size: 14,
+                        color: Colors.black,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         '${templates.first.userCredits}',
@@ -69,7 +78,6 @@ class StyleSelectionContent extends StatelessWidget {
       ),
       body: Column(
         children: [
-
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -83,7 +91,7 @@ class StyleSelectionContent extends StatelessWidget {
               itemBuilder: (context, index) {
                 final template = templates[index];
                 final isSelected = template.id == selectedStyleId;
-                
+
                 return GestureDetector(
                   onTap: () => onStyleSelected(template.id),
                   child: Column(
@@ -92,9 +100,13 @@ class StyleSelectionContent extends StatelessWidget {
                       Expanded(
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          padding: isSelected ? const EdgeInsets.all(3) : EdgeInsets.zero,
+                          padding: isSelected
+                              ? const EdgeInsets.all(3)
+                              : EdgeInsets.zero,
                           decoration: BoxDecoration(
-                            color: isSelected ? (template.isPremium ? null : Colors.black) : Colors.transparent,
+                            color: isSelected
+                                ? (template.isPremium ? null : Colors.black)
+                                : Colors.transparent,
                             gradient: isSelected && template.isPremium
                                 ? const LinearGradient(
                                     begin: Alignment.topLeft,
@@ -110,10 +122,12 @@ class StyleSelectionContent extends StatelessWidget {
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.2),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.2,
+                                      ),
                                       blurRadius: 15,
                                       offset: const Offset(0, 10),
-                                    )
+                                    ),
                                   ]
                                 : [],
                           ),
@@ -131,12 +145,20 @@ class StyleSelectionContent extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   memCacheHeight: 600,
                                   maxHeightDiskCache: 800,
-                                  fadeInDuration: const Duration(milliseconds: 200),
+                                  fadeInDuration: const Duration(
+                                    milliseconds: 200,
+                                  ),
                                   placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   errorWidget: (context, url, error) => Center(
-                                    child: Icon(Icons.error_outline, color: Colors.red.withValues(alpha: 0.5)),
+                                    child: Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red.withValues(alpha: 0.5),
+                                    ),
                                   ),
                                 ),
                                 if (template.supportsPhoto)
@@ -146,16 +168,24 @@ class StyleSelectionContent extends StatelessWidget {
                                     child: Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha: 0.9),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.9,
+                                        ),
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withValues(alpha: 0.1),
+                                            color: Colors.black.withValues(
+                                              alpha: 0.1,
+                                            ),
                                             blurRadius: 4,
-                                          )
+                                          ),
                                         ],
                                       ),
-                                      child: const Icon(Icons.add_a_photo_outlined, size: 10, color: Colors.black),
+                                      child: const Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 10,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                 if (template.isLocked)
@@ -163,12 +193,19 @@ class StyleSelectionContent extends StatelessWidget {
                                     color: Colors.black.withValues(alpha: 0.7),
                                     child: Center(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          const Icon(Icons.lock_rounded, color: Colors.white, size: 32),
+                                          const Icon(
+                                            Icons.lock_rounded,
+                                            color: Colors.white,
+                                            size: 32,
+                                          ),
                                           const SizedBox(height: 8),
                                           Text(
-                                            AppLocalizations.of(context)!.premium,
+                                            AppLocalizations.of(
+                                              context,
+                                            )!.premium,
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 10,
@@ -197,8 +234,12 @@ class StyleSelectionContent extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 11,
-                                fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
-                                color: isSelected ? Colors.black : Colors.grey[800],
+                                fontWeight: isSelected
+                                    ? FontWeight.w900
+                                    : FontWeight.w600,
+                                color: isSelected
+                                    ? Colors.black
+                                    : Colors.grey[800],
                                 letterSpacing: 1.0,
                               ),
                             ),
@@ -219,7 +260,7 @@ class StyleSelectionContent extends StatelessWidget {
               },
             ),
           ),
-          
+
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -252,5 +293,3 @@ class StyleSelectionContent extends StatelessWidget {
     );
   }
 }
-
-

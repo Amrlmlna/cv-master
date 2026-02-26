@@ -12,7 +12,7 @@ class TailoredDataHeader extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.withValues(alpha: 0.1), 
+        color: Colors.blue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
       ),
@@ -24,7 +24,7 @@ class TailoredDataHeader extends StatelessWidget {
             child: Text(
               AppLocalizations.of(context)!.tailoredDataMessage,
               style: TextStyle(
-                color: isDark ? Colors.blue[100] : Colors.blue[900], 
+                color: isDark ? Colors.blue[100] : Colors.blue[900],
                 fontSize: 14,
                 height: 1.4,
               ),

@@ -7,9 +7,9 @@ class IpLocationService {
 
   Future<String?> getCountryCode() async {
     try {
-      final response = await http.get(Uri.parse(_apiUrl)).timeout(
-        const Duration(seconds: 5),
-      );
+      final response = await http
+          .get(Uri.parse(_apiUrl))
+          .timeout(const Duration(seconds: 5));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

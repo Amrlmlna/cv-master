@@ -15,7 +15,9 @@ final draftRepositoryProvider = Provider<DraftRepository>((ref) {
   return DraftRepositoryImpl(localDataSource: dataSource);
 });
 
-final draftsProvider = AsyncNotifierProvider<DraftsNotifier, List<CVData>>(DraftsNotifier.new);
+final draftsProvider = AsyncNotifierProvider<DraftsNotifier, List<CVData>>(
+  DraftsNotifier.new,
+);
 
 class DraftsNotifier extends AsyncNotifier<List<CVData>> {
   late final DraftRepository _repository;
@@ -49,14 +51,14 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
       return _repository.getDrafts();
     });
   }
-  
+
   Future<void> saveFromState(CVCreationState creationState) async {
     if (creationState.jobInput == null || creationState.userProfile == null) {
       return;
     }
 
     final id = creationState.currentDraftId ?? const Uuid().v4();
-    
+
     if (creationState.currentDraftId == null) {
       ref.read(cvCreationProvider.notifier).setCurrentDraftId(id);
     }
@@ -75,7 +77,7 @@ class DraftsNotifier extends AsyncNotifier<List<CVData>> {
   }
 
   Future<void> refresh() async {
-     state = const AsyncValue.loading();
-     state = await AsyncValue.guard(() => _repository.getDrafts());
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => _repository.getDrafts());
   }
 }

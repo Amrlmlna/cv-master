@@ -35,7 +35,9 @@ class OnboardingShell extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                currentPage == totalSteps - 1 ? AppLocalizations.of(context)!.youreAllSet : AppLocalizations.of(context)!.dropYourDetails,
+                currentPage == totalSteps - 1
+                    ? AppLocalizations.of(context)!.youreAllSet
+                    : AppLocalizations.of(context)!.dropYourDetails,
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w900,
@@ -62,7 +64,10 @@ class OnboardingShell extends StatelessWidget {
 
         if (currentPage > 0)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 8.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -78,7 +83,9 @@ class OnboardingShell extends StatelessWidget {
                 LinearProgressIndicator(
                   value: (currentPage + 1) / totalSteps,
                   backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor,
+                  ),
                 ),
               ],
             ),

@@ -48,7 +48,9 @@ class LanguageSelector extends ConsumerWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? (isDark ? Colors.white : Colors.black) : Colors.transparent,
+            color: isSelected
+                ? (isDark ? Colors.white : Colors.black)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(22),
           ),
           child: Text(

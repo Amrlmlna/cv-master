@@ -10,14 +10,14 @@ class ProfileActionButtons extends StatelessWidget {
     super.key,
     required this.onSave,
     this.canSave = true,
-  }); 
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 48),
-        
+
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
@@ -29,20 +29,23 @@ class ProfileActionButtons extends StatelessWidget {
             ),
           ),
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         Center(
           child: TextButton.icon(
             onPressed: () => context.push('/profile/help'),
-            icon: Icon(Icons.help_outline, color: Theme.of(context).disabledColor),
+            icon: Icon(
+              Icons.help_outline,
+              color: Theme.of(context).disabledColor,
+            ),
             label: Text(
               AppLocalizations.of(context)!.helpSupport,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
         ),
-        
+
         const SizedBox(height: 100),
       ],
     );

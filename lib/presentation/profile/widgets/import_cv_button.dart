@@ -8,10 +8,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 class ImportCVButton extends ConsumerWidget {
   final Function(UserProfile) onImportSuccess;
 
-  const ImportCVButton({
-    super.key,
-    required this.onImportSuccess,
-  });
+  const ImportCVButton({super.key, required this.onImportSuccess});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +23,9 @@ class ImportCVButton extends ConsumerWidget {
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
           side: BorderSide(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.2),
             width: 1,
           ),
           shape: RoundedRectangleBorder(
@@ -39,7 +38,9 @@ class ImportCVButton extends ConsumerWidget {
             fontSize: 14,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.2,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.8),
           ),
         ),
       ),

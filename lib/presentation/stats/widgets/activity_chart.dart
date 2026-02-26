@@ -14,9 +14,13 @@ class ActivityChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxY = (weeklyActivity.isNotEmpty 
-        ? weeklyActivity.reduce((curr, next) => curr > next ? curr : next) 
-        : 5).toDouble();
+    final maxY =
+        (weeklyActivity.isNotEmpty
+                ? weeklyActivity.reduce(
+                    (curr, next) => curr > next ? curr : next,
+                  )
+                : 5)
+            .toDouble();
     final effectiveMaxY = maxY < 5 ? 5.0 : maxY + 1;
 
     return Container(
@@ -30,7 +34,7 @@ class ActivityChart extends StatelessWidget {
         ),
       ),
       child: LineChart(
-        duration: const Duration(milliseconds: 500), 
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOutCubic,
         LineChartData(
           gridData: FlGridData(
@@ -46,8 +50,12 @@ class ActivityChart extends StatelessWidget {
           ),
           titlesData: FlTitlesData(
             show: true,
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
@@ -105,12 +113,15 @@ class ActivityChart extends StatelessWidget {
           lineBarsData: [
             LineChartBarData(
               spots: List.generate(weeklyActivity.length, (index) {
-                return FlSpot(index.toDouble(), weeklyActivity[index].toDouble());
+                return FlSpot(
+                  index.toDouble(),
+                  weeklyActivity[index].toDouble(),
+                );
               }),
               isCurved: true,
               gradient: LinearGradient(
-                colors: isDark 
-                    ? [Colors.blueAccent, Colors.purpleAccent] 
+                colors: isDark
+                    ? [Colors.blueAccent, Colors.purpleAccent]
                     : [Colors.blue, Colors.purple],
               ),
               barWidth: 4,
@@ -119,9 +130,15 @@ class ActivityChart extends StatelessWidget {
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
-                  colors: isDark 
-                      ? [Colors.blueAccent.withValues(alpha: 0.2), Colors.purpleAccent.withValues(alpha: 0.0)]
-                      : [Colors.blue.withValues(alpha: 0.2), Colors.purple.withValues(alpha: 0.0)],
+                  colors: isDark
+                      ? [
+                          Colors.blueAccent.withValues(alpha: 0.2),
+                          Colors.purpleAccent.withValues(alpha: 0.0),
+                        ]
+                      : [
+                          Colors.blue.withValues(alpha: 0.2),
+                          Colors.purple.withValues(alpha: 0.0),
+                        ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

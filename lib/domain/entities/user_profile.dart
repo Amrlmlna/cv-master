@@ -74,17 +74,23 @@ class UserProfile extends Equatable {
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String?,
       location: json['location'] as String?,
-      experience: (json['experience'] as List<dynamic>?)
+      experience:
+          (json['experience'] as List<dynamic>?)
               ?.map((e) => Experience.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      education: (json['education'] as List<dynamic>?)
+      education:
+          (json['education'] as List<dynamic>?)
               ?.map((e) => Education.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      skills: (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      skills:
+          (json['skills'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
           const [],
-      certifications: (json['certifications'] as List<dynamic>?)
+      certifications:
+          (json['certifications'] as List<dynamic>?)
               ?.map((e) => Certification.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -94,14 +100,14 @@ class UserProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-        fullName,
-        email,
-        phoneNumber,
-        location,
-        experience,
-        education,
-        skills,
-        certifications,
-        photoUrl,
-      ];
+    fullName,
+    email,
+    phoneNumber,
+    location,
+    experience,
+    education,
+    skills,
+    certifications,
+    photoUrl,
+  ];
 }

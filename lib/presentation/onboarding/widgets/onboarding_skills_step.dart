@@ -21,18 +21,19 @@ class OnboardingSkillsStep extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.skillsTitle,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.skillsSubtitle,
-             style: const TextStyle(color: Colors.grey, height: 1.5),
+            style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
-          SkillsInputForm(
-            skills: skills,
-            onChanged: onChanged,
-          ),
+          SkillsInputForm(skills: skills, onChanged: onChanged),
         ],
       ),
     );

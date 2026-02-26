@@ -26,9 +26,9 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
-  
+
   final _summaryController = TextEditingController();
-  
+
   List<Experience> _experience = [];
   List<Education> _education = [];
   List<String> _skills = [];
@@ -40,10 +40,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final masterProfile = ref.read(masterProfileProvider);
       final creationState = ref.read(cvCreationProvider);
-      
+
       final profileToUse = widget.tailoredResult?.profile ?? masterProfile;
       final isTailored = widget.tailoredResult != null;
-      
+
       if (!mounted) return;
 
       if (profileToUse != null && _nameController.text.isEmpty) {
@@ -52,23 +52,26 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
           _emailController.text = profileToUse.email;
           _phoneController.text = profileToUse.phoneNumber ?? '';
           _locationController.text = profileToUse.location ?? '';
-          
+
           _experience = List<Experience>.from(profileToUse.experience);
           _education = List<Education>.from(profileToUse.education);
           _skills = List<String>.from(profileToUse.skills);
-          _certifications = List<Certification>.from(profileToUse.certifications);
+          _certifications = List<Certification>.from(
+            profileToUse.certifications,
+          );
         });
 
-        final initialSummary = widget.tailoredResult?.summary ?? creationState.summary;
+        final initialSummary =
+            widget.tailoredResult?.summary ?? creationState.summary;
         if (initialSummary != null) {
           _summaryController.text = initialSummary;
         }
 
         CustomSnackBar.showSuccess(
           context,
-          isTailored 
-            ? AppLocalizations.of(context)!.reviewedByAI
-            : AppLocalizations.of(context)!.autoFillFromMaster,
+          isTailored
+              ? AppLocalizations.of(context)!.reviewedByAI
+              : AppLocalizations.of(context)!.autoFillFromMaster,
         );
       }
     });
@@ -93,21 +96,33 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         location: _locationController.text,
         experience: _experience,
         education: _education,
-        skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'], 
+        skills: _skills.isNotEmpty ? _skills : ['Leadership', 'Communication'],
         certifications: _certifications,
       );
 
       ref.read(cvCreationProvider.notifier).setUserProfile(profile);
       ref.read(cvCreationProvider.notifier).setSummary(_summaryController.text);
-      
-      final hasChanges = await ref.read(masterProfileProvider.notifier).mergeProfile(profile);
-      
+
+      final hasChanges = await ref
+          .read(masterProfileProvider.notifier)
+          .mergeProfile(profile);
+
       if (hasChanges && mounted) {
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.masterProfileUpdated);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.masterProfileUpdated,
+        );
       }
 
       if (mounted) {
-        if (!AuthGuard.check(context, featureTitle: AppLocalizations.of(context)!.authWallSelectTemplate, featureDescription: AppLocalizations.of(context)!.authWallSelectTemplateDesc)) return;
+        if (!AuthGuard.check(
+          context,
+          featureTitle: AppLocalizations.of(context)!.authWallSelectTemplate,
+          featureDescription: AppLocalizations.of(
+            context,
+          )!.authWallSelectTemplateDesc,
+        ))
+          return;
         context.push('/create/style-selection');
       }
     }
@@ -116,7 +131,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.reviewData),
@@ -137,7 +152,7 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         child: ElevatedButton(
           onPressed: _submit,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isDark ? Colors.white : Colors.black, 
+            backgroundColor: isDark ? Colors.white : Colors.black,
             foregroundColor: isDark ? Colors.black : Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 18),
             shape: RoundedRectangleBorder(

@@ -13,11 +13,11 @@ class FirebaseAuthRepository implements AuthRepository {
   final RemoteUserDataSource remoteDataSource;
 
   FirebaseAuthRepository({
-    FirebaseAuth? firebaseAuth, 
+    FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
     required this.remoteDataSource,
-  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
+  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+       _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
   AppUser? _mapFirebaseUser(fb.User? user) {
     if (user == null) return null;
@@ -30,14 +30,17 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Stream<AppUser?> get authStateChanges => 
+  Stream<AppUser?> get authStateChanges =>
       _firebaseAuth.authStateChanges().map(_mapFirebaseUser);
 
   @override
   AppUser? get currentUser => _mapFirebaseUser(_firebaseAuth.currentUser);
 
   @override
-  Future<AppUser?> signInWithEmailAndPassword(String email, String password) async {
+  Future<AppUser?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -54,20 +57,24 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<AppUser?> signUpWithEmailAndPassword(String email, String password, String name) async {
+  Future<AppUser?> signUpWithEmailAndPassword(
+    String email,
+    String password,
+    String name,
+  ) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
+
       if (userCredential.user != null) {
         await userCredential.user!.updateDisplayName(name);
         await userCredential.user!.sendEmailVerification();
         await userCredential.user!.reload();
         await PaymentService.login(userCredential.user!.uid);
       }
-      
+
       return _mapFirebaseUser(_firebaseAuth.currentUser);
     } catch (e) {
       throw DataErrorMapper.map(e);
@@ -87,20 +94,24 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<AppUser?> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize();
-      final GoogleSignInAccount? googleUser = await _googleSignIn.attemptLightweightAuthentication() 
-          ?? await _googleSignIn.authenticate();
-      
+      final GoogleSignInAccount? googleUser =
+          await _googleSignIn.attemptLightweightAuthentication() ??
+          await _googleSignIn.authenticate();
+
       if (googleUser == null) return null;
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final authorization = await googleUser.authorizationClient.authorizeScopes(['email']);
-      
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final authorization = await googleUser.authorizationClient
+          .authorizeScopes(['email']);
+
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: authorization.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
       final user = _mapFirebaseUser(userCredential.user);
       if (user != null) {
         await PaymentService.login(user.uid);

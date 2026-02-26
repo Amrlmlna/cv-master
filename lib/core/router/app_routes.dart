@@ -9,7 +9,7 @@ class AppRoutes {
   static const String onboardingForm = '/onboarding/form';
 
   static const String dashboard = '/dashboard';
-  
+
   // Profile & Support
   static const String profile = '/profile';
   static const String help = '/profile/help';

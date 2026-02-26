@@ -20,7 +20,8 @@ class SpinningTextLoader extends StatefulWidget {
   State<SpinningTextLoader> createState() => _SpinningTextLoaderState();
 }
 
-class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTickerProviderStateMixin {
+class _SpinningTextLoaderState extends State<SpinningTextLoader>
+    with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   Timer? _timer;
   late AnimationController _shimmerController;
@@ -30,8 +31,8 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
     super.initState();
     _startTimer();
     _shimmerController = AnimationController(
-        vsync: this, 
-        duration: const Duration(milliseconds: 2500)
+      vsync: this,
+      duration: const Duration(milliseconds: 2500),
     )..repeat();
   }
 
@@ -57,16 +58,19 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       transitionBuilder: (Widget child, Animation<double> animation) {
-        final offsetAnimation = Tween<Offset>(
-          begin: const Offset(0.0, 0.5),
-          end: Offset.zero,
-        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutBack));
+        final offsetAnimation =
+            Tween<Offset>(
+              begin: const Offset(0.0, 0.5),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+            );
 
         final opacityAnimation = Tween<double>(
           begin: 0.0,
           end: 1.0,
         ).animate(CurvedAnimation(parent: animation, curve: Curves.easeIn));
-        
+
         return AnimatedBuilder(
           animation: animation,
           builder: (context, child) {
@@ -75,10 +79,7 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
               imageFilter: ImageFilter.blur(sigmaX: 0, sigmaY: blur),
               child: FadeTransition(
                 opacity: opacityAnimation,
-                child: SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                ),
+                child: SlideTransition(position: offsetAnimation, child: child),
               ),
             );
           },
@@ -101,7 +102,9 @@ class _SpinningTextLoaderState extends State<SpinningTextLoader> with SingleTick
             },
             child: Text(
               widget.texts[_currentIndex],
-              style: widget.style?.copyWith(color: Colors.white) ?? const TextStyle(color: Colors.white),
+              style:
+                  widget.style?.copyWith(color: Colors.white) ??
+                  const TextStyle(color: Colors.white),
               textAlign: TextAlign.center,
             ),
           );

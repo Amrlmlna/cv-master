@@ -49,12 +49,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: false,
-        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-          messages: [
-            AppLocalizations.of(context)!.validatingData,
-            AppLocalizations.of(context)!.finalizing,
-          ],
-        ),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppLoadingScreen(
+              messages: [
+                AppLocalizations.of(context)!.validatingData,
+                AppLocalizations.of(context)!.finalizing,
+              ],
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -77,7 +78,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           debugPrint("Sync failed on login: $e");
         }
 
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.welcomeBackSuccess);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.welcomeBackSuccess,
+        );
         if (context.canPop()) {
           context.pop();
         } else {
@@ -111,12 +115,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: false,
-        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-          messages: [
-            AppLocalizations.of(context)!.googleSignInSuccess,
-            AppLocalizations.of(context)!.finalizing,
-          ],
-        ),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppLoadingScreen(
+              messages: [
+                AppLocalizations.of(context)!.googleSignInSuccess,
+                AppLocalizations.of(context)!.finalizing,
+              ],
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -126,7 +131,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     try {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signInWithGoogle();
-      
+
       popLoadingScreen();
 
       if (user != null && mounted) {
@@ -136,7 +141,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           debugPrint("Sync failed on Google login: $e");
         }
 
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.googleSignInSuccess);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.googleSignInSuccess,
+        );
         if (context.canPop()) {
           context.pop();
         } else {
@@ -146,7 +154,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } catch (e) {
       popLoadingScreen();
       if (mounted) {
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.googleSignInError(e.toString()),
+        );
       }
     } finally {
       if (mounted) {
@@ -196,10 +207,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Text(
                   AppLocalizations.of(context)!.signInSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
+                  style: GoogleFonts.outfit(color: Colors.grey, fontSize: 16),
                 ),
                 const SizedBox(height: 48),
 
@@ -210,7 +218,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                     filled: true,
-                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+                    fillColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.grey.shade100,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
@@ -232,10 +242,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
                     filled: true,
-                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+                    fillColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -267,12 +281,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                 Row(
                   children: [
-                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                    Expanded(
+                      child: Divider(
+                        color: isDark ? Colors.white24 : Colors.black12,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey.shade600)),
+                      child: Text(
+                        AppLocalizations.of(context)!.or,
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
                     ),
-                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                    Expanded(
+                      child: Divider(
+                        color: isDark ? Colors.white24 : Colors.black12,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -280,8 +305,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 SocialLoginButton(
                   onPressed: _isLoading ? null : _loginWithGoogle,
                   text: AppLocalizations.of(context)!.continueWithGoogle,
-                  icon: Image.asset('assets/images/google_logo.png', height: 24),
-                  isLoading: _isLoading && false, // Add specific loading state for google if needed
+                  icon: Image.asset(
+                    'assets/images/google_logo.png',
+                    height: 24,
+                  ),
+                  isLoading:
+                      _isLoading &&
+                      false, // Add specific loading state for google if needed
                 ),
                 const SizedBox(height: 24),
 

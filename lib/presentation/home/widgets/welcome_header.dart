@@ -11,10 +11,11 @@ class WelcomeHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(masterProfileProvider);
     final displayName = ref.watch(userDisplayNameProvider);
-    
-    final name = profile?.fullName.split(' ').first ?? 
-                 displayName?.split(' ').first ?? 
-                 'there';
+
+    final name =
+        profile?.fullName.split(' ').first ??
+        displayName?.split(' ').first ??
+        'there';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

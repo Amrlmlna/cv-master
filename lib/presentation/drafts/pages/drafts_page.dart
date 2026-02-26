@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../domain/entities/cv_data.dart';
 import '../../../domain/entities/job_input.dart';
-import '../../../domain/entities/tailored_cv_result.dart'; 
+import '../../../domain/entities/tailored_cv_result.dart';
 import '../../cv/providers/cv_generation_provider.dart';
 import '../providers/draft_provider.dart';
 import '../widgets/drafts_content.dart';
@@ -17,9 +17,10 @@ class DraftsPage extends ConsumerStatefulWidget {
   ConsumerState<DraftsPage> createState() => _DraftsPageState();
 }
 
-class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProviderStateMixin {
+class _DraftsPageState extends ConsumerState<DraftsPage>
+    with SingleTickerProviderStateMixin {
   String _searchQuery = '';
-  String? _selectedFolder; 
+  String? _selectedFolder;
   late TabController _tabController;
 
   @override
@@ -36,18 +37,17 @@ class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProvid
 
   void _handleDraftSelection(CVData draft) {
     final notifier = ref.read(cvCreationProvider.notifier);
-    
-    notifier.setJobInput(JobInput(
-      jobTitle: draft.jobTitle, 
-      jobDescription: '',
-    ));
+
+    notifier.setJobInput(
+      JobInput(jobTitle: draft.jobTitle, jobDescription: ''),
+    );
 
     notifier.setUserProfile(draft.userProfile);
 
     notifier.setSummary(draft.summary);
 
     notifier.setStyle(draft.styleId);
-    
+
     notifier.setCurrentDraftId(draft.id);
 
     final tailoredResult = TailoredCVResult(
@@ -60,9 +60,9 @@ class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProvid
   void _handleDelete(String id, int currentFolderCount) {
     ref.read(draftsProvider.notifier).deleteDraft(id);
     if (currentFolderCount <= 1 && _selectedFolder != null) {
-        setState(() {
-          _selectedFolder = null;
-        });
+      setState(() {
+        _selectedFolder = null;
+      });
     }
   }
 
@@ -107,8 +107,14 @@ class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProvid
                   dividerColor: Colors.transparent,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.grey[500],
-                  labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                  unselectedLabelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  labelStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  unselectedLabelStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                  ),
                   labelPadding: EdgeInsets.zero,
                   padding: const EdgeInsets.all(3),
                   tabs: [
@@ -163,12 +169,16 @@ class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProvid
         onDraftDeleted: (val) {},
       ),
       data: (drafts) {
-        final filteredDrafts = _searchQuery.isEmpty 
-            ? drafts 
-            : drafts.where((d) => d.jobTitle.toLowerCase().contains(_searchQuery)).toList();
+        final filteredDrafts = _searchQuery.isEmpty
+            ? drafts
+            : drafts
+                  .where((d) => d.jobTitle.toLowerCase().contains(_searchQuery))
+                  .toList();
         final Map<String, List<CVData>> folders = {};
         for (var draft in filteredDrafts) {
-          final key = draft.jobTitle.isNotEmpty ? draft.jobTitle : 'Tanpa Judul';
+          final key = draft.jobTitle.isNotEmpty
+              ? draft.jobTitle
+              : 'Tanpa Judul';
           if (!folders.containsKey(key)) {
             folders[key] = [];
           }
@@ -186,7 +196,8 @@ class _DraftsPageState extends ConsumerState<DraftsPage> with SingleTickerProvid
           selectedFolderName: _selectedFolder,
           searchQuery: _searchQuery,
           isLoading: false,
-          onSearchChanged: (val) => setState(() => _searchQuery = val.toLowerCase()),
+          onSearchChanged: (val) =>
+              setState(() => _searchQuery = val.toLowerCase()),
           onFolderSelected: (val) => setState(() => _selectedFolder = val),
           onDraftSelected: _handleDraftSelection,
           onDraftDeleted: (id) => _handleDelete(id, currentDrafts.length),

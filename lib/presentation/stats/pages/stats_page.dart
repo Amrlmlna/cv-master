@@ -17,17 +17,20 @@ class StatsPage extends ConsumerWidget {
     final stats = ref.watch(profileStatsProvider);
     final weeklyActivity = ref.watch(weeklyActivityProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     String getLocalizedLevel(String key) {
       final l10n = AppLocalizations.of(context)!;
       switch (key) {
-        case 'userLevelRookie': return l10n.userLevelRookie;
-        case 'userLevelMid': return l10n.userLevelMid;
-        case 'userLevelExpert': return l10n.userLevelExpert;
-        default: return key;
+        case 'userLevelRookie':
+          return l10n.userLevelRookie;
+        case 'userLevelMid':
+          return l10n.userLevelMid;
+        case 'userLevelExpert':
+          return l10n.userLevelExpert;
+        default:
+          return key;
       }
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -40,17 +43,28 @@ class StatsPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserLevelCard(level: getLocalizedLevel(userLevelKey), isDark: isDark)
+            UserLevelCard(
+                  level: getLocalizedLevel(userLevelKey),
+                  isDark: isDark,
+                )
                 .animate()
                 .fadeIn(duration: 600.ms, curve: Curves.easeOutQuad)
-                .slideX(begin: -0.2, end: 0, duration: 600.ms, curve: Curves.easeOutQuad),
+                .slideX(
+                  begin: -0.2,
+                  end: 0,
+                  duration: 600.ms,
+                  curve: Curves.easeOutQuad,
+                ),
 
             const SizedBox(height: 24),
 
             Text(
-              AppLocalizations.of(context)!.activityOverview,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            )
+                  AppLocalizations.of(context)!.activityOverview,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
                 .animate()
                 .fadeIn(delay: 200.ms, duration: 500.ms)
                 .slideX(begin: -0.1, end: 0),
@@ -59,13 +73,20 @@ class StatsPage extends ConsumerWidget {
             ActivityChart(isDark: isDark, weeklyActivity: weeklyActivity)
                 .animate()
                 .fadeIn(delay: 300.ms, duration: 600.ms)
-                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1), curve: Curves.easeOutBack),
+                .scale(
+                  begin: const Offset(0.9, 0.9),
+                  end: const Offset(1, 1),
+                  curve: Curves.easeOutBack,
+                ),
             const SizedBox(height: 24),
 
             Text(
-              AppLocalizations.of(context)!.keyMetrics,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            )
+                  AppLocalizations.of(context)!.keyMetrics,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
                 .animate()
                 .fadeIn(delay: 400.ms, duration: 500.ms)
                 .slideX(begin: -0.1, end: 0),

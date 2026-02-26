@@ -11,12 +11,17 @@ class OnboardingLegalModal extends StatelessWidget {
     required this.content,
   });
 
-  static void show(BuildContext context, {required String title, required String content}) {
+  static void show(
+    BuildContext context, {
+    required String title,
+    required String content,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => OnboardingLegalModal(title: title, content: content),
+      builder: (context) =>
+          OnboardingLegalModal(title: title, content: content),
     );
   }
 
@@ -55,10 +60,7 @@ class OnboardingLegalModal extends StatelessWidget {
           ),
           const Divider(),
           Expanded(
-            child: Markdown(
-              data: content,
-              padding: const EdgeInsets.all(24),
-            ),
+            child: Markdown(data: content, padding: const EdgeInsets.all(24)),
           ),
         ],
       ),

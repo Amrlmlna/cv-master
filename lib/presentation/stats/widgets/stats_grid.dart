@@ -5,19 +5,31 @@ class StatsGrid extends StatelessWidget {
   final Map<String, int> stats;
   final bool isDark;
 
-  const StatsGrid({
-    super.key,
-    required this.stats,
-    required this.isDark,
-  });
+  const StatsGrid({super.key, required this.stats, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
     final items = [
-      {'label': AppLocalizations.of(context)!.totalCVs, 'value': stats['cvCount'].toString(), 'icon': Icons.description_outlined},
-      {'label': AppLocalizations.of(context)!.skills, 'value': stats['skillsCount'].toString(), 'icon': Icons.bolt_outlined},
-      {'label': AppLocalizations.of(context)!.experience, 'value': stats['experienceCount'].toString(), 'icon': Icons.work_outline},
-      {'label': AppLocalizations.of(context)!.educationHistory, 'value': stats['educationCount'].toString(), 'icon': Icons.school_outlined},
+      {
+        'label': AppLocalizations.of(context)!.totalCVs,
+        'value': stats['cvCount'].toString(),
+        'icon': Icons.description_outlined,
+      },
+      {
+        'label': AppLocalizations.of(context)!.skills,
+        'value': stats['skillsCount'].toString(),
+        'icon': Icons.bolt_outlined,
+      },
+      {
+        'label': AppLocalizations.of(context)!.experience,
+        'value': stats['experienceCount'].toString(),
+        'icon': Icons.work_outline,
+      },
+      {
+        'label': AppLocalizations.of(context)!.educationHistory,
+        'value': stats['educationCount'].toString(),
+        'icon': Icons.school_outlined,
+      },
     ];
 
     return GridView.builder(
@@ -45,7 +57,11 @@ class StatsGrid extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(item['icon'] as IconData, size: 24, color: isDark ? Colors.white70 : Colors.black54),
+              Icon(
+                item['icon'] as IconData,
+                size: 24,
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

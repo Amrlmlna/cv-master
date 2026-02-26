@@ -29,21 +29,26 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
     if (result != null) {
       final newList = List<Experience>.from(widget.experiences);
-      
+
       if (index != null) {
         newList[index] = result;
         widget.onChanged(newList);
       } else {
         // Checking for duplicates on new addition
-        final isDuplicate = newList.any((exp) => 
-          exp.jobTitle.toLowerCase() == result.jobTitle.toLowerCase() &&
-          exp.companyName.toLowerCase() == result.companyName.toLowerCase() &&
-          exp.startDate == result.startDate
+        final isDuplicate = newList.any(
+          (exp) =>
+              exp.jobTitle.toLowerCase() == result.jobTitle.toLowerCase() &&
+              exp.companyName.toLowerCase() ==
+                  result.companyName.toLowerCase() &&
+              exp.startDate == result.startDate,
         );
 
         if (isDuplicate) {
           if (mounted) {
-            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+            CustomSnackBar.showWarning(
+              context,
+              AppLocalizations.of(context)!.cvDataExists,
+            );
           }
         } else {
           newList.add(result);
@@ -84,7 +89,8 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark = widget.isDark || Theme.of(context).brightness == Brightness.dark;
+    final effectiveIsDark =
+        widget.isDark || Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,14 +98,37 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(AppLocalizations.of(context)!.workExperience, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: effectiveIsDark ? Colors.white : Colors.black)),
+            Text(
+              AppLocalizations.of(context)!.workExperience,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: effectiveIsDark ? Colors.white : Colors.black,
+              ),
+            ),
             TextButton.icon(
               onPressed: () => _editExperience(),
-              icon: Icon(Icons.add, color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor),
-              label: Text(AppLocalizations.of(context)!.add, style: TextStyle(color: effectiveIsDark ? Colors.white : Theme.of(context).primaryColor)),
+              icon: Icon(
+                Icons.add,
+                color: effectiveIsDark
+                    ? Colors.white
+                    : Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                AppLocalizations.of(context)!.add,
+                style: TextStyle(
+                  color: effectiveIsDark
+                      ? Colors.white
+                      : Theme.of(context).primaryColor,
+                ),
+              ),
               style: TextButton.styleFrom(
-                backgroundColor: effectiveIsDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[100],
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                backgroundColor: effectiveIsDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ],
@@ -107,7 +136,12 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         if (widget.experiences.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(AppLocalizations.of(context)!.noExperience, style: TextStyle(color: effectiveIsDark ? Colors.white54 : Colors.grey)),
+            child: Text(
+              AppLocalizations.of(context)!.noExperience,
+              style: TextStyle(
+                color: effectiveIsDark ? Colors.white54 : Colors.grey,
+              ),
+            ),
           ),
         ListView.separated(
           shrinkWrap: true,
@@ -118,10 +152,21 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
             final exp = widget.experiences[index];
             return Card(
               margin: EdgeInsets.zero,
-              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white, 
+              color: effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white,
               child: ListTile(
-                title: Text(exp.jobTitle, style: TextStyle(fontWeight: FontWeight.bold, color: effectiveIsDark ? Colors.white : Colors.black)),
-                subtitle: Text('${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? AppLocalizations.of(context)!.present}', style: TextStyle(color: effectiveIsDark ? Colors.white70 : Colors.black87)),
+                title: Text(
+                  exp.jobTitle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: effectiveIsDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                subtitle: Text(
+                  '${exp.companyName}\n${exp.startDate} - ${exp.endDate ?? AppLocalizations.of(context)!.present}',
+                  style: TextStyle(
+                    color: effectiveIsDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
                 isThreeLine: true,
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),

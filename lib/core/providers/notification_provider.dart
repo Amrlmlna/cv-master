@@ -14,13 +14,17 @@ class NotificationNotifier extends StateNotifier<List<NotificationEntity>> {
   }
 
   void _listenToActions() {
-    NotificationController.displayStreamController.stream.listen((receivedNotification) {
+    NotificationController.displayStreamController.stream.listen((
+      receivedNotification,
+    ) {
       final notification = NotificationEntity(
         id: const Uuid().v4(),
         title: receivedNotification.title,
         body: receivedNotification.body ?? '',
         timestamp: DateTime.now(),
-        payload: receivedNotification.payload != null ? jsonEncode(receivedNotification.payload) : null,
+        payload: receivedNotification.payload != null
+            ? jsonEncode(receivedNotification.payload)
+            : null,
       );
       addNotification(notification);
     });
@@ -67,9 +71,12 @@ class NotificationNotifier extends StateNotifier<List<NotificationEntity>> {
   }
 }
 
-final notificationProvider = StateNotifierProvider<NotificationNotifier, List<NotificationEntity>>((ref) {
-  return NotificationNotifier();
-});
+final notificationProvider =
+    StateNotifierProvider<NotificationNotifier, List<NotificationEntity>>((
+      ref,
+    ) {
+      return NotificationNotifier();
+    });
 
 final unreadNotificationCountProvider = Provider<int>((ref) {
   final notifications = ref.watch(notificationProvider);

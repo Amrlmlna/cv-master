@@ -25,11 +25,11 @@ class JobInputPage extends ConsumerStatefulWidget {
 class _JobInputPageState extends ConsumerState<JobInputPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-  final _companyController = TextEditingController(); 
+  final _companyController = TextEditingController();
   final _descController = TextEditingController();
 
   static const String _kDraftTitleKey = 'draft_job_title';
-  static const String _kDraftCompanyKey = 'draft_job_company'; 
+  static const String _kDraftCompanyKey = 'draft_job_company';
   static const String _kDraftDescKey = 'draft_job_desc';
 
   Timer? _debounceTimer;
@@ -46,19 +46,19 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   Future<void> _loadDrafts() async {
     final prefs = await SharedPreferences.getInstance();
     if (mounted) {
-       final savedTitle = prefs.getString(_kDraftTitleKey);
-       final savedCompany = prefs.getString(_kDraftCompanyKey);
-       final savedDesc = prefs.getString(_kDraftDescKey);
-       
-       if (savedTitle != null && _titleController.text.isEmpty) {
-         _titleController.text = savedTitle;
-       }
-       if (savedCompany != null && _companyController.text.isEmpty) {
-         _companyController.text = savedCompany;
-       }
-       if (savedDesc != null && _descController.text.isEmpty) {
-         _descController.text = savedDesc;
-       }
+      final savedTitle = prefs.getString(_kDraftTitleKey);
+      final savedCompany = prefs.getString(_kDraftCompanyKey);
+      final savedDesc = prefs.getString(_kDraftDescKey);
+
+      if (savedTitle != null && _titleController.text.isEmpty) {
+        _titleController.text = savedTitle;
+      }
+      if (savedCompany != null && _companyController.text.isEmpty) {
+        _companyController.text = savedCompany;
+      }
+      if (savedDesc != null && _descController.text.isEmpty) {
+        _descController.text = savedDesc;
+      }
     }
   }
 
@@ -95,21 +95,25 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       final masterProfile = ref.read(masterProfileProvider);
-      
+
       if (masterProfile == null) {
-        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.completeProfileFirst);
+        CustomSnackBar.showWarning(
+          context,
+          AppLocalizations.of(context)!.completeProfileFirst,
+        );
         return;
       }
 
       Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-            messages: [
-              AppLocalizations.of(context)!.validatingData,
-              AppLocalizations.of(context)!.preparingProfile,
-              AppLocalizations.of(context)!.continuingToForm,
-            ],
-          ),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              AppLoadingScreen(
+                messages: [
+                  AppLocalizations.of(context)!.validatingData,
+                  AppLocalizations.of(context)!.preparingProfile,
+                  AppLocalizations.of(context)!.continuingToForm,
+                ],
+              ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -119,36 +123,44 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
       try {
         final jobInput = JobInput(
           jobTitle: _titleController.text,
-          company: _companyController.text.isNotEmpty ? _companyController.text : null,
+          company: _companyController.text.isNotEmpty
+              ? _companyController.text
+              : null,
           jobDescription: _descController.text,
         );
-        
+
         ref.read(cvCreationProvider.notifier).setJobInput(jobInput);
 
         final repository = ref.read(cvRepositoryProvider);
         final locale = ref.read(localeNotifierProvider);
         final tailoredResult = await repository.tailorProfile(
-          masterProfile: masterProfile, 
+          masterProfile: masterProfile,
           jobInput: jobInput,
           locale: locale.languageCode,
         );
-        
-        if (mounted) {
-           Navigator.of(context).pop();
 
-           await _clearDrafts();
-           
-           context.push('/create/user-data', extra: tailoredResult);
+        if (mounted) {
+          Navigator.of(context).pop();
+
+          await _clearDrafts();
+
+          context.push('/create/user-data', extra: tailoredResult);
         }
       } catch (e) {
         if (mounted) {
           Navigator.of(context).pop();
-          
-          CustomSnackBar.showError(context, AppLocalizations.of(context)!.analyzeProfileError(e.toString()));
+
+          CustomSnackBar.showError(
+            context,
+            AppLocalizations.of(context)!.analyzeProfileError(e.toString()),
+          );
         }
-      } 
+      }
     } else {
-      CustomSnackBar.showError(context, AppLocalizations.of(context)!.fillJobTitle);
+      CustomSnackBar.showError(
+        context,
+        AppLocalizations.of(context)!.fillJobTitle,
+      );
     }
   }
 
@@ -202,7 +214,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                         ),
                         child: Column(
                           children: [
-                            const Icon(Icons.camera_alt_outlined, color: Colors.white70, size: 28),
+                            const Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.white70,
+                              size: 28,
+                            ),
                             const SizedBox(height: 10),
                             Text(
                               AppLocalizations.of(context)!.camera,
@@ -234,7 +250,11 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
                         ),
                         child: Column(
                           children: [
-                            const Icon(Icons.photo_library_outlined, color: Colors.white70, size: 28),
+                            const Icon(
+                              Icons.photo_library_outlined,
+                              color: Colors.white70,
+                              size: 28,
+                            ),
                             const SizedBox(height: 10),
                             Text(
                               AppLocalizations.of(context)!.gallery,
@@ -261,7 +281,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
   Future<void> _scanJobPosting(ImageSource source) async {
     final ocrNotifier = ref.read(ocrProvider.notifier);
     bool loadingShown = false;
-    
+
     final result = await ocrNotifier.scanJobPosting(
       source,
       onProcessingStart: () {
@@ -271,25 +291,26 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
             PageRouteBuilder(
               opaque: false,
               barrierDismissible: false,
-              pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-                badge: AppLocalizations.of(context)!.ocrScanning,
-                messages: [
-                  AppLocalizations.of(context)!.analyzingText,
-                  AppLocalizations.of(context)!.identifyingVacancy,
-                  AppLocalizations.of(context)!.organizingData,
-                  AppLocalizations.of(context)!.finalizing,
-                ],
-              ),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AppLoadingScreen(
+                    badge: AppLocalizations.of(context)!.ocrScanning,
+                    messages: [
+                      AppLocalizations.of(context)!.analyzingText,
+                      AppLocalizations.of(context)!.identifyingVacancy,
+                      AppLocalizations.of(context)!.organizingData,
+                      AppLocalizations.of(context)!.finalizing,
+                    ],
+                  ),
             ),
           );
         }
       },
     );
-    
+
     if (mounted && loadingShown) {
       Navigator.of(context).pop();
     }
-    
+
     if (!mounted) return;
 
     switch (result.status) {
@@ -297,15 +318,24 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         _titleController.text = result.jobInput!.jobTitle;
         _companyController.text = result.jobInput!.company ?? '';
         _descController.text = result.jobInput!.jobDescription ?? '';
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.jobExtractionSuccess);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.jobExtractionSuccess,
+        );
 
       case OCRStatus.cancelled:
-
       case OCRStatus.noText:
-        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.noTextFound);
+        CustomSnackBar.showWarning(
+          context,
+          AppLocalizations.of(context)!.noTextFound,
+        );
 
       case OCRStatus.error:
-        CustomSnackBar.showError(context, result.errorMessage ?? AppLocalizations.of(context)!.jobExtractionFailed);
+        CustomSnackBar.showError(
+          context,
+          result.errorMessage ??
+              AppLocalizations.of(context)!.jobExtractionFailed,
+        );
     }
   }
 

@@ -4,8 +4,8 @@ import '../../core/config/api_config.dart';
 class RemoteUserDataSource {
   final http.Client _httpClient;
 
-  RemoteUserDataSource({http.Client? httpClient}) 
-      : _httpClient = httpClient ?? http.Client();
+  RemoteUserDataSource({http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   static String get _baseUrl => ApiConfig.baseUrl;
 
@@ -16,7 +16,10 @@ class RemoteUserDataSource {
     );
 
     if (response.statusCode != 200) {
-      throw http.ClientException('Failed to delete account: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to delete account: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 }

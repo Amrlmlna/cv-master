@@ -52,13 +52,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: false,
-        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-          messages: [
-            AppLocalizations.of(context)!.validatingData,
-            AppLocalizations.of(context)!.finalizing,
-            AppLocalizations.of(context)!.ready,
-          ],
-        ),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppLoadingScreen(
+              messages: [
+                AppLocalizations.of(context)!.validatingData,
+                AppLocalizations.of(context)!.finalizing,
+                AppLocalizations.of(context)!.ready,
+              ],
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -75,22 +76,25 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
       if (user != null && mounted) {
         await authRepo.sendEmailVerification();
-        
+
         popLoadingScreen();
         // Wait for the loading screen to animate out before opening the bottom sheet
         await Future.delayed(const Duration(milliseconds: 300));
-        
+
         if (mounted) {
-          EmailVerificationBottomSheet.show(context, onVerified: () async {
-            try {
-              await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
-            } catch (e) {
-              debugPrint("Sync failed after verification: $e");
-            }
-            if (mounted) {
-              context.go('/');
-            }
-          });
+          EmailVerificationBottomSheet.show(
+            context,
+            onVerified: () async {
+              try {
+                await ref.read(profileSyncProvider).initialCloudFetch(user.uid);
+              } catch (e) {
+                debugPrint("Sync failed after verification: $e");
+              }
+              if (mounted) {
+                context.go('/');
+              }
+            },
+          );
         }
       } else {
         popLoadingScreen();
@@ -122,13 +126,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: false,
-        pageBuilder: (context, animation, secondaryAnimation) => AppLoadingScreen(
-          messages: [
-            AppLocalizations.of(context)!.googleSignInSuccess,
-            AppLocalizations.of(context)!.finalizing,
-            AppLocalizations.of(context)!.ready,
-          ],
-        ),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppLoadingScreen(
+              messages: [
+                AppLocalizations.of(context)!.googleSignInSuccess,
+                AppLocalizations.of(context)!.finalizing,
+                AppLocalizations.of(context)!.ready,
+              ],
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -138,7 +143,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     try {
       final authRepo = ref.read(authRepositoryProvider);
       final user = await authRepo.signInWithGoogle();
-      
+
       popLoadingScreen();
 
       if (user != null && mounted) {
@@ -154,7 +159,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     } catch (e) {
       popLoadingScreen();
       if (mounted) {
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.googleSignInError(e.toString()));
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.googleSignInError(e.toString()),
+        );
       }
     } finally {
       if (mounted) {
@@ -172,7 +180,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -212,10 +223,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Text(
                   AppLocalizations.of(context)!.createAccountSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
+                  style: GoogleFonts.outfit(color: Colors.grey, fontSize: 16),
                 ),
                 const SizedBox(height: 32),
 
@@ -225,7 +233,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     labelText: AppLocalizations.of(context)!.fullName,
                     prefixIcon: const Icon(Icons.person_outline),
                     filled: true,
-                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+                    fillColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.grey.shade100,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
@@ -247,7 +257,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     labelText: AppLocalizations.of(context)!.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                     filled: true,
-                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+                    fillColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.grey.shade100,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
@@ -269,10 +281,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     labelText: AppLocalizations.of(context)!.password,
                     prefixIcon: const Icon(Icons.lock_outline),
                     filled: true,
-                    fillColor: isDark ? const Color(0xFF1E1E1E) : Colors.grey.shade100,
+                    fillColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.grey.shade100,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -307,12 +323,23 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
                 Row(
                   children: [
-                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                    Expanded(
+                      child: Divider(
+                        color: isDark ? Colors.white24 : Colors.black12,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey.shade600)),
+                      child: Text(
+                        AppLocalizations.of(context)!.or,
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
                     ),
-                    Expanded(child: Divider(color: isDark ? Colors.white24 : Colors.black12)),
+                    Expanded(
+                      child: Divider(
+                        color: isDark ? Colors.white24 : Colors.black12,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -320,10 +347,13 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 SocialLoginButton(
                   onPressed: _isLoading ? null : _signupWithGoogle,
                   text: AppLocalizations.of(context)!.continueWithGoogle,
-                  icon: Image.asset('assets/images/google_logo.png', height: 24),
+                  icon: Image.asset(
+                    'assets/images/google_logo.png',
+                    height: 24,
+                  ),
                   isLoading: false,
                 ),
-                
+
                 const SizedBox(height: 24),
 
                 Row(

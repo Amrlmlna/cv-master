@@ -58,7 +58,12 @@ class CVImportHandler {
                     label: AppLocalizations.of(context)!.camera,
                     onTap: () {
                       Navigator.pop(sheetContext);
-                      _importFromImage(context, ref, ImageSource.camera, onImportSuccess);
+                      _importFromImage(
+                        context,
+                        ref,
+                        ImageSource.camera,
+                        onImportSuccess,
+                      );
                     },
                   ),
                   const SizedBox(width: 12),
@@ -68,7 +73,12 @@ class CVImportHandler {
                     label: AppLocalizations.of(context)!.gallery,
                     onTap: () {
                       Navigator.pop(sheetContext);
-                      _importFromImage(context, ref, ImageSource.gallery, onImportSuccess);
+                      _importFromImage(
+                        context,
+                        ref,
+                        ImageSource.gallery,
+                        onImportSuccess,
+                      );
                     },
                   ),
                   const SizedBox(width: 12),
@@ -134,28 +144,30 @@ class CVImportHandler {
   ) async {
     bool loadingShown = false;
 
-    final result = await ref.read(cvImportProvider.notifier).importFromImage(
-      source,
-      onProcessingStart: () {
-        if (!loadingShown) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (ctx, _, __) => AppLoadingScreen(
-                badge: AppLocalizations.of(context)!.importingCVBadge,
-                messages: [
-                  AppLocalizations.of(context)!.readingCV,
-                  AppLocalizations.of(context)!.extractingData,
-                  AppLocalizations.of(context)!.compilingProfile,
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
+    final result = await ref
+        .read(cvImportProvider.notifier)
+        .importFromImage(
+          source,
+          onProcessingStart: () {
+            if (!loadingShown) {
+              loadingShown = true;
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  opaque: false,
+                  barrierDismissible: false,
+                  pageBuilder: (ctx, _, __) => AppLoadingScreen(
+                    badge: AppLocalizations.of(context)!.importingCVBadge,
+                    messages: [
+                      AppLocalizations.of(context)!.readingCV,
+                      AppLocalizations.of(context)!.extractingData,
+                      AppLocalizations.of(context)!.compilingProfile,
+                    ],
+                  ),
+                ),
+              );
+            }
+          },
+        );
 
     if (loadingShown && context.mounted) {
       Navigator.pop(context);
@@ -171,27 +183,29 @@ class CVImportHandler {
   ) async {
     bool loadingShown = false;
 
-    final result = await ref.read(cvImportProvider.notifier).importFromPDF(
-      onProcessingStart: () {
-        if (!loadingShown) {
-          loadingShown = true;
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              barrierDismissible: false,
-              pageBuilder: (ctx, _, __) => AppLoadingScreen(
-                badge: AppLocalizations.of(context)!.importingCVBadge,
-                messages: [
-                  AppLocalizations.of(context)!.readingPDF,
-                  AppLocalizations.of(context)!.extractingData,
-                  AppLocalizations.of(context)!.compilingProfile,
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
+    final result = await ref
+        .read(cvImportProvider.notifier)
+        .importFromPDF(
+          onProcessingStart: () {
+            if (!loadingShown) {
+              loadingShown = true;
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  opaque: false,
+                  barrierDismissible: false,
+                  pageBuilder: (ctx, _, __) => AppLoadingScreen(
+                    badge: AppLocalizations.of(context)!.importingCVBadge,
+                    messages: [
+                      AppLocalizations.of(context)!.readingPDF,
+                      AppLocalizations.of(context)!.extractingData,
+                      AppLocalizations.of(context)!.compilingProfile,
+                    ],
+                  ),
+                ),
+              );
+            }
+          },
+        );
 
     if (loadingShown && context.mounted) {
       Navigator.pop(context);
@@ -218,10 +232,16 @@ class CVImportHandler {
         // User cancelled, do nothing
         break;
       case CVImportStatus.noText:
-        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.noTextFoundInCV);
+        CustomSnackBar.showWarning(
+          context,
+          AppLocalizations.of(context)!.noTextFoundInCV,
+        );
         break;
       case CVImportStatus.error:
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.importFailedMessage);
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.importFailedMessage,
+        );
         break;
       default:
         break;

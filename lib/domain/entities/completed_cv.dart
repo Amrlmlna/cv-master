@@ -37,7 +37,9 @@ class CompletedCV {
 
   static List<CompletedCV> listFromJsonString(String jsonString) {
     final list = jsonDecode(jsonString) as List;
-    return list.map((e) => CompletedCV.fromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => CompletedCV.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   static String listToJsonString(List<CompletedCV> cvs) {

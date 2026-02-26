@@ -40,7 +40,10 @@ class CVRepositoryImpl implements CVRepository {
   @override
   Future<String> rewriteContent(String originalText, {String? locale}) async {
     try {
-      return await remoteDataSource.rewriteContent(originalText, locale: locale);
+      return await remoteDataSource.rewriteContent(
+        originalText,
+        locale: locale,
+      );
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
@@ -59,7 +62,8 @@ class CVRepositoryImpl implements CVRepository {
         locale: locale,
       );
 
-      final profileJson = responseData['tailoredProfile'] as Map<String, dynamic>;
+      final profileJson =
+          responseData['tailoredProfile'] as Map<String, dynamic>;
       final summary = responseData['summary'] as String;
 
       return TailoredCVResult(

@@ -11,13 +11,16 @@ import '../../auth/providers/auth_state_provider.dart';
 import 'profile_provider.dart';
 import '../../drafts/providers/draft_sync_provider.dart';
 
-final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>((ref) {
-  
-  final dataSource = ref.watch(firestoreDataSourceProvider); 
-  return FirestoreProfileRepository(dataSource: dataSource);
-});
+final firestoreProfileRepositoryProvider = Provider<FirestoreProfileRepository>(
+  (ref) {
+    final dataSource = ref.watch(firestoreDataSourceProvider);
+    return FirestoreProfileRepository(dataSource: dataSource);
+  },
+);
 
-final remoteTemplateDataSourceProvider = Provider<RemoteTemplateDataSource>((ref) {
+final remoteTemplateDataSourceProvider = Provider<RemoteTemplateDataSource>((
+  ref,
+) {
   return RemoteTemplateDataSource();
 });
 
@@ -35,7 +38,7 @@ class ProfileSyncManager {
   Timer? _heartbeatTimer;
   UserProfile? _lastSyncedProfile;
   static const String _syncKey = 'last_synced_profile_json';
-  
+
   late final FirestoreProfileRepository _firestoreRepo;
 
   ProfileSyncManager(this._ref) {
@@ -44,18 +47,23 @@ class ProfileSyncManager {
 
   void init() {
     print("[SyncManager] Initializing...");
-    
+
     _ref.listen(authStateProvider, (prev, next) {
       final user = next.value;
       if (user != null && (prev == null || prev.value == null)) {
-        print("[SyncManager] User logged in: ${user.uid}. Triggering initial cloud fetch...");
+        print(
+          "[SyncManager] User logged in: ${user.uid}. Triggering initial cloud fetch...",
+        );
         initialCloudFetch(user.uid);
       }
     });
 
     _heartbeatTimer?.cancel();
-    _heartbeatTimer = Timer.periodic(const Duration(seconds: 30), (_) => _heartbeat());
-    
+    _heartbeatTimer = Timer.periodic(
+      const Duration(seconds: 30),
+      (_) => _heartbeat(),
+    );
+
     _loadLastSyncedCache();
   }
 
@@ -82,7 +90,9 @@ class ProfileSyncManager {
       final cloudProfile = await _firestoreRepo.getProfile(uid);
       if (cloudProfile != null) {
         print("[SyncManager] Cloud data found. Merging into local...");
-        await _ref.read(masterProfileProvider.notifier).mergeProfile(cloudProfile);
+        await _ref
+            .read(masterProfileProvider.notifier)
+            .mergeProfile(cloudProfile);
         _updateLastSyncedCache(_ref.read(masterProfileProvider)!);
       } else {
         print("[SyncManager] Cloud is empty for this user.");
@@ -99,7 +109,9 @@ class ProfileSyncManager {
     if (currentProfile == null || user == null) return;
 
     if (currentProfile != _lastSyncedProfile) {
-      print("[SyncManager] Changes detected! Pushing to Cloud for ${user.uid}...");
+      print(
+        "[SyncManager] Changes detected! Pushing to Cloud for ${user.uid}...",
+      );
       try {
         await _firestoreRepo.saveProfile(user.uid, currentProfile);
         await _updateLastSyncedCache(currentProfile);

@@ -10,20 +10,24 @@ class CVDataParser {
     required JobInput jobInput,
     required String styleId,
   }) {
-    final String summary = data['generatedSummary']?.toString() ?? 'Summary not available.';
-    
+    final String summary =
+        data['generatedSummary']?.toString() ?? 'Summary not available.';
+
     final List<String> tailoredSkills = [];
     final dynamic rawSkills = data['tailoredSkills'] ?? data['skills'];
     if (rawSkills is List) {
       tailoredSkills.addAll(rawSkills.map((e) => e.toString()));
     }
-    
-    final refinedExperience = _refineExperience(profile.experience, data['analyzedExperience']);
+
+    final refinedExperience = _refineExperience(
+      profile.experience,
+      data['analyzedExperience'],
+    );
 
     return CVData(
       id: const Uuid().v4(),
       userProfile: profile.copyWith(
-        skills: tailoredSkills, 
+        skills: tailoredSkills,
         experience: refinedExperience,
       ),
       summary: summary,
@@ -33,7 +37,10 @@ class CVDataParser {
     );
   }
 
-  static List<Experience> _refineExperience(List<Experience> originalExperience, dynamic rawAnalysis) {
+  static List<Experience> _refineExperience(
+    List<Experience> originalExperience,
+    dynamic rawAnalysis,
+  ) {
     if (rawAnalysis is! List) return originalExperience;
 
     final refinedMap = <String, String>{};
@@ -46,7 +53,7 @@ class CVDataParser {
         }
       }
     }
-    
+
     return originalExperience.map((exp) {
       final refinedDesc = refinedMap[exp.jobTitle.toLowerCase()];
       if (refinedDesc != null) {

@@ -17,10 +17,7 @@ class PremiumBanner extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF1A1A1A),
-            const Color(0xFF000000),
-          ],
+          colors: [const Color(0xFF1A1A1A), const Color(0xFF000000)],
         ),
         boxShadow: [
           BoxShadow(
@@ -37,12 +34,19 @@ class PremiumBanner extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: AuthGuard.protected(context, () async {
-            final purchased = await PaymentService.presentPaywall();
-            if (purchased) {
-              ref.invalidate(templatesProvider);
-            }
-          }, featureTitle: AppLocalizations.of(context)!.authWallBuyCredits, featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc),
+          onTap: AuthGuard.protected(
+            context,
+            () async {
+              final purchased = await PaymentService.presentPaywall();
+              if (purchased) {
+                ref.invalidate(templatesProvider);
+              }
+            },
+            featureTitle: AppLocalizations.of(context)!.authWallBuyCredits,
+            featureDescription: AppLocalizations.of(
+              context,
+            )!.authWallBuyCreditsDesc,
+          ),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -60,9 +64,9 @@ class PremiumBanner extends ConsumerWidget {
                     size: 20,
                   ),
                 ),
-                
+
                 const SizedBox(width: 16),
-                
+
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,11 +93,13 @@ class PremiumBanner extends ConsumerWidget {
                     ],
                   ),
                 ),
-                
+
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Icon(

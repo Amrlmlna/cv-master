@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreDataSource {
   final FirebaseFirestore _firestore;
 
-  FirestoreDataSource({FirebaseFirestore? firestore}) 
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  FirestoreDataSource({FirebaseFirestore? firestore})
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference collection(String path) => _firestore.collection(path);
   DocumentReference document(String path) => _firestore.doc(path);
@@ -20,6 +20,6 @@ class FirestoreDataSource {
   Future<void> deleteData(String path) async {
     await _firestore.doc(path).delete();
   }
-  
+
   WriteBatch batch() => _firestore.batch();
 }

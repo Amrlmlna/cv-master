@@ -33,13 +33,16 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIsDark = isDark || Theme.of(context).brightness == Brightness.dark;
+    final effectiveIsDark =
+        isDark || Theme.of(context).brightness == Brightness.dark;
 
     final fillColor = effectiveIsDark ? const Color(0xFF2C2C2C) : Colors.white;
     final textColor = effectiveIsDark ? Colors.white : Colors.black87;
     final labelColor = effectiveIsDark ? Colors.grey[400] : Colors.grey[600];
-    final borderColor = effectiveIsDark ? Colors.transparent : Colors.grey.shade300;
-    
+    final borderColor = effectiveIsDark
+        ? Colors.transparent
+        : Colors.grey.shade300;
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -56,22 +59,30 @@ class CustomTextFormField extends StatelessWidget {
         labelStyle: TextStyle(color: labelColor),
         hintText: hintText,
         hintStyle: TextStyle(color: labelColor),
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: labelColor) : null,
+        prefixIcon: prefixIcon != null
+            ? Icon(prefixIcon, color: labelColor)
+            : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(12),
-           borderSide: BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: borderColor),
         ),
         focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(12),
-           borderSide: BorderSide(color: effectiveIsDark ? Colors.white54 : Colors.black, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: effectiveIsDark ? Colors.white54 : Colors.black,
+            width: 1.5,
+          ),
         ),
         filled: true,
         fillColor: fillColor,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         alignLabelWithHint: maxLines > 1,
       ),
     );

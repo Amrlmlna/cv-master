@@ -38,9 +38,7 @@ class SocialLoginButton extends StatelessWidget {
                   const SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 else ...[
                   icon,

@@ -9,10 +9,7 @@ class FirestoreDraftRepository {
 
   Future<void> saveDraft(String uid, CVData draft) async {
     try {
-      await dataSource.setData(
-        'users/$uid/drafts/${draft.id}',
-        draft.toJson(),
-      );
+      await dataSource.setData('users/$uid/drafts/${draft.id}', draft.toJson());
     } catch (e) {
       throw DataErrorMapper.map(e);
     }
@@ -28,11 +25,14 @@ class FirestoreDraftRepository {
 
   Future<List<CVData>> getDrafts(String uid) async {
     try {
-      final snapshot = await dataSource.collection('users/$uid/drafts')
+      final snapshot = await dataSource
+          .collection('users/$uid/drafts')
           .orderBy('createdAt', descending: true)
           .get();
 
-      return snapshot.docs.map((doc) => CVData.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      return snapshot.docs
+          .map((doc) => CVData.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       throw DataErrorMapper.map(e);
     }

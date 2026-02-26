@@ -19,21 +19,21 @@ class HomePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              
+
               const WelcomeHeader(),
               const SizedBox(height: 24),
-              
+
               const ProgressBanner(),
               const SizedBox(height: 24),
-              
+
               const HomeQuickActions(),
               const SizedBox(height: 32),
-              
+
               const LoginCTACard(),
               const SizedBox(height: 16),
-              
+
               const PremiumBanner(),
-              
+
               const SizedBox(height: 100),
             ],
           ),

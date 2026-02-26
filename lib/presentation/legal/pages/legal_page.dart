@@ -40,8 +40,13 @@ class _LegalContent extends StatelessWidget {
       selectable: true,
       padding: const EdgeInsets.all(16),
       styleSheet: MarkdownStyleSheet(
-        h1: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-        h2: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, height: 2),
+        h1: Theme.of(
+          context,
+        ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+        h2: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+          height: 2,
+        ),
         p: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.5),
       ),
     );

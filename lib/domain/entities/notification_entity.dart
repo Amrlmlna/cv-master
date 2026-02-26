@@ -15,10 +15,7 @@ class NotificationEntity {
     this.payload,
   });
 
-  NotificationEntity copyWith({
-    bool? isRead,
-    String? title,
-  }) {
+  NotificationEntity copyWith({bool? isRead, String? title}) {
     return NotificationEntity(
       id: id,
       title: title ?? this.title,
@@ -38,12 +35,13 @@ class NotificationEntity {
     'payload': payload,
   };
 
-  factory NotificationEntity.fromJson(Map<String, dynamic> json) => NotificationEntity(
-    id: json['id'],
-    title: json['title'],
-    body: json['body'],
-    timestamp: DateTime.parse(json['timestamp']),
-    isRead: json['isRead'],
-    payload: json['payload'],
-  );
+  factory NotificationEntity.fromJson(Map<String, dynamic> json) =>
+      NotificationEntity(
+        id: json['id'],
+        title: json['title'],
+        body: json['body'],
+        timestamp: DateTime.parse(json['timestamp']),
+        isRead: json['isRead'],
+        payload: json['payload'],
+      );
 }

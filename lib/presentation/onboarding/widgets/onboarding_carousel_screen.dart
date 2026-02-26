@@ -15,7 +15,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Stack(
       children: [
         if (imageAsset != null)
@@ -23,7 +23,7 @@ class OnboardingCarouselScreen extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            height: screenHeight * 0.55, 
+            height: screenHeight * 0.55,
             child: Image.asset(
               imageAsset!,
               fit: BoxFit.cover,
@@ -38,25 +38,20 @@ class OnboardingCarouselScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [0.35, 0.75], 
-                  colors: [
-                    Colors.transparent,
-                    Colors.black,
-                  ],
+                  stops: [0.35, 0.75],
+                  colors: [Colors.transparent, Colors.black],
                 ),
               ),
             ),
           ),
 
         if (imageAsset == null)
-          Positioned.fill(
-            child: Container(color: Colors.black),
-          ),
+          Positioned.fill(child: Container(color: Colors.black)),
 
         Positioned(
           left: 32,
           right: 32,
-          bottom: 24, 
+          bottom: 24,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

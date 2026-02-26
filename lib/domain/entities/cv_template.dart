@@ -4,10 +4,10 @@ class CVTemplate extends Equatable {
   final String id;
   final String name;
   final String description;
-  final String thumbnailUrl; 
+  final String thumbnailUrl;
   final List<String> previewUrls;
   final bool isPremium;
-  final List<String> tags; 
+  final List<String> tags;
   final int currentUsage;
   final int userCredits;
   final bool supportsPhoto;
@@ -69,5 +69,16 @@ class CVTemplate extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, description, thumbnailUrl, previewUrls, isPremium, tags, currentUsage, userCredits, supportsPhoto];
+  List<Object?> get props => [
+    id,
+    name,
+    description,
+    thumbnailUrl,
+    previewUrls,
+    isPremium,
+    tags,
+    currentUsage,
+    userCredits,
+    supportsPhoto,
+  ];
 }

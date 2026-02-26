@@ -33,12 +33,16 @@ class _HelpPageState extends State<HelpPage> {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'cvfast.contact@gmail.com',
-      query: 'subject=Bantuan Aplikasi CV Master&body=Halo tim support, saya butuh bantuan...',
+      query:
+          'subject=Bantuan Aplikasi CV Master&body=Halo tim support, saya butuh bantuan...',
     );
 
     if (!await launchUrl(emailLaunchUri)) {
       if (mounted) {
-         CustomSnackBar.showError(context, AppLocalizations.of(context)!.cantOpenEmail);
+        CustomSnackBar.showError(
+          context,
+          AppLocalizations.of(context)!.cantOpenEmail,
+        );
       }
     }
   }
@@ -77,13 +81,13 @@ class _HelpPageState extends State<HelpPage> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 48),
             const SizedBox(height: 48),
             Text(
               AppLocalizations.of(context)!.frequentQuestions,
               style: TextStyle(
-                fontSize: 20, 
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Outfit',
                 color: isDark ? Colors.white : Colors.black,
@@ -99,7 +103,7 @@ class _HelpPageState extends State<HelpPage> {
               question: AppLocalizations.of(context)!.faqEditQuestion,
               answer: AppLocalizations.of(context)!.faqEditAnswer,
             ),
-             FAQItem(
+            FAQItem(
               question: AppLocalizations.of(context)!.faqDataQuestion,
               answer: AppLocalizations.of(context)!.faqDataAnswer,
             ),
@@ -114,7 +118,16 @@ class _HelpPageState extends State<HelpPage> {
                 children: [
                   Opacity(
                     opacity: 0.5,
-                    child: Image.asset('assets/icon/icon.png', width: 48, height: 48, errorBuilder: (context, error, stackTrace) => const Icon(Icons.description, size: 48, color: Colors.grey))
+                    child: Image.asset(
+                      'assets/icon/icon.png',
+                      width: 48,
+                      height: 48,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.description,
+                        size: 48,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -127,19 +140,34 @@ class _HelpPageState extends State<HelpPage> {
                     children: [
                       TextButton(
                         onPressed: () => context.push('/legal/privacy'),
-                        child: Text(AppLocalizations.of(context)!.privacyPolicy, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                        child: Text(
+                          AppLocalizations.of(context)!.privacyPolicy,
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                      Text('|', style: TextStyle(color: Colors.grey[700], fontSize: 12)),
+                      Text(
+                        '|',
+                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                      ),
                       TextButton(
                         onPressed: () => context.push('/legal/terms'),
-                        child: Text(AppLocalizations.of(context)!.termsOfService, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                        child: Text(
+                          AppLocalizations.of(context)!.termsOfService,
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
-             const SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -153,7 +181,12 @@ class _SupportCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback onTap;
 
-  const _SupportCard({required this.icon, required this.title, required this.subtitle, required this.onTap});
+  const _SupportCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -163,9 +196,9 @@ class _SupportCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-             color: Colors.black.withValues(alpha: 0.1),
-             offset: const Offset(0, 4),
-             blurRadius: 10,
+            color: Colors.black.withValues(alpha: 0.1),
+            offset: const Offset(0, 4),
+            blurRadius: 10,
           ),
         ],
       ),
@@ -188,9 +221,19 @@ class _SupportCard extends StatelessWidget {
                   child: Icon(icon, color: Colors.white, size: 20),
                 ),
                 const SizedBox(height: 16),
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(subtitle, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                Text(
+                  subtitle,
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                ),
               ],
             ),
           ),

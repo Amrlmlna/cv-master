@@ -17,10 +17,12 @@ class ForgotPasswordBottomSheet extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<ForgotPasswordBottomSheet> createState() => _ForgotPasswordBottomSheetState();
+  ConsumerState<ForgotPasswordBottomSheet> createState() =>
+      _ForgotPasswordBottomSheetState();
 }
 
-class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottomSheet> {
+class _ForgotPasswordBottomSheetState
+    extends ConsumerState<ForgotPasswordBottomSheet> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
@@ -36,13 +38,13 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
 
     setState(() => _isLoading = true);
     try {
-      await ref.read(authRepositoryProvider).sendPasswordResetEmail(
-        _emailController.text.trim(),
-      );
+      await ref
+          .read(authRepositoryProvider)
+          .sendPasswordResetEmail(_emailController.text.trim());
       if (mounted) {
         Navigator.pop(context);
         CustomSnackBar.showSuccess(
-          context, 
+          context,
           AppLocalizations.of(context)!.verificationEmailSent,
         );
       }
@@ -64,7 +66,12 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
         color: Color(0xFF121212),
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
-      padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(context).viewInsets.bottom + 40),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        16,
+        24,
+        MediaQuery.of(context).viewInsets.bottom + 40,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -82,7 +89,7 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
               ),
             ),
             const SizedBox(height: 32),
-            
+
             Text(
               AppLocalizations.of(context)!.forgotPassword,
               textAlign: TextAlign.center,
@@ -93,14 +100,14 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
               ),
             ),
             const SizedBox(height: 12),
-            
+
             Text(
               AppLocalizations.of(context)!.forgotPasswordResetMessage,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 14, color: Colors.white60),
             ),
             const SizedBox(height: 32),
-            
+
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
@@ -112,11 +119,15 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
                 fillColor: Colors.white.withValues(alpha: 0.03),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+                  borderSide: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.1),
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
+                  borderSide: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.05),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -131,7 +142,7 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
               },
             ),
             const SizedBox(height: 24),
-            
+
             SizedBox(
               height: 56,
               child: ElevatedButton(
@@ -139,18 +150,26 @@ class _ForgotPasswordBottomSheetState extends ConsumerState<ForgotPasswordBottom
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   elevation: 0,
                 ),
                 child: _isLoading
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.black,
+                        ),
                       )
                     : Text(
                         AppLocalizations.of(context)!.sendResetLink,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
               ),
             ),

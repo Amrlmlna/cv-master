@@ -40,10 +40,26 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _phoneController = TextEditingController();
     _locationController = TextEditingController();
 
-    _nameController.addListener(() => ref.read(onboardingFormProvider.notifier).updateName(_nameController.text));
-    _emailController.addListener(() => ref.read(onboardingFormProvider.notifier).updateEmail(_emailController.text));
-    _phoneController.addListener(() => ref.read(onboardingFormProvider.notifier).updatePhone(_phoneController.text));
-    _locationController.addListener(() => ref.read(onboardingFormProvider.notifier).updateLocation(_locationController.text));
+    _nameController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updateName(_nameController.text),
+    );
+    _emailController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updateEmail(_emailController.text),
+    );
+    _phoneController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updatePhone(_phoneController.text),
+    );
+    _locationController.addListener(
+      () => ref
+          .read(onboardingFormProvider.notifier)
+          .updateLocation(_locationController.text),
+    );
 
     _prefillFromAuth();
   }
@@ -72,17 +88,19 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   void _nextPage() {
     final notifier = ref.read(onboardingFormProvider.notifier);
-    
+
     if (ref.read(onboardingFormProvider).currentPage == 0) {
-       if (_nameController.text.isEmpty) {
-        CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.fillNameError);
+      if (_nameController.text.isEmpty) {
+        CustomSnackBar.showWarning(
+          context,
+          AppLocalizations.of(context)!.fillNameError,
+        );
         return;
       }
     }
 
     if (notifier.nextPage()) {
-    } else {
-    }
+    } else {}
   }
 
   void _prevPage() {
@@ -91,16 +109,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   void _handleImportSuccess(profile) {
     final notifier = ref.read(onboardingFormProvider.notifier);
-    
+
     notifier.populateFromImport(profile);
-    
+
     _nameController.text = profile.fullName;
     _emailController.text = profile.email;
     _phoneController.text = profile.phoneNumber ?? '';
     _locationController.text = profile.location ?? '';
-    
+
     notifier.skipToFinal();
-    
+
     if (mounted) {
       CustomSnackBar.showSuccess(
         context,
@@ -114,10 +132,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> _finishOnboarding() async {
-     await ref.read(onboardingFormProvider.notifier).submit();
-     if (mounted) {
-       context.go('/');
-     }
+    await ref.read(onboardingFormProvider.notifier).submit();
+    if (mounted) {
+      context.go('/');
+    }
   }
 
   @override
@@ -125,18 +143,18 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final state = ref.watch(onboardingFormProvider);
     final currentPage = state.currentPage;
     final isSaving = state.isSaving;
-    
+
     final bool isImportStep = currentPage == 1;
     final bool isLastPage = currentPage == 6;
 
     final bool isSkippable = currentPage >= 2 && currentPage <= 5;
-    
+
     ref.listen(onboardingFormProvider, (prev, next) {
       if (prev?.currentPage != next.currentPage) {
         _pageController.animateToPage(
-          next.currentPage, 
-          duration: const Duration(milliseconds: 300), 
-          curve: Curves.easeInOut
+          next.currentPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
         );
       }
     });
@@ -148,7 +166,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         children: [
           Expanded(
             child: Form(
-              key: _formKey, 
+              key: _formKey,
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -165,19 +183,27 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   OnboardingExperienceStep(
                     experiences: state.formData.experience,
-                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateExperience(val),
+                    onChanged: (val) => ref
+                        .read(onboardingFormProvider.notifier)
+                        .updateExperience(val),
                   ),
                   OnboardingEducationStep(
                     education: state.formData.education,
-                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateEducation(val),
+                    onChanged: (val) => ref
+                        .read(onboardingFormProvider.notifier)
+                        .updateEducation(val),
                   ),
                   OnboardingCertificationStep(
                     certifications: state.formData.certifications,
-                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateCertifications(val),
+                    onChanged: (val) => ref
+                        .read(onboardingFormProvider.notifier)
+                        .updateCertifications(val),
                   ),
                   OnboardingSkillsStep(
                     skills: state.formData.skills,
-                    onChanged: (val) => ref.read(onboardingFormProvider.notifier).updateSkills(val),
+                    onChanged: (val) => ref
+                        .read(onboardingFormProvider.notifier)
+                        .updateSkills(val),
                   ),
                   const OnboardingFinalStep(),
                 ],

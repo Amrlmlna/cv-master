@@ -23,10 +23,7 @@ class HeroSection extends ConsumerWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFFFFF),
-            Color(0xFFE0E0E0),
-          ],
+          colors: [Color(0xFFFFFFFF), Color(0xFFE0E0E0)],
         ),
         boxShadow: [
           BoxShadow(
@@ -38,13 +35,16 @@ class HeroSection extends ConsumerWidget {
       ),
       child: Stack(
         children: [
-           Padding(
+          Padding(
             padding: const EdgeInsets.all(32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12),
@@ -61,15 +61,15 @@ class HeroSection extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  hasDrafts 
-                    ? AppLocalizations.of(context)!.createProfessionalCV 
-                    : AppLocalizations.of(context)!.createFirstCV,
+                  hasDrafts
+                      ? AppLocalizations.of(context)!.createProfessionalCV
+                      : AppLocalizations.of(context)!.createFirstCV,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 42,
                     fontWeight: FontWeight.w600,
                     fontFamily: 'Outfit',
-                    height: 1.0, 
+                    height: 1.0,
                     letterSpacing: -1.5,
                   ),
                 ),
@@ -78,7 +78,16 @@ class HeroSection extends ConsumerWidget {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: AuthGuard.protected(context, () => context.push('/create/job-input'), featureTitle: AppLocalizations.of(context)!.authWallCreateCV, featureDescription: AppLocalizations.of(context)!.authWallCreateCVDesc),
+                    onPressed: AuthGuard.protected(
+                      context,
+                      () => context.push('/create/job-input'),
+                      featureTitle: AppLocalizations.of(
+                        context,
+                      )!.authWallCreateCV,
+                      featureDescription: AppLocalizations.of(
+                        context,
+                      )!.authWallCreateCVDesc,
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,

@@ -55,8 +55,12 @@ class CVData extends Equatable {
   factory CVData.fromJson(Map<String, dynamic> json) {
     return CVData(
       id: json['id'] as String,
-      userProfile: UserProfile.fromJson(json['userProfile'] as Map<String, dynamic>),
-      summary: (json['summary'] ?? json['generatedSummary']) as String? ?? 'Summary not available',
+      userProfile: UserProfile.fromJson(
+        json['userProfile'] as Map<String, dynamic>,
+      ),
+      summary:
+          (json['summary'] ?? json['generatedSummary']) as String? ??
+          'Summary not available',
       styleId: json['styleId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       jobTitle: json['jobTitle'] as String? ?? 'Untitled Job',
@@ -65,5 +69,13 @@ class CVData extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, userProfile, summary, styleId, createdAt, jobTitle, jobDescription];
+  List<Object?> get props => [
+    id,
+    userProfile,
+    summary,
+    styleId,
+    createdAt,
+    jobTitle,
+    jobDescription,
+  ];
 }

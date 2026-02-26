@@ -42,7 +42,8 @@ class AuthWallBottomSheet extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<AuthWallBottomSheet> createState() => _AuthWallBottomSheetState();
+  ConsumerState<AuthWallBottomSheet> createState() =>
+      _AuthWallBottomSheetState();
 }
 
 class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
@@ -91,8 +92,12 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
             decoration: BoxDecoration(
-              color: (isDark ? Colors.black : Colors.grey.shade900).withValues(alpha: 0.35),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              color: (isDark ? Colors.black : Colors.grey.shade900).withValues(
+                alpha: 0.35,
+              ),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -160,7 +165,10 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                 SocialLoginButton(
                   onPressed: _isLoading ? null : _signInWithGoogle,
                   text: AppLocalizations.of(context)!.continueWithGoogle,
-                  icon: Image.asset('assets/images/google_logo.png', height: 24),
+                  icon: Image.asset(
+                    'assets/images/google_logo.png',
+                    height: 24,
+                  ),
                   isLoading: _isLoading,
                 ),
                 const SizedBox(height: 12),

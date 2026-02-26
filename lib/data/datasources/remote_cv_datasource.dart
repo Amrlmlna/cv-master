@@ -5,8 +5,8 @@ import '../../core/config/api_config.dart';
 class RemoteCVDataSource {
   final http.Client _httpClient;
 
-  RemoteCVDataSource({http.Client? httpClient}) 
-      : _httpClient = httpClient ?? http.Client();
+  RemoteCVDataSource({http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   static String get _cvBaseUrl => '${ApiConfig.baseUrl}/cv';
 
@@ -28,7 +28,10 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException('Failed to generate CV: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to generate CV: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 
@@ -50,7 +53,10 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException('Failed to tailor profile: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to tailor profile: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 
@@ -68,7 +74,10 @@ class RemoteCVDataSource {
       final data = jsonDecode(response.body);
       return data['rewrittenText'] as String;
     } else {
-      throw http.ClientException('Failed to rewrite content: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to rewrite content: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 
@@ -82,7 +91,10 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw http.ClientException('Failed to parse CV: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to parse CV: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 
@@ -108,7 +120,7 @@ class RemoteCVDataSource {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final String? pdfUrl = data['pdfUrl'];
-      
+
       if (pdfUrl == null || pdfUrl.isEmpty) {
         throw http.ClientException('Generated PDF URL is empty');
       }
@@ -117,21 +129,28 @@ class RemoteCVDataSource {
       if (pdfResponse.statusCode == 200) {
         final bytes = pdfResponse.bodyBytes;
         final startString = String.fromCharCodes(bytes.take(100));
-        
+
         if (startString.contains('<?xml') || startString.contains('<Error>')) {
-          throw http.ClientException('Received XML error instead of PDF. Check GCS permissions.');
+          throw http.ClientException(
+            'Received XML error instead of PDF. Check GCS permissions.',
+          );
         }
 
         if (!startString.contains('%PDF')) {
           throw http.ClientException('Downloaded file is not a valid PDF.');
         }
-        
+
         return bytes;
       } else {
-        throw http.ClientException('Failed to download PDF from GCS: ${pdfResponse.statusCode}');
+        throw http.ClientException(
+          'Failed to download PDF from GCS: ${pdfResponse.statusCode}',
+        );
       }
     } else {
-      throw http.ClientException('Failed to generate PDF: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to generate PDF: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 }

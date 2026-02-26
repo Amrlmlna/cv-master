@@ -17,7 +17,8 @@ class TemplatePreviewPage extends ConsumerStatefulWidget {
   const TemplatePreviewPage({super.key});
 
   @override
-  ConsumerState<TemplatePreviewPage> createState() => _TemplatePreviewPageState();
+  ConsumerState<TemplatePreviewPage> createState() =>
+      _TemplatePreviewPageState();
 }
 
 class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
@@ -50,9 +51,14 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
 
     if (template.isLocked) {
       if (mounted) {
-        if (!AuthGuard.check(context,
-            featureTitle: AppLocalizations.of(context)!.authWallBuyCredits,
-            featureDescription: AppLocalizations.of(context)!.authWallBuyCreditsDesc)) return;
+        if (!AuthGuard.check(
+          context,
+          featureTitle: AppLocalizations.of(context)!.authWallBuyCredits,
+          featureDescription: AppLocalizations.of(
+            context,
+          )!.authWallBuyCreditsDesc,
+        ))
+          return;
 
         final purchased = await PaymentService.presentPaywall();
         if (purchased) {
@@ -65,12 +71,14 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     final globalLocale = ref.read(localeNotifierProvider).languageCode;
     final effectiveLocale = _manualLocaleOverride ?? globalLocale;
 
-    await ref.read(cvDownloadProvider.notifier).attemptDownload(
-      context: context,
-      styleId: selectedStyleId,
-      locale: effectiveLocale,
-      usePhoto: _usePhoto,
-    );
+    await ref
+        .read(cvDownloadProvider.notifier)
+        .attemptDownload(
+          context: context,
+          styleId: selectedStyleId,
+          locale: effectiveLocale,
+          usePhoto: _usePhoto,
+        );
   }
 
   @override
@@ -78,7 +86,10 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
     final templatesAsync = ref.watch(templatesProvider);
     final creationState = ref.watch(cvCreationProvider);
     final downloadState = ref.watch(cvDownloadProvider);
-    final photoUrl = ref.watch(profileControllerProvider).currentProfile.photoUrl;
+    final photoUrl = ref
+        .watch(profileControllerProvider)
+        .currentProfile
+        .photoUrl;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -91,7 +102,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
         data: (templates) {
           final template = templates.firstWhere(
             (t) => t.id == creationState.selectedStyle,
-            orElse: () => templates.isNotEmpty ? templates.first : throw Exception('No template selected'),
+            orElse: () => templates.isNotEmpty
+                ? templates.first
+                : throw Exception('No template selected'),
           );
 
           return SingleChildScrollView(
@@ -106,7 +119,8 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                   usePhoto: _usePhoto,
                   pageController: _pageController,
                   onPageChanged: (index) {
-                    if (template.supportsPhoto && template.previewUrls.length > 1) {
+                    if (template.supportsPhoto &&
+                        template.previewUrls.length > 1) {
                       setState(() => _usePhoto = (index == 1));
                     }
                   },
@@ -115,28 +129,39 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
 
                 Text(
                   AppLocalizations.of(context)!.cvLanguage,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 LanguageSelector(
                   manualLocaleOverride: _manualLocaleOverride,
-                  onLocaleChanged: (code) => setState(() => _manualLocaleOverride = code),
+                  onLocaleChanged: (code) =>
+                      setState(() => _manualLocaleOverride = code),
                 ),
                 const SizedBox(height: 24),
 
                 if (template.supportsPhoto) ...[
-                   Text(
+                  Text(
                     AppLocalizations.of(context)!.photoSettings,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   PhotoToggleSettings(
                     photoUrl: photoUrl,
                     usePhoto: _usePhoto,
-                    onUploadingChanged: (val) => setState(() => _isUploading = val),
+                    onUploadingChanged: (val) =>
+                        setState(() => _isUploading = val),
                     onToggleChanged: (val) {
                       setState(() => _usePhoto = val);
-                      if (template.supportsPhoto && template.previewUrls.length > 1) {
+                      if (template.supportsPhoto &&
+                          template.previewUrls.length > 1) {
                         _pageController.animateToPage(
                           val ? 1 : 0,
                           duration: const Duration(milliseconds: 300),
@@ -158,7 +183,9 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
             children: [
               const Icon(Icons.error_outline, size: 48, color: Colors.red),
               const SizedBox(height: 16),
-              Text(AppLocalizations.of(context)!.templateLoadError(err.toString())),
+              Text(
+                AppLocalizations.of(context)!.templateLoadError(err.toString()),
+              ),
               ElevatedButton(
                 onPressed: () => ref.refresh(templatesProvider),
                 child: Text(AppLocalizations.of(context)!.retry),
@@ -184,18 +211,27 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: (downloadState.status == DownloadStatus.generating || _isUploading) ? null : _handleDownload,
+              onPressed:
+                  (downloadState.status == DownloadStatus.generating ||
+                      _isUploading)
+                  ? null
+                  : _handleDownload,
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? Colors.white : Colors.black,
                 foregroundColor: isDark ? Colors.black : Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
               ),
               child: downloadState.status == DownloadStatus.generating
-                ? const CircularProgressIndicator()
-                : Text(
-                    AppLocalizations.of(context)!.exportPdf,
-                    style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
-                  ),
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      AppLocalizations.of(context)!.exportPdf,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
             ),
           ),
         ),

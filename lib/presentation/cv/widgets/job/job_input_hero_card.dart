@@ -19,7 +19,7 @@ class JobInputHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +34,7 @@ class JobInputHeroCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        
+
         Text(
           AppLocalizations.of(context)!.aiHelpCreateCV,
           style: GoogleFonts.outfit(
@@ -44,9 +44,9 @@ class JobInputHeroCard extends StatelessWidget {
             fontWeight: FontWeight.w400,
           ),
         ),
-        
+
         const SizedBox(height: 32),
-        
+
         Container(
           decoration: BoxDecoration(
             color: isDark ? Colors.grey[900] : Colors.grey[100],
@@ -57,10 +57,12 @@ class JobInputHeroCard extends StatelessWidget {
               _buildMinimalInput(
                 context: context,
                 controller: controller,
-                hint: hintText.isEmpty && controller.text.isEmpty ? AppLocalizations.of(context)!.positionHint : hintText,
+                hint: hintText.isEmpty && controller.text.isEmpty
+                    ? AppLocalizations.of(context)!.positionHint
+                    : hintText,
                 autoFocus: true,
               ),
-              
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Divider(
@@ -93,7 +95,7 @@ class JobInputHeroCard extends StatelessWidget {
     VoidCallback? onSubmit,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return TextFormField(
       controller: controller,
       autofocus: autoFocus,
@@ -114,7 +116,10 @@ class JobInputHeroCard extends StatelessWidget {
         focusedBorder: InputBorder.none,
         errorBorder: InputBorder.none,
         focusedErrorBorder: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         filled: false,
       ),
       validator: (value) {

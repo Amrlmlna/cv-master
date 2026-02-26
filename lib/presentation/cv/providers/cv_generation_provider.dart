@@ -21,7 +21,6 @@ class CVCreationState {
   final String selectedStyle;
   final String? currentDraftId;
 
-
   const CVCreationState({
     this.jobInput,
     this.userProfile,
@@ -69,10 +68,12 @@ class CVCreationNotifier extends Notifier<CVCreationState> {
     state = state.copyWith(selectedStyle: style);
   }
 
-
   void setCurrentDraftId(String id) {
     state = state.copyWith(currentDraftId: id);
   }
 }
 
-final cvCreationProvider = NotifierProvider<CVCreationNotifier, CVCreationState>(CVCreationNotifier.new);
+final cvCreationProvider =
+    NotifierProvider<CVCreationNotifier, CVCreationState>(
+      CVCreationNotifier.new,
+    );

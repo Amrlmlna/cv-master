@@ -11,18 +11,22 @@ class ProgressBanner extends ConsumerWidget {
     final userLevel = ref.watch(userLevelProvider);
     final rawCompletion = ref.watch(profileCompletionProvider);
     final stats = ref.watch(profileStatsProvider);
-    
+
     // Helper to get localized user level
     String getLocalizedLevel(String key) {
       final l10n = AppLocalizations.of(context)!;
       switch (key) {
-        case 'userLevelRookie': return l10n.userLevelRookie;
-        case 'userLevelMid': return l10n.userLevelMid;
-        case 'userLevelExpert': return l10n.userLevelExpert;
-        default: return key;
+        case 'userLevelRookie':
+          return l10n.userLevelRookie;
+        case 'userLevelMid':
+          return l10n.userLevelMid;
+        case 'userLevelExpert':
+          return l10n.userLevelExpert;
+        default:
+          return key;
       }
     }
-    
+
     // Cap completion at 100%
     final completion = rawCompletion > 100 ? 100 : rawCompletion;
     final isComplete = completion == 100;
@@ -34,10 +38,7 @@ class ProgressBanner extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Colors.grey.shade900,
-            Colors.grey.shade800,
-          ],
+          colors: [Colors.grey.shade900, Colors.grey.shade800],
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -73,9 +74,9 @@ class ProgressBanner extends ConsumerWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           if (!isComplete)
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -103,9 +104,9 @@ class ProgressBanner extends ConsumerWidget {
                 ),
               ],
             ),
-          
+
           const SizedBox(height: 16),
-          
+
           if (!isComplete)
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -116,10 +117,10 @@ class ProgressBanner extends ConsumerWidget {
                 minHeight: 6,
               ),
             ),
-          
+
           if (!isComplete) const SizedBox(height: 20),
           if (isComplete) const SizedBox(height: 12),
-          
+
           Row(
             children: [
               _StatItem(
@@ -148,10 +149,7 @@ class _StatItem extends StatelessWidget {
   final String label;
   final int value;
 
-  const _StatItem({
-    required this.label,
-    required this.value,
-  });
+  const _StatItem({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -168,10 +166,7 @@ class _StatItem extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey.shade400,
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
         ),
       ],
     );

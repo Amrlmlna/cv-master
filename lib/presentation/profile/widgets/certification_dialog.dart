@@ -21,7 +21,9 @@ class _CertificationDialogState extends State<CertificationDialog> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.existing?.name ?? '');
-    _issuerController = TextEditingController(text: widget.existing?.issuer ?? '');
+    _issuerController = TextEditingController(
+      text: widget.existing?.issuer ?? '',
+    );
     if (widget.existing != null) {
       _selectedDate = widget.existing!.date;
     }
@@ -51,7 +53,9 @@ class _CertificationDialogState extends State<CertificationDialog> {
   void _save() {
     if (_formKey.currentState!.validate()) {
       final cert = Certification(
-        id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        id:
+            widget.existing?.id ??
+            DateTime.now().millisecondsSinceEpoch.toString(),
         name: _nameController.text,
         issuer: _issuerController.text,
         date: _selectedDate,
@@ -63,7 +67,11 @@ class _CertificationDialogState extends State<CertificationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existing == null ? AppLocalizations.of(context)!.addCertification : AppLocalizations.of(context)!.editCertification),
+      title: Text(
+        widget.existing == null
+            ? AppLocalizations.of(context)!.addCertification
+            : AppLocalizations.of(context)!.editCertification,
+      ),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -72,13 +80,21 @@ class _CertificationDialogState extends State<CertificationDialog> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.certificationName),
-                validator: (value) => value == null || value.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.certificationName,
+                ),
+                validator: (value) => value == null || value.isEmpty
+                    ? AppLocalizations.of(context)!.requiredField
+                    : null,
               ),
               TextFormField(
                 controller: _issuerController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.issuer),
-                validator: (value) => value == null || value.isEmpty ? AppLocalizations.of(context)!.requiredField : null,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.issuer,
+                ),
+                validator: (value) => value == null || value.isEmpty
+                    ? AppLocalizations.of(context)!.requiredField
+                    : null,
               ),
               const SizedBox(height: 16),
               Row(

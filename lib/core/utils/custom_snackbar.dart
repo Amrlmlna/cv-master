@@ -29,7 +29,8 @@ class CustomSnackBar {
     if (errorMsg.contains('firebase_auth/email-already-in-use')) {
       return 'This email address is already in use by another account.';
     }
-    if (errorMsg.contains('firebase_auth/invalid-credential') || errorMsg.contains('firebase_auth/wrong-password')) {
+    if (errorMsg.contains('firebase_auth/invalid-credential') ||
+        errorMsg.contains('firebase_auth/wrong-password')) {
       return 'Invalid email or password. Please try again.';
     }
     if (errorMsg.contains('firebase_auth/weak-password')) {
@@ -44,11 +45,11 @@ class CustomSnackBar {
     if (errorMsg.contains('firebase_auth/network-request-failed')) {
       return 'Network error. Please check your internet connection.';
     }
-    
+
     // Strip out the bracketed Firebase specific error codes if present
     final regex = RegExp(r'\[.*?\] \s*');
     final cleaned = errorMsg.replaceAll(regex, '').trim();
-    
+
     if (cleaned.startsWith('Exception: ')) {
       return cleaned.substring(11); // Remove leading 'Exception: '
     }
@@ -56,11 +57,7 @@ class CustomSnackBar {
   }
 
   /// Internal method to show styled snackbar
-  static void _show(
-    BuildContext context,
-    String message,
-    IconData icon,
-  ) {
+  static void _show(BuildContext context, String message, IconData icon) {
     final sanitizedMessage = _normalizeErrorMessage(message);
 
     // Remove existing if any
@@ -114,15 +111,15 @@ class _TopSnackBarState extends State<_TopSnackBar>
       vsync: this,
     );
 
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutCubic,
-      reverseCurve: Curves.easeInCubic,
-    ));
-    
+    _offsetAnimation =
+        Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Curves.easeOutCubic,
+            reverseCurve: Curves.easeInCubic,
+          ),
+        );
+
     _fadeAnimation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeOut,
@@ -162,7 +159,7 @@ class _TopSnackBarState extends State<_TopSnackBar>
           key: UniqueKey(),
           direction: DismissDirection.up,
           onDismissed: (_) {
-             widget.onDismissed();
+            widget.onDismissed();
           },
           child: SlideTransition(
             position: _offsetAnimation,
@@ -175,7 +172,10 @@ class _TopSnackBarState extends State<_TopSnackBar>
                   child: CustomPaint(
                     painter: _LiquidGlassSnackBarPainter(),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         // Very transparent dark base so the blur + highlights are visible
                         color: Colors.black.withValues(alpha: 0.25),
@@ -255,10 +255,7 @@ class _LiquidGlassSnackBarPainter extends CustomPainter {
       ..shader = RadialGradient(
         center: const Alignment(0.8, 1.2),
         radius: 1.0,
-        colors: [
-          Colors.white.withValues(alpha: 0.08),
-          Colors.transparent,
-        ],
+        colors: [Colors.white.withValues(alpha: 0.08), Colors.transparent],
         stops: const [0.0, 1.0],
       ).createShader(rect);
 

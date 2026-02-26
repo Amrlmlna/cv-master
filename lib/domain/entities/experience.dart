@@ -48,7 +48,9 @@ class Experience extends Equatable {
 
   factory Experience.fromJson(Map<String, dynamic> json) {
     return Experience(
-      id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id:
+          json['id'] as String? ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       jobTitle: json['jobTitle'] as String,
       companyName: json['companyName'] as String,
       startDate: json['startDate'] as String,
@@ -58,5 +60,12 @@ class Experience extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, jobTitle, companyName, startDate, endDate, description];
+  List<Object?> get props => [
+    id,
+    jobTitle,
+    companyName,
+    startDate,
+    endDate,
+    description,
+  ];
 }

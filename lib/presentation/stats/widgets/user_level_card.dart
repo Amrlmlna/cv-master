@@ -6,11 +6,7 @@ class UserLevelCard extends StatelessWidget {
   final String level;
   final bool isDark;
 
-  const UserLevelCard({
-    super.key,
-    required this.level,
-    required this.isDark,
-  });
+  const UserLevelCard({super.key, required this.level, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +15,8 @@ class UserLevelCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: isDark 
-              ? [const Color(0xFF2C3E50), const Color(0xFF000000)] 
+          colors: isDark
+              ? [const Color(0xFF2C3E50), const Color(0xFF000000)]
               : [const Color(0xFF2C3E50), const Color(0xFF4CA1AF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -39,10 +35,7 @@ class UserLevelCard extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.currentLevel,
-            style: GoogleFonts.outfit(
-              color: Colors.white70,
-              fontSize: 14,
-            ),
+            style: GoogleFonts.outfit(color: Colors.white70, fontSize: 14),
           ),
           const SizedBox(height: 8),
           Text(
@@ -63,7 +56,7 @@ class UserLevelCard extends StatelessWidget {
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: 0.7, 
+              widthFactor: 0.7,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -75,10 +68,7 @@ class UserLevelCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.keepBuilding,
-            style: GoogleFonts.outfit(
-              color: Colors.white70,
-              fontSize: 12,
-            ),
+            style: GoogleFonts.outfit(color: Colors.white70, fontSize: 12),
           ),
         ],
       ),

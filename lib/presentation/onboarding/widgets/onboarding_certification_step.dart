@@ -22,12 +22,16 @@ class OnboardingCertificationStep extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.certificationTitle,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.certificationSubtitle,
-             style: const TextStyle(color: Colors.grey, height: 1.5),
+            style: const TextStyle(color: Colors.grey, height: 1.5),
           ),
           const SizedBox(height: 32),
           CertificationListForm(

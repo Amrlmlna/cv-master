@@ -6,7 +6,7 @@ class CVImportRepository {
   final RemoteCVDataSource remoteDataSource;
 
   CVImportRepository({required this.remoteDataSource});
-  
+
   Future<UserProfile> parseCV(String cvText) async {
     try {
       final data = await remoteDataSource.parseCV(cvText);

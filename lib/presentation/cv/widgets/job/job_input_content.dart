@@ -66,7 +66,8 @@ class _JobInputContentState extends State<JobInputContent> {
             _charIndex--;
           } else {
             _isDeleting = false;
-            _currentStringIndex = (_currentStringIndex + 1) % _jobExamples.length;
+            _currentStringIndex =
+                (_currentStringIndex + 1) % _jobExamples.length;
           }
         } else {
           if (_charIndex < currentString.length) {
@@ -75,15 +76,15 @@ class _JobInputContentState extends State<JobInputContent> {
             _isDeleting = true;
           }
         }
-        
+
         if (_charIndex == currentString.length && !_isDeleting) {
-           _typingTimer?.cancel();
-           Future.delayed(const Duration(seconds: 2), () {
-             if (mounted) {
-               _isDeleting = true;
-               _startTypingAnimation(); 
-             }
-           });
+          _typingTimer?.cancel();
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) {
+              _isDeleting = true;
+              _startTypingAnimation();
+            }
+          });
         } else {
           _hintText = currentString.substring(0, _charIndex);
         }
@@ -113,7 +114,7 @@ class _JobInputContentState extends State<JobInputContent> {
               JobDescriptionField(controller: widget.descController),
 
               const SizedBox(height: 32),
-              
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -127,9 +128,22 @@ class _JobInputContentState extends State<JobInputContent> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: widget.isLoading 
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                    : Text(AppLocalizations.of(context)!.continueToReview, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: widget.isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          AppLocalizations.of(context)!.continueToReview,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
             ],

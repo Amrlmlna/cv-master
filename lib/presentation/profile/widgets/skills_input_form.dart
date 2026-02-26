@@ -22,10 +22,15 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
   void _addSkill() {
     final text = _controller.text.trim();
     if (text.isNotEmpty) {
-      final isDuplicate = widget.skills.any((s) => s.toLowerCase() == text.toLowerCase());
+      final isDuplicate = widget.skills.any(
+        (s) => s.toLowerCase() == text.toLowerCase(),
+      );
       if (isDuplicate) {
         if (mounted) {
-          CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+          CustomSnackBar.showWarning(
+            context,
+            AppLocalizations.of(context)!.cvDataExists,
+          );
         }
       } else {
         final newList = List<String>.from(widget.skills)..add(text);
@@ -66,15 +71,22 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
         ),
         const SizedBox(height: 16),
         if (widget.skills.isEmpty)
-          Text(AppLocalizations.of(context)!.noSkills, style: const TextStyle(color: Colors.grey))
+          Text(
+            AppLocalizations.of(context)!.noSkills,
+            style: const TextStyle(color: Colors.grey),
+          )
         else
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
-            children: widget.skills.map((skill) => Chip(
-              label: Text(skill),
-              onDeleted: () => _removeSkill(skill),
-            )).toList(),
+            children: widget.skills
+                .map(
+                  (skill) => Chip(
+                    label: Text(skill),
+                    onDeleted: () => _removeSkill(skill),
+                  ),
+                )
+                .toList(),
           ),
       ],
     );

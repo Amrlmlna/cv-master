@@ -5,8 +5,8 @@ import '../../core/config/api_config.dart';
 class RemoteTemplateDataSource {
   final http.Client _httpClient;
 
-  RemoteTemplateDataSource({http.Client? httpClient}) 
-      : _httpClient = httpClient ?? http.Client();
+  RemoteTemplateDataSource({http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   static String get _baseUrl => ApiConfig.baseUrl;
 
@@ -19,7 +19,10 @@ class RemoteTemplateDataSource {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw http.ClientException('Failed to load templates: ${response.statusCode}', response.request?.url);
+      throw http.ClientException(
+        'Failed to load templates: ${response.statusCode}',
+        response.request?.url,
+      );
     }
   }
 }

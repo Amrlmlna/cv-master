@@ -27,4 +27,3 @@ class QuickActions extends ConsumerWidget {
     );
   }
 }
-

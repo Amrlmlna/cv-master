@@ -45,29 +45,37 @@ class EmailVerificationBottomSheet extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<EmailVerificationBottomSheet> createState() => _EmailVerificationBottomSheetState();
+  ConsumerState<EmailVerificationBottomSheet> createState() =>
+      _EmailVerificationBottomSheetState();
 }
 
-class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerificationBottomSheet> {
+class _EmailVerificationBottomSheetState
+    extends ConsumerState<EmailVerificationBottomSheet> {
   bool _isChecking = false;
   bool _isResending = false;
 
   Future<void> _checkStatus() async {
     setState(() => _isChecking = true);
-    
+
     try {
       await ref.read(authRepositoryProvider).reloadUser();
       final user = fb.FirebaseAuth.instance.currentUser;
-      
+
       if (user?.emailVerified ?? false) {
         if (mounted) {
           Navigator.pop(context);
           widget.onVerified?.call();
-          CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.emailVerifiedSuccess);
+          CustomSnackBar.showSuccess(
+            context,
+            AppLocalizations.of(context)!.emailVerifiedSuccess,
+          );
         }
       } else {
         if (mounted) {
-          CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.emailNotVerifiedYet);
+          CustomSnackBar.showWarning(
+            context,
+            AppLocalizations.of(context)!.emailNotVerifiedYet,
+          );
         }
       }
     } catch (e) {
@@ -86,7 +94,10 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
     try {
       await ref.read(authRepositoryProvider).sendEmailVerification();
       if (mounted) {
-        CustomSnackBar.showSuccess(context, AppLocalizations.of(context)!.verificationEmailSent);
+        CustomSnackBar.showSuccess(
+          context,
+          AppLocalizations.of(context)!.verificationEmailSent,
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -109,7 +120,12 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
         color: Color(0xFF121212),
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
-      padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(context).padding.bottom + 24),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        16,
+        24,
+        MediaQuery.of(context).padding.bottom + 24,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -122,7 +138,7 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
             ),
           ),
           const SizedBox(height: 8),
-          
+
           Text(
             widget.title ?? AppLocalizations.of(context)!.verifyYourEmail,
             textAlign: TextAlign.center,
@@ -133,20 +149,21 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
             ),
           ),
           const SizedBox(height: 12),
-          
+
           Text(
-            widget.description ?? AppLocalizations.of(context)!.verificationSentTo(email),
+            widget.description ??
+                AppLocalizations.of(context)!.verificationSentTo(email),
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 14, color: Colors.white60),
           ),
-          
+
           if (widget.extensionContent != null) ...[
             const SizedBox(height: 24),
             widget.extensionContent!,
           ],
 
           const SizedBox(height: 32),
-          
+
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -170,7 +187,9 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
               child: _isChecking
                   ? SpinningTextLoader(
@@ -179,21 +198,32 @@ class _EmailVerificationBottomSheetState extends ConsumerState<EmailVerification
                         AppLocalizations.of(context)!.validatingLink,
                         AppLocalizations.of(context)!.almostThere,
                       ],
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     )
                   : Text(
                       AppLocalizations.of(context)!.iHaveVerified,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
             ),
           ),
           const SizedBox(height: 16),
-          
+
           TextButton(
             onPressed: _isResending ? null : _resendLink,
             child: Text(
-              _isResending ? AppLocalizations.of(context)!.sending : AppLocalizations.of(context)!.resendEmail,
-              style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
+              _isResending
+                  ? AppLocalizations.of(context)!.sending
+                  : AppLocalizations.of(context)!.resendEmail,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
