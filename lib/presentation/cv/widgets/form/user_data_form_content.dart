@@ -74,7 +74,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-
             ReviewSectionCard(
               title: AppLocalizations.of(context)!.personalInfo,
               icon: Icons.person_outline,

@@ -23,13 +23,24 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
 
     return accountsAsync.when(
       data: (accounts) {
-        final filteredAccounts = _searchQuery.isEmpty 
-            ? accounts 
-            : accounts.where((acc) => 
-                acc.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase())) ||
-                acc.name.toLowerCase().contains(_searchQuery.toLowerCase()) || 
-                acc.handle.toLowerCase().contains(_searchQuery.toLowerCase())
-              ).toList();
+        final filteredAccounts = _searchQuery.isEmpty
+            ? accounts
+            : accounts
+                  .where(
+                    (acc) =>
+                        acc.tags.any(
+                          (tag) => tag.toLowerCase().contains(
+                            _searchQuery.toLowerCase(),
+                          ),
+                        ) ||
+                        acc.name.toLowerCase().contains(
+                          _searchQuery.toLowerCase(),
+                        ) ||
+                        acc.handle.toLowerCase().contains(
+                          _searchQuery.toLowerCase(),
+                        ),
+                  )
+                  .toList();
 
         return Column(
           children: [
@@ -71,38 +82,64 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                   Expanded(
                     child: Text(
                       AppLocalizations.of(context)!.jobListScannerHint,
-                      style: const TextStyle(color: Colors.white70, fontSize: 13),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: filteredAccounts.isEmpty 
+              child: filteredAccounts.isEmpty
                   ? Center(
                       child: Padding(
                         padding: const EdgeInsets.all(24.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.search_off, size: 64, color: Colors.grey.shade800),
+                            Icon(
+                              Icons.search_off,
+                              size: 64,
+                              color: Colors.grey.shade800,
+                            ),
                             const SizedBox(height: 16),
                             Text(
-                              AppLocalizations.of(context)!.jobListNoAccountsFound,
-                              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              AppLocalizations.of(
+                                context,
+                              )!.jobListNoAccountsFound,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              AppLocalizations.of(context)!.jobListNoAccountsFoundDesc(_searchQuery),
-                              style: TextStyle(color: Colors.grey.shade500, fontSize: 13, height: 1.5),
+                              AppLocalizations.of(
+                                context,
+                              )!.jobListNoAccountsFoundDesc(_searchQuery),
+                              style: TextStyle(
+                                color: Colors.grey.shade500,
+                                fontSize: 13,
+                                height: 1.5,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 24),
                             ElevatedButton.icon(
                               onPressed: () => context.push(AppRoutes.feedback),
-                              icon: const Icon(Icons.feedback_outlined, size: 18),
-                              label: Text(AppLocalizations.of(context)!.jobListGiveFeedback),
+                              icon: const Icon(
+                                Icons.feedback_outlined,
+                                size: 18,
+                              ),
+                              label: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.jobListGiveFeedback,
+                              ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 foregroundColor: Colors.black,
@@ -110,7 +147,10 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
                               ),
                             ),
                           ],
@@ -118,16 +158,22 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
                       ),
                     )
                   : GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 0.85,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
                       ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 0.85,
+                          ),
                       itemCount: filteredAccounts.length,
                       itemBuilder: (context, index) {
-                        return CuratedAccountCard(account: filteredAccounts[index]);
+                        return CuratedAccountCard(
+                          account: filteredAccounts[index],
+                        );
                       },
                     ),
             ),
@@ -135,7 +181,9 @@ class _CuratedAccountsTabState extends ConsumerState<CuratedAccountsTab> {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
+      error: (err, stack) => Center(
+        child: Text('$err', style: const TextStyle(color: Colors.white)),
+      ),
     );
   }
 }

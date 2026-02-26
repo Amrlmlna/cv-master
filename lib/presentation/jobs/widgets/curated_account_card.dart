@@ -45,7 +45,11 @@ class CuratedAccountCard extends StatelessWidget {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: [Color(0xFF833AB4), Color(0xFFFD1D1D), Color(0xFFF56040)],
+                      colors: [
+                        Color(0xFF833AB4),
+                        Color(0xFFFD1D1D),
+                        Color(0xFFF56040),
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -55,9 +59,17 @@ class CuratedAccountCard extends StatelessWidget {
                       ? Image.network(
                           account.profileImageUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.person, color: Colors.white54, size: 28),
+                          errorBuilder: (_, __, ___) => const Icon(
+                            Icons.person,
+                            color: Colors.white54,
+                            size: 28,
+                          ),
                         )
-                      : const Icon(Icons.person, color: Colors.white54, size: 28),
+                      : const Icon(
+                          Icons.person,
+                          color: Colors.white54,
+                          size: 28,
+                        ),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -121,4 +133,3 @@ class _AccountTag extends StatelessWidget {
     );
   }
 }
-

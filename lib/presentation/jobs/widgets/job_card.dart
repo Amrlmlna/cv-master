@@ -5,11 +5,7 @@ class JobCard extends StatelessWidget {
   final JobPosting job;
   final VoidCallback onTap;
 
-  const JobCard({
-    super.key,
-    required this.job,
-    required this.onTap,
-  });
+  const JobCard({super.key, required this.job, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,9 @@ class JobCard extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      job.company.isNotEmpty ? job.company[0].toUpperCase() : '?',
+                      job.company.isNotEmpty
+                          ? job.company[0].toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -49,7 +47,7 @@ class JobCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                
+
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,20 +72,34 @@ class JobCard extends StatelessWidget {
                       Row(
                         children: [
                           if (job.location != null) ...[
-                            Icon(Icons.location_on, size: 14, color: Colors.grey.shade500),
+                            Icon(
+                              Icons.location_on,
+                              size: 14,
+                              color: Colors.grey.shade500,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               job.location!,
-                              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                              style: TextStyle(
+                                color: Colors.grey.shade500,
+                                fontSize: 12,
+                              ),
                             ),
                             const SizedBox(width: 12),
                           ],
                           if (job.employmentType != null) ...[
-                            Icon(Icons.work, size: 14, color: Colors.grey.shade500),
+                            Icon(
+                              Icons.work,
+                              size: 14,
+                              color: Colors.grey.shade500,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               job.employmentType!,
-                              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                              style: TextStyle(
+                                color: Colors.grey.shade500,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ],

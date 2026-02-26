@@ -21,21 +21,21 @@ class JobPosting extends Equatable {
     required this.sourceUrl,
     required this.postedAt,
     this.location,
-    this. employmentType,
+    this.employmentType,
     this.requirements,
   });
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        company,
-        description,
-        source,
-        sourceUrl,
-        postedAt,
-        location,
-        employmentType,
-        requirements,
-      ];
+    id,
+    title,
+    company,
+    description,
+    source,
+    sourceUrl,
+    postedAt,
+    location,
+    employmentType,
+    requirements,
+  ];
 }

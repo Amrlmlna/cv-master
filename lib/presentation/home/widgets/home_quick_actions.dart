@@ -48,7 +48,7 @@ class HomeQuickActions extends ConsumerWidget {
         ),
         _QuickActionCircle(
           icon: Icons.work_outline,
-          label: 'Jobs',
+          label: AppLocalizations.of(context)!.jobs,
           onTap: () {
             context.push('/jobs');
           },

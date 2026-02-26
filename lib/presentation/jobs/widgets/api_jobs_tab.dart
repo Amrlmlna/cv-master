@@ -51,7 +51,9 @@ class ApiJobsTab extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
+      error: (err, stack) => Center(
+        child: Text('$err', style: const TextStyle(color: Colors.white)),
+      ),
     );
   }
 }

@@ -587,6 +587,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get jobTitle => 'Job Title';
 
   @override
+  String get jobs => 'Jobs';
+
+  @override
   String get keepBuilding =>
       'Keep building your profile to reach the next level!';
 

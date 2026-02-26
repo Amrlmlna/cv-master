@@ -32,7 +32,7 @@ class RemoteJobDataSource {
   Future<List<JobPostingModel>> getJobPostings() async {
     try {
       final response = await _httpClient.get(
-        Uri.parse(_jobBaseUrl), 
+        Uri.parse(_jobBaseUrl),
         headers: await ApiConfig.getAuthHeaders(),
       );
 

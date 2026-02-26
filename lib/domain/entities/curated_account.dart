@@ -23,13 +23,13 @@ class CuratedAccount extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        handle,
-        platform,
-        url,
-        description,
-        tags,
-        profileImageUrl,
-      ];
+    id,
+    name,
+    handle,
+    platform,
+    url,
+    description,
+    tags,
+    profileImageUrl,
+  ];
 }

@@ -88,10 +88,7 @@ class _JobListPageState extends ConsumerState<JobListPage>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: const [
-                  CuratedAccountsTab(),
-                  ApiJobsTab(),
-                ],
+                children: const [CuratedAccountsTab(), ApiJobsTab()],
               ),
             ),
           ],

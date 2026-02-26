@@ -18,7 +18,9 @@ final jobRepositoryProvider = Provider<JobRepository>((ref) {
 });
 
 // Provides the curated Instagram/TikTok accounts
-final curatedAccountsProvider = FutureProvider<List<CuratedAccount>>((ref) async {
+final curatedAccountsProvider = FutureProvider<List<CuratedAccount>>((
+  ref,
+) async {
   final repository = ref.watch(jobRepositoryProvider);
   return await repository.getCuratedAccounts();
 });

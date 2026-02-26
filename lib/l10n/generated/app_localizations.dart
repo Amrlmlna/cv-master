@@ -1170,6 +1170,12 @@ abstract class AppLocalizations {
   /// **'Job Title'**
   String get jobTitle;
 
+  /// No description provided for @jobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get jobs;
+
   /// No description provided for @keepBuilding.
   ///
   /// In en, this message translates to:

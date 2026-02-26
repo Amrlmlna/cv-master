@@ -43,7 +43,7 @@ class JobPreviewBottomSheet extends StatelessWidget {
     );
     // Ideally we pass this via extra in stateful routing or a provider override.
     // For now, depending on your app_router, we can just push. We'll send it via extra if the route supports it,
-    // or just rely on the user to copy/paste if extra casting isn't set up yet. 
+    // or just rely on the user to copy/paste if extra casting isn't set up yet.
     // Wait, the router doesn't take extra for createJobInput currently. Let's send them there and notify.
     context.push(AppRoutes.createJobInput, extra: existingJobInput);
   }
@@ -140,7 +140,8 @@ class JobPreviewBottomSheet extends StatelessWidget {
                       height: 1.6,
                     ),
                   ),
-                  if (job.requirements != null && job.requirements!.isNotEmpty) ...[
+                  if (job.requirements != null &&
+                      job.requirements!.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     Text(
                       AppLocalizations.of(context)!.jobRequirements,
@@ -157,7 +158,13 @@ class JobPreviewBottomSheet extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('• ', style: TextStyle(color: Colors.white, fontSize: 16)),
+                            const Text(
+                              '• ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
                             Expanded(
                               child: Text(
                                 req,
@@ -186,12 +193,16 @@ class JobPreviewBottomSheet extends StatelessWidget {
                   onPressed: () => _launchSourceUrl(context),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
+                    side: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(AppLocalizations.of(context)!.jobListViewOriginal),
+                  child: Text(
+                    AppLocalizations.of(context)!.jobListViewOriginal,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -205,7 +216,9 @@ class JobPreviewBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(AppLocalizations.of(context)!.jobListCreateCvForJob),
+                  child: Text(
+                    AppLocalizations.of(context)!.jobListCreateCvForJob,
+                  ),
                 ),
               ),
             ],

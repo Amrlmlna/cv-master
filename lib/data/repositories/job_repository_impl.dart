@@ -6,9 +6,7 @@ import '../datasources/remote_job_datasource.dart';
 class JobRepositoryImpl implements JobRepository {
   final RemoteJobDataSource remoteDataSource;
 
-  JobRepositoryImpl({
-    required this.remoteDataSource,
-  });
+  JobRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<List<CuratedAccount>> getCuratedAccounts() async {

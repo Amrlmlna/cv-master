@@ -590,6 +590,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get jobTitle => 'Posisi / Jabatan';
 
   @override
+  String get jobs => 'Lowongan';
+
+  @override
   String get keepBuilding =>
       'Terus lengkapi profilmu untuk mencapai level berikutnya!';
 
