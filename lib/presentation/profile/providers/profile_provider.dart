@@ -321,6 +321,31 @@ class ProfileController extends StateNotifier<ProfileState> {
   void importProfile(UserProfile importedProfile) {
     final current = state.currentProfile;
     
+    final List<Experience> dedupedExp = List.from(current.experience);
+    for (final newExp in importedProfile.experience) {
+      final exists = dedupedExp.any((oldExp) =>
+          oldExp.jobTitle.toLowerCase() == newExp.jobTitle.toLowerCase() &&
+          oldExp.companyName.toLowerCase() == newExp.companyName.toLowerCase() &&
+          oldExp.startDate == newExp.startDate);
+      if (!exists) dedupedExp.add(newExp);
+    }
+
+    final List<Education> dedupedEdu = List.from(current.education);
+    for (final newEdu in importedProfile.education) {
+      final exists = dedupedEdu.any((oldEdu) =>
+          oldEdu.schoolName.toLowerCase() == newEdu.schoolName.toLowerCase() &&
+          oldEdu.degree.toLowerCase() == newEdu.degree.toLowerCase());
+      if (!exists) dedupedEdu.add(newEdu);
+    }
+
+    final List<Certification> dedupedCert = List.from(current.certifications);
+    for (final newCert in importedProfile.certifications) {
+      final exists = dedupedCert.any((oldCert) =>
+          oldCert.name.toLowerCase() == newCert.name.toLowerCase() &&
+          oldCert.issuer.toLowerCase() == newCert.issuer.toLowerCase());
+      if (!exists) dedupedCert.add(newCert);
+    }
+    
     final newProfile = current.copyWith(
       fullName: current.fullName.isEmpty ? importedProfile.fullName : current.fullName,
       email: current.email.isEmpty ? importedProfile.email : current.email,
@@ -330,10 +355,10 @@ class ProfileController extends StateNotifier<ProfileState> {
       location: (current.location == null || current.location!.isEmpty)
           ? importedProfile.location
           : current.location,
-      experience: [...current.experience, ...importedProfile.experience],
-      education: [...current.education, ...importedProfile.education],
+      experience: dedupedExp,
+      education: dedupedEdu,
       skills: {...current.skills, ...importedProfile.skills}.toList(),
-      certifications: [...current.certifications, ...importedProfile.certifications],
+      certifications: dedupedCert,
     );
 
     state = state.copyWith(currentProfile: newProfile);

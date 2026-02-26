@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/entities/certification.dart';
 import 'certification_dialog.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class CertificationListForm extends StatefulWidget {
   final List<Certification> certifications;
@@ -28,12 +29,25 @@ class _CertificationListFormState extends State<CertificationListForm> {
 
     if (result != null) {
       final newList = List<Certification>.from(widget.certifications);
+      
       if (index != null) {
         newList[index] = result;
+        widget.onChanged(newList);
       } else {
-        newList.add(result);
+        final isDuplicate = newList.any((cert) => 
+          cert.name.toLowerCase() == result.name.toLowerCase() &&
+          cert.issuer.toLowerCase() == result.issuer.toLowerCase()
+        );
+
+        if (isDuplicate) {
+          if (mounted) {
+            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+          }
+        } else {
+          newList.add(result);
+          widget.onChanged(newList);
+        }
       }
-      widget.onChanged(newList);
     }
   }
 

@@ -7,7 +7,6 @@ import '../../profile/providers/profile_provider.dart';
 import '../widgets/form/user_data_form_content.dart';
 import '../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../core/providers/locale_provider.dart';
 
 import '../../../domain/entities/tailored_cv_result.dart';
 import '../../auth/utils/auth_guard.dart';
@@ -29,7 +28,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
   final _locationController = TextEditingController();
   
   final _summaryController = TextEditingController();
-  bool _isGeneratingSummary = false;
   
   List<Experience> _experience = [];
   List<Education> _education = [];
@@ -84,51 +82,6 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
     _locationController.dispose();
     _summaryController.dispose();
     super.dispose();
-  }
-
-  Future<void> _generateSummary() async {
-    final jobInput = ref.read(cvCreationProvider).jobInput;
-    if (jobInput == null) {
-      CustomSnackBar.showError(context, AppLocalizations.of(context)!.jobInputMissing);
-      return;
-    }
-
-    setState(() {
-      _isGeneratingSummary = true;
-    });
-
-    try {
-      final currentProfile = UserProfile(
-        fullName: _nameController.text,
-        email: _emailController.text,
-        phoneNumber: _phoneController.text,
-        location: _locationController.text,
-        experience: _experience,
-        education: _education,
-        skills: _skills,
-        certifications: _certifications,
-      );
-
-      final repository = ref.read(cvRepositoryProvider);
-      final locale = ref.read(localeNotifierProvider);
-      final cvData = await repository.generateCV(
-        profile: currentProfile,
-        jobInput: jobInput,
-        styleId: 'ATS',
-        locale: locale.languageCode,
-      );
-      if (mounted) {
-        setState(() {
-          _summaryController.text = cvData.summary;
-          _isGeneratingSummary = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isGeneratingSummary = false);
-        CustomSnackBar.showError(context, AppLocalizations.of(context)!.generateSummaryFailed(e.toString()));
-      }
-    }
   }
 
   Future<void> _submit() async {
@@ -207,12 +160,10 @@ class _UserDataFormPageState extends ConsumerState<UserDataFormPage> {
         phoneController: _phoneController,
         locationController: _locationController,
         summaryController: _summaryController,
-        isGeneratingSummary: _isGeneratingSummary,
         experience: _experience,
         education: _education,
         skills: _skills,
         certifications: _certifications,
-        onGenerateSummary: _generateSummary,
         onExperienceChanged: (val) => setState(() => _experience = val),
         onEducationChanged: (val) => setState(() => _education = val),
         onSkillsChanged: (val) => setState(() => _skills = val),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/entities/user_profile.dart';
 import 'experience_dialog.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class ExperienceListForm extends StatefulWidget {
   final List<Experience> experiences;
@@ -28,12 +29,27 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
 
     if (result != null) {
       final newList = List<Experience>.from(widget.experiences);
+      
       if (index != null) {
         newList[index] = result;
+        widget.onChanged(newList);
       } else {
-        newList.add(result);
+        // Checking for duplicates on new addition
+        final isDuplicate = newList.any((exp) => 
+          exp.jobTitle.toLowerCase() == result.jobTitle.toLowerCase() &&
+          exp.companyName.toLowerCase() == result.companyName.toLowerCase() &&
+          exp.startDate == result.startDate
+        );
+
+        if (isDuplicate) {
+          if (mounted) {
+            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+          }
+        } else {
+          newList.add(result);
+          widget.onChanged(newList);
+        }
       }
-      widget.onChanged(newList);
     }
   }
 

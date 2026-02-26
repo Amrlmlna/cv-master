@@ -26,13 +26,11 @@ class UserDataFormContent extends StatefulWidget {
   final TextEditingController locationController;
   final TextEditingController summaryController;
 
-  final bool isGeneratingSummary;
   final List<Experience> experience;
   final List<Education> education;
   final List<String> skills;
   final List<Certification> certifications; 
 
-  final VoidCallback onGenerateSummary;
   final ValueChanged<List<Experience>> onExperienceChanged;
   final ValueChanged<List<Education>> onEducationChanged;
   final ValueChanged<List<String>> onSkillsChanged;
@@ -49,12 +47,10 @@ class UserDataFormContent extends StatefulWidget {
     required this.phoneController,
     required this.locationController,
     required this.summaryController,
-    required this.isGeneratingSummary,
     required this.experience,
     required this.education,
     required this.skills,
     required this.certifications, 
-    required this.onGenerateSummary,
     required this.onExperienceChanged,
     required this.onEducationChanged,
     required this.onSkillsChanged,
@@ -105,8 +101,6 @@ class _UserDataFormContentState extends State<UserDataFormContent> {
               onExpansionChanged: (val) => setState(() => _isSummaryExpanded = val),
               child: SummarySection(
                 controller: widget.summaryController,
-                isGenerating: widget.isGeneratingSummary,
-                onGenerate: widget.onGenerateSummary,
                 isDark: widget.isDark,
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../domain/entities/user_profile.dart';
 import '../../common/widgets/custom_text_form_field.dart';
 import '../../common/widgets/university_picker.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class EducationListForm extends StatefulWidget {
@@ -30,12 +31,25 @@ class _EducationListFormState extends State<EducationListForm> {
 
     if (result != null) {
       final newList = List<Education>.from(widget.education);
+      
       if (index != null) {
         newList[index] = result;
+        widget.onChanged(newList);
       } else {
-        newList.add(result);
+        final isDuplicate = newList.any((edu) => 
+          edu.schoolName.toLowerCase() == result.schoolName.toLowerCase() &&
+          edu.degree.toLowerCase() == result.degree.toLowerCase()
+        );
+
+        if (isDuplicate) {
+          if (mounted) {
+            CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+          }
+        } else {
+          newList.add(result);
+          widget.onChanged(newList);
+        }
       }
-      widget.onChanged(newList);
     }
   }
 

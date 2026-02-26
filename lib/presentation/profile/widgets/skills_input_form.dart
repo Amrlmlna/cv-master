@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import '../../../../core/utils/custom_snackbar.dart';
 
 class SkillsInputForm extends StatefulWidget {
   final List<String> skills;
@@ -20,10 +21,17 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
 
   void _addSkill() {
     final text = _controller.text.trim();
-    if (text.isNotEmpty && !widget.skills.contains(text)) {
-      final newList = List<String>.from(widget.skills)..add(text);
-      widget.onChanged(newList);
-      _controller.clear();
+    if (text.isNotEmpty) {
+      final isDuplicate = widget.skills.any((s) => s.toLowerCase() == text.toLowerCase());
+      if (isDuplicate) {
+        if (mounted) {
+          CustomSnackBar.showWarning(context, AppLocalizations.of(context)!.cvDataExists);
+        }
+      } else {
+        final newList = List<String>.from(widget.skills)..add(text);
+        widget.onChanged(newList);
+        _controller.clear();
+      }
     }
   }
 
