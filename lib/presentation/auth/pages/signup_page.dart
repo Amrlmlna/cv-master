@@ -203,7 +203,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     const SizedBox(width: 12),
                     Text(
                       'clever',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.inter(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
@@ -214,7 +214,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Text(
                   AppLocalizations.of(context)!.createAccount,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.inter(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
                   ),
@@ -223,7 +223,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 Text(
                   AppLocalizations.of(context)!.createAccountSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(color: Colors.grey, fontSize: 16),
+                  style: GoogleFonts.inter(color: Colors.grey, fontSize: 16),
                 ),
                 const SizedBox(height: 32),
 
@@ -364,7 +364,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       onPressed: () => context.go('/login'),
                       child: Text(
                         AppLocalizations.of(context)!.logIn,
-                        style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
+                        style: GoogleFonts.inter(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

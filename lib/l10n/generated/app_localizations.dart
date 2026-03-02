@@ -2363,6 +2363,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'YOU\'RE ALL SET!'**
   String get youreAllSet;
+
+  /// No description provided for @generateCvCost.
+  ///
+  /// In en, this message translates to:
+  /// **'GENERATE ({cost} CREDITS)'**
+  String generateCvCost(int cost);
+
+  /// No description provided for @generateCvFree.
+  ///
+  /// In en, this message translates to:
+  /// **'GENERATE (FREE)'**
+  String get generateCvFree;
 }
 
 class _AppLocalizationsDelegate

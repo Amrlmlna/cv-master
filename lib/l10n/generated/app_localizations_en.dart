@@ -1211,4 +1211,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youreAllSet => 'YOU\'RE ALL SET!';
+
+  @override
+  String generateCvCost(int cost) {
+    return 'GENERATE ($cost CREDITS)';
+  }
+
+  @override
+  String get generateCvFree => 'GENERATE (FREE)';
 }

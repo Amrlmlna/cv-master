@@ -26,7 +26,7 @@ class AppTheme {
         onError: Colors.white,
       ),
 
-      textTheme: GoogleFonts.outfitTextTheme().apply(
+      textTheme: GoogleFonts.interTextTheme().apply(
         bodyColor: primaryColor,
         displayColor: primaryColor,
       ),
@@ -125,7 +125,7 @@ class AppTheme {
         onError: Colors.white,
       ),
 
-      textTheme: GoogleFonts.outfitTextTheme(
+      textTheme: GoogleFonts.interTextTheme(
         ThemeData.dark().textTheme,
       ).apply(bodyColor: Colors.white, displayColor: Colors.white),
       appBarTheme: const AppBarTheme(
@@ -144,7 +144,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.outfit(fontWeight: FontWeight.bold),
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.bold),
         ),
       ),
       textButtonTheme: TextButtonThemeData(

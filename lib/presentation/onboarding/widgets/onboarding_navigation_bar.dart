@@ -112,7 +112,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                           AppLocalizations.of(context)!.savingProfile,
                           AppLocalizations.of(context)!.ready,
                         ],
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.inter(
                           color: Colors.white,
                           fontWeight: FontWeight.w900,
                           fontSize: 16,
@@ -125,7 +125,7 @@ class OnboardingNavigationBar extends StatelessWidget {
                       isLastPage
                           ? AppLocalizations.of(context)!.startNow
                           : AppLocalizations.of(context)!.nextStep,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
                         letterSpacing: 1.0,

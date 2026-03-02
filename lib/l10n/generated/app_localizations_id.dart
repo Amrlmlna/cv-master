@@ -1218,4 +1218,12 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get youreAllSet => 'SIAP MELUNCUR!';
+
+  @override
+  String generateCvCost(int cost) {
+    return 'BUAT CV ($cost KREDIT)';
+  }
+
+  @override
+  String get generateCvFree => 'BUAT CV (GRATIS)';
 }

@@ -53,7 +53,7 @@ class SectionCard extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: GoogleFonts.outfit(
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: isDark ? Colors.white : Colors.black,
             fontSize: 16,

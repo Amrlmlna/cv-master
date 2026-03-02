@@ -82,7 +82,7 @@ class AppLoadingScreen extends StatelessWidget {
                       badge!,
                       style:
                           badgeStyle ??
-                          GoogleFonts.outfit(
+                          GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.5,
@@ -101,7 +101,7 @@ class AppLoadingScreen extends StatelessWidget {
                 texts: messages,
                 style:
                     messageStyle ??
-                    GoogleFonts.outfit(
+                    GoogleFonts.inter(
                       fontSize: 24,
                       fontWeight: FontWeight.w300,
                       color: textColor,

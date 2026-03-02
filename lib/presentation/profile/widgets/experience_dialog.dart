@@ -207,7 +207,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                                 AppLocalizations.of(context)!.rephrasing,
                                 AppLocalizations.of(context)!.polishing,
                               ],
-                              style: GoogleFonts.outfit(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _ExperienceDialogState extends ConsumerState<ExperienceDialog> {
                             ),
                             label: Text(
                               AppLocalizations.of(context)!.rewriteAI,
-                              style: GoogleFonts.outfit(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,

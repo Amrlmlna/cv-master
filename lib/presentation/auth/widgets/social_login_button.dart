@@ -45,7 +45,7 @@ class SocialLoginButton extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     text,
-                    style: GoogleFonts.outfit(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),

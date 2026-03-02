@@ -110,7 +110,7 @@ class CVDownloadNotifier extends Notifier<CVDownloadState> {
       orElse: () => templates.first,
     );
 
-    if (template.userCredits > 0 || template.currentUsage < 2) {
+    if (template.hasFreeGeneration || template.userCredits >= template.requiredCredits) {
       if (template.userCredits > 0) {
         await _generateAndOpenPDF(
           context,

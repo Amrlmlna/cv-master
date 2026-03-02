@@ -142,7 +142,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   widget.featureTitle ??
                       AppLocalizations.of(context)!.loginToSave,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.inter(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -154,7 +154,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                   widget.featureDescription ??
                       AppLocalizations.of(context)!.syncAnywhere,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.white.withValues(alpha: 0.6),
                     height: 1.4,
@@ -202,7 +202,7 @@ class _AuthWallBottomSheetState extends ConsumerState<AuthWallBottomSheet> {
                       },
                       child: Text(
                         AppLocalizations.of(context)!.signUp,
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.inter(
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF5EEAD4),
                           fontSize: 14,

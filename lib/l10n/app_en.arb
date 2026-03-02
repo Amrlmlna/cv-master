@@ -405,5 +405,14 @@
   "workExperience": "Work Experience",
   "writeSomething": "Please write something",
   "year": "Year",
-  "youreAllSet": "YOU'RE ALL SET!"
+  "youreAllSet": "YOU'RE ALL SET!",
+  "generateCvCost": "GENERATE ({cost} CREDITS)",
+  "@generateCvCost": {
+    "placeholders": {
+        "cost": {
+            "type": "int"
+        }
+    }
+  },
+  "generateCvFree": "GENERATE (FREE)"
 }

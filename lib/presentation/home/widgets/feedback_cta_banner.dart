@@ -4,6 +4,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import 'package:clever/core/services/review_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../providers/banner_provider.dart';
 
 class FeedbackCTABanner extends ConsumerWidget {
   const FeedbackCTABanner({super.key});
@@ -12,6 +13,9 @@ class FeedbackCTABanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDismissed = ref.watch(feedbackBannerDismissedProvider);
+
+    if (isDismissed) return const SizedBox.shrink();
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -42,15 +46,15 @@ class FeedbackCTABanner extends ConsumerWidget {
                   size: 28,
                 ),
               ).animate().scale(
-                delay: 400.ms,
-                duration: 600.ms,
-                curve: Curves.easeOutBack,
-              ),
+                    delay: 400.ms,
+                    duration: 600.ms,
+                    curve: Curves.easeOutBack,
+                  ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   l10n.feedbackTitle,
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -72,7 +76,8 @@ class FeedbackCTABanner extends ConsumerWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => ReviewService().requestReview(),
+                  // Opens the Play Store / App Store listing directly
+                  onPressed: () => ReviewService().openStoreListing(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDark ? Colors.white : Colors.black,
                     foregroundColor: isDark ? Colors.black : Colors.white,
@@ -89,7 +94,12 @@ class FeedbackCTABanner extends ConsumerWidget {
               ),
               const SizedBox(width: 12),
               TextButton(
-                onPressed: () {},
+                // Hides the banner until the app is restarted (in-memory)
+                onPressed: () {
+                  ref
+                      .read(feedbackBannerDismissedProvider.notifier)
+                      .state = true;
+                },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,

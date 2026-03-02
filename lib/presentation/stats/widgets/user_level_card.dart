@@ -35,12 +35,12 @@ class UserLevelCard extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.currentLevel,
-            style: GoogleFonts.outfit(color: Colors.white70, fontSize: 14),
+            style: GoogleFonts.inter(color: Colors.white70, fontSize: 14),
           ),
           const SizedBox(height: 8),
           Text(
             level,
-            style: GoogleFonts.outfit(
+            style: GoogleFonts.inter(
               color: Colors.white,
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class UserLevelCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.keepBuilding,
-            style: GoogleFonts.outfit(color: Colors.white70, fontSize: 12),
+            style: GoogleFonts.inter(color: Colors.white70, fontSize: 12),
           ),
         ],
       ),

@@ -25,7 +25,9 @@ class CVTemplate extends Equatable {
     this.supportsPhoto = false,
   });
 
-  bool get isLocked => currentUsage >= 2 && userCredits <= 0;
+  int get requiredCredits => isPremium ? 4 : 2;
+  bool get hasFreeGeneration => currentUsage < 2;
+  bool get isLocked => !hasFreeGeneration && userCredits < requiredCredits;
 
   factory CVTemplate.fromJson(Map<String, dynamic> json) {
     return CVTemplate(

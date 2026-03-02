@@ -24,7 +24,7 @@ class OnboardingImportStep extends ConsumerWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.alreadyHaveCV,
-            style: GoogleFonts.outfit(
+            style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -97,7 +97,7 @@ class _OptionCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,

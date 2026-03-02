@@ -12,6 +12,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/template_carousel_preview.dart';
 import '../widgets/language_selector.dart';
 import '../widgets/photo_toggle_settings.dart';
+import '../../common/widgets/spinning_text_loader.dart';
 
 class TemplatePreviewPage extends ConsumerStatefulWidget {
   const TemplatePreviewPage({super.key});
@@ -224,13 +225,44 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                 ),
               ),
               child: downloadState.status == DownloadStatus.generating
-                  ? const CircularProgressIndicator()
-                  : Text(
-                      AppLocalizations.of(context)!.exportPdf,
+                  ? SpinningTextLoader(
+                      texts: [
+                        AppLocalizations.of(context)!.generatingPdfBadge,
+                        AppLocalizations.of(context)!.processingData,
+                        AppLocalizations.of(context)!.finalizingPdf,
+                      ],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2,
+                        fontSize: 14,
                       ),
+                    )
+                  : Builder(
+                      builder: (context) {
+                        final currentTemplates = ref.watch(templatesProvider).valueOrNull ?? [];
+                        if (currentTemplates.isEmpty) {
+                          return Text(
+                            AppLocalizations.of(context)!.exportPdf,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),
+                          );
+                        }
+                        final currentTemplate = currentTemplates.firstWhere(
+                          (t) => t.id == ref.watch(cvCreationProvider).selectedStyle,
+                          orElse: () => currentTemplates.first,
+                        );
+                        return Text(
+                          currentTemplate.hasFreeGeneration
+                              ? AppLocalizations.of(context)!.generateCvFree
+                              : AppLocalizations.of(context)!.generateCvCost(currentTemplate.requiredCredits),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        );
+                      },
                     ),
             ),
           ),

@@ -405,5 +405,14 @@
   "workExperience": "Pengalaman Kerja",
   "writeSomething": "Tulis sesuatu dong",
   "year": "Tahun",
-  "youreAllSet": "SIAP MELUNCUR!"
+  "youreAllSet": "SIAP MELUNCUR!",
+  "generateCvCost": "BUAT CV ({cost} KREDIT)",
+  "@generateCvCost": {
+    "placeholders": {
+        "cost": {
+            "type": "int"
+        }
+    }
+  },
+  "generateCvFree": "BUAT CV (GRATIS)"
 }

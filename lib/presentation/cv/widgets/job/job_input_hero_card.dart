@@ -25,7 +25,7 @@ class JobInputHeroCard extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.whatJobApply,
-          style: GoogleFonts.outfit(
+          style: GoogleFonts.inter(
             color: isDark ? Colors.white : Colors.black,
             fontSize: 32,
             fontWeight: FontWeight.w800,
@@ -37,7 +37,7 @@ class JobInputHeroCard extends StatelessWidget {
 
         Text(
           AppLocalizations.of(context)!.aiHelpCreateCV,
-          style: GoogleFonts.outfit(
+          style: GoogleFonts.inter(
             color: isDark ? Colors.grey[400] : Colors.grey[600],
             height: 1.5,
             fontSize: 16,
@@ -99,14 +99,14 @@ class JobInputHeroCard extends StatelessWidget {
     return TextFormField(
       controller: controller,
       autofocus: autoFocus,
-      style: GoogleFonts.outfit(
+      style: GoogleFonts.inter(
         color: isDark ? Colors.white : Colors.black,
         fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.outfit(
+        hintStyle: GoogleFonts.inter(
           color: isDark ? Colors.grey[600] : Colors.grey[400],
           fontSize: 17,
           fontWeight: FontWeight.w400,

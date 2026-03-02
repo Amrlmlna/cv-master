@@ -83,7 +83,7 @@ class WalletCard extends StatelessWidget {
                         children: [
                           Text(
                             'CleVer',
-                            style: GoogleFonts.outfit(
+                            style: GoogleFonts.inter(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 22,
@@ -138,7 +138,7 @@ class WalletCard extends StatelessWidget {
                               children: [
                                 Text(
                                   '$totalCredits',
-                                  style: GoogleFonts.outfit(
+                                  style: GoogleFonts.inter(
                                     fontSize: 48,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,

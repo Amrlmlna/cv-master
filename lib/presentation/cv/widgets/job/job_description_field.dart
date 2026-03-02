@@ -15,7 +15,7 @@ class JobDescriptionField extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.jobDetailLabel,
-          style: GoogleFonts.outfit(
+          style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: isDark ? Colors.white : Colors.black,
@@ -30,13 +30,13 @@ class JobDescriptionField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             maxLines: 5,
-            style: GoogleFonts.outfit(
+            style: GoogleFonts.inter(
               color: isDark ? Colors.white : Colors.black,
               fontSize: 16,
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.jobDetailHint,
-              hintStyle: GoogleFonts.outfit(
+              hintStyle: GoogleFonts.inter(
                 color: isDark ? Colors.grey[600] : Colors.grey[400],
                 fontSize: 16,
               ),

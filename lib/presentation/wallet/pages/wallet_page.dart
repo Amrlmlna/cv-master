@@ -32,7 +32,7 @@ class WalletPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.wallet,
-                    style: GoogleFonts.outfit(
+                    style: GoogleFonts.inter(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: Colors.white,
@@ -112,7 +112,7 @@ class WalletPage extends ConsumerWidget {
               // History Placeholder
               Text(
                 l10n.recentTransactions,
-                style: GoogleFonts.outfit(
+                style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white.withValues(alpha: 0.95),
@@ -140,7 +140,7 @@ class WalletPage extends ConsumerWidget {
                     Text(
                       l10n.usageHistoryComingSoon,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.white.withValues(alpha: 0.4),
                       ),

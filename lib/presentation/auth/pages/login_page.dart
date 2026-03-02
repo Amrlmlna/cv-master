@@ -187,7 +187,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(width: 12),
                     Text(
                       'clever',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.inter(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
@@ -198,7 +198,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Text(
                   AppLocalizations.of(context)!.welcomeBack,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.inter(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
                   ),
@@ -207,7 +207,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Text(
                   AppLocalizations.of(context)!.signInSubtitle,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.outfit(color: Colors.grey, fontSize: 16),
+                  style: GoogleFonts.inter(color: Colors.grey, fontSize: 16),
                 ),
                 const SizedBox(height: 48),
 
@@ -323,7 +323,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       onPressed: () => context.push('/signup'),
                       child: Text(
                         AppLocalizations.of(context)!.signUp,
-                        style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
+                        style: GoogleFonts.inter(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

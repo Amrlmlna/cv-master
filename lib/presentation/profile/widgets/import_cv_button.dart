@@ -34,7 +34,7 @@ class ImportCVButton extends ConsumerWidget {
         ),
         child: Text(
           AppLocalizations.of(context)!.importFromCV,
-          style: GoogleFonts.outfit(
+          style: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.2,
