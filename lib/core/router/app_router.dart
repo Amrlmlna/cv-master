@@ -32,6 +32,31 @@ import 'app_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
+CustomTransitionPage<void> _buildPage(Widget child, GoRouterState state) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 300),
+    reverseTransitionDuration: const Duration(milliseconds: 250),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final curve = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      );
+      return FadeTransition(
+        opacity: curve,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.04),
+            end: Offset.zero,
+          ).animate(curve),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final onboardingCompleted = ref.watch(onboardingProvider);
 
@@ -57,24 +82,27 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Auth Routes
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => const LoginPage(),
+        pageBuilder: (context, state) => _buildPage(const LoginPage(), state),
       ),
       GoRoute(
         path: AppRoutes.signup,
-        builder: (context, state) => const SignupPage(),
+        pageBuilder: (context, state) => _buildPage(const SignupPage(), state),
       ),
 
       GoRoute(
         path: AppRoutes.error,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final args = state.extra as ErrorPageArgs?;
-          return ErrorPage(
-            args:
-                args ??
-                ErrorPageArgs(
-                  title: AppLocalizations.of(context)!.unknownError,
-                  message: AppLocalizations.of(context)!.unknownErrorDesc,
-                ),
+          return _buildPage(
+            ErrorPage(
+              args:
+                  args ??
+                  ErrorPageArgs(
+                    title: AppLocalizations.of(context)!.unknownError,
+                    message: AppLocalizations.of(context)!.unknownErrorDesc,
+                  ),
+            ),
+            state,
           );
         },
       ),
@@ -82,16 +110,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Onboarding Flow
       GoRoute(
         path: AppRoutes.onboarding,
-        builder: (context, state) => const OnboardingWelcomePage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const OnboardingWelcomePage(), state),
         routes: [
           GoRoute(
             path: 'form', // Relative to /onboarding
-            builder: (context, state) => const OnboardingPage(),
+            pageBuilder: (context, state) =>
+                _buildPage(const OnboardingPage(), state),
           ),
         ],
       ),
 
-      // Main Application Shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainWrapperPage(navigationShell: navigationShell);
@@ -141,7 +170,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'help',
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const HelpPage(),
+                    pageBuilder: (context, state) =>
+                        _buildPage(const HelpPage(), state),
                   ),
                 ],
               ),
@@ -152,47 +182,60 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: AppRoutes.notifications,
-        builder: (context, state) => const NotificationPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const NotificationPage(), state),
       ),
 
       GoRoute(
         path: AppRoutes.feedback,
-        builder: (context, state) => const FeedbackPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const FeedbackPage(), state),
       ),
       GoRoute(
         path: AppRoutes.legal,
-        builder: (context, state) => const LegalPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const LegalPage(), state),
       ),
       GoRoute(
         path: AppRoutes.jobs,
-        builder: (context, state) => const JobListPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const JobListPage(), state),
       ),
       GoRoute(
         path: AppRoutes.stats,
-        builder: (context, state) => const StatsPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const StatsPage(), state),
       ),
 
       GoRoute(
         path: AppRoutes.createJobInput,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final jobInput = state.extra as JobInput?;
-          return JobInputPage(initialJobInput: jobInput);
+          return _buildPage(
+            JobInputPage(initialJobInput: jobInput),
+            state,
+          );
         },
       ),
       GoRoute(
         path: AppRoutes.createUserData,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final tailoredResult = state.extra as TailoredCVResult?;
-          return UserDataFormPage(tailoredResult: tailoredResult);
+          return _buildPage(
+            UserDataFormPage(tailoredResult: tailoredResult),
+            state,
+          );
         },
       ),
       GoRoute(
         path: AppRoutes.createStyleSelection,
-        builder: (context, state) => const StyleSelectionPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const StyleSelectionPage(), state),
       ),
       GoRoute(
         path: AppRoutes.createTemplatePreview,
-        builder: (context, state) => const TemplatePreviewPage(),
+        pageBuilder: (context, state) =>
+            _buildPage(const TemplatePreviewPage(), state),
       ),
     ],
   );

@@ -22,12 +22,15 @@ class MainWrapperPage extends ConsumerStatefulWidget {
   ConsumerState<MainWrapperPage> createState() => _MainWrapperPageState();
 }
 
-class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
+class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
+    with TickerProviderStateMixin {
   bool _sheetShowing = false;
+  int _previousIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _previousIndex = widget.navigationShell.currentIndex;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVerification(ref.read(authStateProvider).value);
     });
@@ -100,6 +103,10 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
       }
     }
 
+    setState(() {
+      _previousIndex = widget.navigationShell.currentIndex;
+    });
+
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,
@@ -113,11 +120,37 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage> {
     });
 
     final currentIndex = widget.navigationShell.currentIndex;
+    final goingForward = currentIndex >= _previousIndex;
 
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBodyBehindAppBar: true,
-      body: widget.navigationShell,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        transitionBuilder: (child, animation) {
+          final isIncoming = child.key == ValueKey(currentIndex);
+          final beginOffset = isIncoming
+              ? Offset(goingForward ? 0.25 : -0.25, 0)
+              : Offset(goingForward ? -0.25 : 0.25, 0);
+
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: beginOffset,
+              end: Offset.zero,
+            ).animate(animation),
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        child: KeyedSubtree(
+          key: ValueKey(currentIndex),
+          child: widget.navigationShell,
+        ),
+      ),
       floatingActionButton: _buildCenterFAB(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
