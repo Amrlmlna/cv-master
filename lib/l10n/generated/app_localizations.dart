@@ -2418,16 +2418,16 @@ abstract class AppLocalizations {
   /// **'you\'re all set!'**
   String get youreAllSet;
 
-  /// No description provided for @generateCvCost.
+  /// text for the generate cv button
   ///
   /// In en, this message translates to:
-  /// **'generate ({cost} credits)'**
+  /// **'generate'**
   String generateCvCost(int cost);
 
   /// No description provided for @generateCvFree.
   ///
   /// In en, this message translates to:
-  /// **'generate (free)'**
+  /// **'generate'**
   String get generateCvFree;
 
   /// No description provided for @onboardingStartFree.

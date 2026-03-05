@@ -353,7 +353,7 @@ class _JobInputPageState extends ConsumerState<JobInputPage> {
         title: Text(AppLocalizations.of(context)!.targetPosition),
         actions: [
           IconButton(
-            icon: const Icon(Icons.photo_camera),
+            icon: const Icon(Icons.document_scanner_outlined),
             tooltip: AppLocalizations.of(context)!.scanJobPosting,
             onPressed: _showImageSourceDialog,
           ),

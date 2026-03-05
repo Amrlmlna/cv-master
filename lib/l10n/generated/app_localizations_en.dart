@@ -1250,11 +1250,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String generateCvCost(int cost) {
-    return 'generate ($cost credits)';
+    return 'generate';
   }
 
   @override
-  String get generateCvFree => 'generate (free)';
+  String get generateCvFree => 'generate';
 
   @override
   String get onboardingStartFree => 'get started, it\'s free';

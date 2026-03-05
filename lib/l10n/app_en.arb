@@ -442,15 +442,17 @@
   "writeSomething": "please write something",
   "year": "year",
   "youreAllSet": "you're all set!",
-  "generateCvCost": "generate ({cost} credits)",
+  "generateCvCost": "generate",
   "@generateCvCost": {
+    "description": "text for the generate cv button",
     "placeholders": {
       "cost": {
-        "type": "int"
+        "type": "int",
+        "description": "the cost of the template"
       }
     }
   },
-  "generateCvFree": "generate (free)",
+  "generateCvFree": "generate",
   "onboardingStartFree": "get started, it's free",
   "onboardingFreeLabel": "2 free cvs, no credit card."
 }

@@ -25,6 +25,16 @@ class BannerAd extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'imageUrl': imageUrl,
+      'redirectUrl': redirectUrl,
+      'isActive': isActive,
+      'order': order,
+    };
+  }
+
   @override
   List<Object?> get props => [id, imageUrl, redirectUrl, isActive, order];
 }

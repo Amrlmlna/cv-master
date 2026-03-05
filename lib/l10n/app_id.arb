@@ -442,15 +442,17 @@
   "writeSomething": "tulis sesuatu dong",
   "year": "tahun",
   "youreAllSet": "siap meluncur!",
-  "generateCvCost": "buat cv ({cost} kredit)",
+  "generateCvCost": "buat cv",
   "@generateCvCost": {
+    "description": "text for the generate cv button",
     "placeholders": {
       "cost": {
-        "type": "int"
+        "type": "int",
+        "description": "the cost of the template"
       }
     }
   },
-  "generateCvFree": "buat cv (gratis)",
+  "generateCvFree": "buat cv",
   "onboardingStartFree": "mulai, ini gratis",
   "onboardingFreeLabel": "2 cv gratis, tanpa kartu kredit."
 }

@@ -16,7 +16,7 @@ class HomeQuickActions extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _QuickActionCircle(
-          icon: Icons.upload_file,
+          icon: Icons.document_scanner_outlined,
           label: AppLocalizations.of(context)!.importCV,
           onTap: () {
             CVImportHandler.showImportDialog(

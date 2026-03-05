@@ -1257,11 +1257,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String generateCvCost(int cost) {
-    return 'buat cv ($cost kredit)';
+    return 'buat cv';
   }
 
   @override
-  String get generateCvFree => 'buat cv (gratis)';
+  String get generateCvFree => 'buat cv';
 
   @override
   String get onboardingStartFree => 'mulai, ini gratis';

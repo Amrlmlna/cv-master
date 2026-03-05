@@ -10,11 +10,13 @@ import '../../../core/providers/locale_provider.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../auth/utils/auth_guard.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/template_carousel_preview.dart';
 import '../widgets/language_selector.dart';
 import '../widgets/photo_toggle_settings.dart';
 import '../../common/widgets/spinning_text_loader.dart';
+import '../../common/widgets/swipe_to_confirm_button.dart';
 
 class TemplatePreviewPage extends ConsumerStatefulWidget {
   const TemplatePreviewPage({super.key});
@@ -225,56 +227,89 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
           child: SizedBox(
             width: double.infinity,
             height: 56,
-            child: ElevatedButton(
-              onPressed:
-                  (downloadState.status == DownloadStatus.generating ||
-                      _isUploading)
-                  ? null
-                  : _handleDownload,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? Colors.white : Colors.black,
-                foregroundColor: isDark ? Colors.black : Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-              ),
+            child: SwipeToConfirmButton(
+              isLoading: downloadState.status == DownloadStatus.generating ||
+                  _isUploading,
+              onConfirm: _handleDownload,
               child: downloadState.status == DownloadStatus.generating
                   ? SpinningTextLoader(
                       texts: [
-                        AppLocalizations.of(context)!.generatingPdfBadge,
-                        AppLocalizations.of(context)!.processingData,
-                        AppLocalizations.of(context)!.finalizingPdf,
+                        AppLocalizations.of(context)!.generatingPdfBadge.toUpperCase(),
+                        AppLocalizations.of(context)!.processingData.toUpperCase(),
+                        AppLocalizations.of(context)!.finalizingPdf.toUpperCase(),
                       ],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                        fontSize: 14,
+                      style: GoogleFonts.inter(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 2.0,
+                        fontSize: 13,
                       ),
                     )
                   : Builder(
                       builder: (context) {
-                        final currentTemplates = ref.watch(templatesProvider).valueOrNull ?? [];
+                        final currentTemplates =
+                            ref.watch(templatesProvider).valueOrNull ?? [];
                         if (currentTemplates.isEmpty) {
                           return Text(
-                            AppLocalizations.of(context)!.exportPdf,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.2,
+                            AppLocalizations.of(context)!
+                                .exportPdf
+                                .toUpperCase(),
+                            style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 2.0,
+                              fontSize: 13,
                             ),
                           );
                         }
                         final currentTemplate = currentTemplates.firstWhere(
-                          (t) => t.id == ref.watch(cvCreationProvider).selectedStyle,
+                          (t) =>
+                              t.id ==
+                              ref.watch(cvCreationProvider).selectedStyle,
                           orElse: () => currentTemplates.first,
                         );
-                        return Text(
-                          currentTemplate.hasFreeGeneration
-                              ? AppLocalizations.of(context)!.generateCvFree
-                              : AppLocalizations.of(context)!.generateCvCost(currentTemplate.requiredCredits),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              currentTemplate.hasFreeGeneration
+                                  ? AppLocalizations.of(context)!
+                                      .generateCvFree
+                                      .toUpperCase()
+                                  : AppLocalizations.of(context)!
+                                      .generateCvCost(0) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
+                                      .replaceAll(RegExp(r'\s*\(.*?\)'), '')
+                                      .toUpperCase(),
+                              style: GoogleFonts.inter(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 2.0,
+                                fontSize: 13,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                currentTemplate.hasFreeGeneration
+                                    ? "FREE"
+                                    : "${currentTemplate.requiredCredits} CREDITS",
+                                style: GoogleFonts.inter(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.0,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
