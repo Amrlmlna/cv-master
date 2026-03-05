@@ -1110,6 +1110,60 @@ abstract class AppLocalizations {
     Object skillsCount,
   );
 
+  /// No description provided for @importSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'import successful!'**
+  String get importSuccessTitle;
+
+  /// No description provided for @importSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'here\'s what we found in your cv:'**
+  String get importSuccessSubtitle;
+
+  /// No description provided for @importSuccessPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'personal info detected'**
+  String get importSuccessPersonalInfo;
+
+  /// No description provided for @importSuccessExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} experience(s)'**
+  String importSuccessExperience(int count);
+
+  /// No description provided for @importSuccessEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} education(s)'**
+  String importSuccessEducation(int count);
+
+  /// No description provided for @importSuccessSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skill(s)'**
+  String importSuccessSkills(int count);
+
+  /// No description provided for @importSuccessCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} certification(s)'**
+  String importSuccessCertifications(int count);
+
+  /// No description provided for @importSuccessContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'continue'**
+  String get importSuccessContinue;
+
+  /// No description provided for @importSuccessNoNewData.
+  ///
+  /// In en, this message translates to:
+  /// **'all data already exists in your profile.'**
+  String get importSuccessNoNewData;
+
   /// No description provided for @importingCVBadge.
   ///
   /// In en, this message translates to:

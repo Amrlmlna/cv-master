@@ -175,6 +175,43 @@
   "importFailedMessage": "gagal mengimport cv. coba lagi ya!",
   "importFromCV": "import dari cv",
   "importSuccessMessage": "cv berhasil diimport!\nditambahkan: {expCount} pengalaman, {eduCount} pendidikan, {skillsCount} skill",
+  "importSuccessTitle": "import berhasil!",
+  "importSuccessSubtitle": "berikut data yang kami temukan dari cv-mu:",
+  "importSuccessPersonalInfo": "info personal terdeteksi",
+  "importSuccessExperience": "{count} pengalaman",
+  "@importSuccessExperience": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessEducation": "{count} pendidikan",
+  "@importSuccessEducation": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessSkills": "{count} keahlian",
+  "@importSuccessSkills": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessCertifications": "{count} sertifikasi",
+  "@importSuccessCertifications": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessContinue": "lanjutkan",
+  "importSuccessNoNewData": "semua data sudah ada di profilmu.",
   "importingCVBadge": "import cv",
   "improving": "memperbaiki...",
   "includeProfilePhoto": "sertakan foto profil",

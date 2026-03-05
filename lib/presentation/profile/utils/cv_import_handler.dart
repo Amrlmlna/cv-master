@@ -5,6 +5,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../providers/cv_import_provider.dart';
 import '../../common/widgets/app_loading_screen.dart';
 import '../../../core/utils/custom_snackbar.dart';
+import '../widgets/import_success_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
 class CVImportHandler {
@@ -225,7 +226,14 @@ class CVImportHandler {
     switch (result.status) {
       case CVImportStatus.success:
         if (result.extractedProfile != null) {
-          onImportSuccess(result.extractedProfile!);
+          ImportSuccessBottomSheet.show(
+            context: context,
+            extractedProfile: result.extractedProfile!,
+            onContinue: () {
+              Navigator.pop(context); // Close the bottom sheet
+              onImportSuccess(result.extractedProfile!);
+            },
+          );
         }
         break;
       case CVImportStatus.cancelled:
@@ -248,3 +256,4 @@ class CVImportHandler {
     }
   }
 }
+

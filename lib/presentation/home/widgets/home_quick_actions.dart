@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/utils/custom_snackbar.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../profile/utils/cv_import_handler.dart';
@@ -24,22 +23,11 @@ class HomeQuickActions extends ConsumerWidget {
               context: context,
               ref: ref,
               onImportSuccess: (UserProfile importedProfile) async {
-                final hasChanges = await ref
+                await ref
                     .read(masterProfileProvider.notifier)
                     .mergeProfile(importedProfile);
 
                 if (context.mounted) {
-                  if (hasChanges) {
-                    CustomSnackBar.showSuccess(
-                      context,
-                      AppLocalizations.of(context)!.cvImportedSuccess,
-                    );
-                  } else {
-                    CustomSnackBar.showInfo(
-                      context,
-                      AppLocalizations.of(context)!.cvDataExists,
-                    );
-                  }
                   context.go('/profile');
                 }
               },

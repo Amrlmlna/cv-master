@@ -175,6 +175,43 @@
   "importFailedMessage": "failed to import cv. please try again!",
   "importFromCV": "import from cv",
   "importSuccessMessage": "cv imported successfully!\nadded: {expCount} experience, {eduCount} education, {skillsCount} skills",
+  "importSuccessTitle": "import successful!",
+  "importSuccessSubtitle": "here's what we found in your cv:",
+  "importSuccessPersonalInfo": "personal info detected",
+  "importSuccessExperience": "{count} experience(s)",
+  "@importSuccessExperience": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessEducation": "{count} education(s)",
+  "@importSuccessEducation": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessSkills": "{count} skill(s)",
+  "@importSuccessSkills": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessCertifications": "{count} certification(s)",
+  "@importSuccessCertifications": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importSuccessContinue": "continue",
+  "importSuccessNoNewData": "all data already exists in your profile.",
   "importingCVBadge": "importing cv",
   "improving": "improving...",
   "includeProfilePhoto": "include profile photo",

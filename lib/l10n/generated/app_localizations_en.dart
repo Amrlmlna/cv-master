@@ -553,6 +553,42 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get importSuccessTitle => 'import successful!';
+
+  @override
+  String get importSuccessSubtitle => 'here\'s what we found in your cv:';
+
+  @override
+  String get importSuccessPersonalInfo => 'personal info detected';
+
+  @override
+  String importSuccessExperience(int count) {
+    return '$count experience(s)';
+  }
+
+  @override
+  String importSuccessEducation(int count) {
+    return '$count education(s)';
+  }
+
+  @override
+  String importSuccessSkills(int count) {
+    return '$count skill(s)';
+  }
+
+  @override
+  String importSuccessCertifications(int count) {
+    return '$count certification(s)';
+  }
+
+  @override
+  String get importSuccessContinue => 'continue';
+
+  @override
+  String get importSuccessNoNewData =>
+      'all data already exists in your profile.';
+
+  @override
   String get importingCVBadge => 'importing cv';
 
   @override

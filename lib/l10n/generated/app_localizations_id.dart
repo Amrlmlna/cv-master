@@ -556,6 +556,42 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get importSuccessTitle => 'import berhasil!';
+
+  @override
+  String get importSuccessSubtitle =>
+      'berikut data yang kami temukan dari cv-mu:';
+
+  @override
+  String get importSuccessPersonalInfo => 'info personal terdeteksi';
+
+  @override
+  String importSuccessExperience(int count) {
+    return '$count pengalaman';
+  }
+
+  @override
+  String importSuccessEducation(int count) {
+    return '$count pendidikan';
+  }
+
+  @override
+  String importSuccessSkills(int count) {
+    return '$count keahlian';
+  }
+
+  @override
+  String importSuccessCertifications(int count) {
+    return '$count sertifikasi';
+  }
+
+  @override
+  String get importSuccessContinue => 'lanjutkan';
+
+  @override
+  String get importSuccessNoNewData => 'semua data sudah ada di profilmu.';
+
+  @override
   String get importingCVBadge => 'import cv';
 
   @override
