@@ -1268,4 +1268,55 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get onboardingFreeLabel => '2 cv gratis, tanpa kartu kredit.';
+
+  @override
+  String get getCredits => 'beli kredit';
+
+  @override
+  String get benefitRegularTitle => '2 kredit untuk template reguler';
+
+  @override
+  String get benefitRegularDesc =>
+      'akses desain profesional dan rapi untuk kebutuhan sehari-hari';
+
+  @override
+  String get benefitPremiumTitle => '4 kredit untuk template premium';
+
+  @override
+  String get benefitPremiumDesc =>
+      'buka desain eksklusif yang bikin cv kamu standout';
+
+  @override
+  String get benefitSkipAdsTitle => 'lewati iklan';
+
+  @override
+  String get benefitSkipAdsDesc => 'nikmati pengalaman mulus tanpa gangguan';
+
+  @override
+  String creditsCount(int count) {
+    return '$count kredit';
+  }
+
+  @override
+  String get popularBadge => 'populer';
+
+  @override
+  String get securePayment => 'pembayaran aman via google play';
+
+  @override
+  String get perCredit => '/kredit';
+
+  @override
+  String savePercent(int percent) {
+    return 'hemat ~$percent%';
+  }
+
+  @override
+  String get packageSmall => 'kecil';
+
+  @override
+  String get packageMedium => 'sedang';
+
+  @override
+  String get packagePro => 'pro';
 }

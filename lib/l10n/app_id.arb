@@ -454,5 +454,34 @@
   },
   "generateCvFree": "buat cv",
   "onboardingStartFree": "mulai, ini gratis",
-  "onboardingFreeLabel": "2 cv gratis, tanpa kartu kredit."
+  "onboardingFreeLabel": "2 cv gratis, tanpa kartu kredit.",
+  "getCredits": "beli kredit",
+  "benefitRegularTitle": "2 kredit untuk template reguler",
+  "benefitRegularDesc": "akses desain profesional dan rapi untuk kebutuhan sehari-hari",
+  "benefitPremiumTitle": "4 kredit untuk template premium",
+  "benefitPremiumDesc": "buka desain eksklusif yang bikin cv kamu standout",
+  "benefitSkipAdsTitle": "lewati iklan",
+  "benefitSkipAdsDesc": "nikmati pengalaman mulus tanpa gangguan",
+  "creditsCount": "{count} kredit",
+  "@creditsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "popularBadge": "populer",
+  "securePayment": "pembayaran aman via google play",
+  "perCredit": "/kredit",
+  "savePercent": "hemat ~{percent}%",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "packageSmall": "kecil",
+  "packageMedium": "sedang",
+  "packagePro": "pro"
 }

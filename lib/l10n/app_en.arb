@@ -454,5 +454,34 @@
   },
   "generateCvFree": "generate",
   "onboardingStartFree": "get started, it's free",
-  "onboardingFreeLabel": "2 free cvs, no credit card."
+  "onboardingFreeLabel": "2 free cvs, no credit card.",
+  "getCredits": "get credits",
+  "benefitRegularTitle": "2 credits for regular templates",
+  "benefitRegularDesc": "access clean, professional layouts for everyday use",
+  "benefitPremiumTitle": "4 credits for premium templates",
+  "benefitPremiumDesc": "unlock exclusive designs that stand out to recruiters",
+  "benefitSkipAdsTitle": "skip ads",
+  "benefitSkipAdsDesc": "enjoy a seamless experience without interruptions",
+  "creditsCount": "{count} credits",
+  "@creditsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "popularBadge": "popular",
+  "securePayment": "secure payment via google play",
+  "perCredit": "/credit",
+  "savePercent": "save ~{percent}%",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "packageSmall": "small",
+  "packageMedium": "medium",
+  "packagePro": "pro"
 }

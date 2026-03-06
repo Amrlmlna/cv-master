@@ -1261,4 +1261,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingFreeLabel => '2 free cvs, no credit card.';
+
+  @override
+  String get getCredits => 'get credits';
+
+  @override
+  String get benefitRegularTitle => '2 credits for regular templates';
+
+  @override
+  String get benefitRegularDesc =>
+      'access clean, professional layouts for everyday use';
+
+  @override
+  String get benefitPremiumTitle => '4 credits for premium templates';
+
+  @override
+  String get benefitPremiumDesc =>
+      'unlock exclusive designs that stand out to recruiters';
+
+  @override
+  String get benefitSkipAdsTitle => 'skip ads';
+
+  @override
+  String get benefitSkipAdsDesc =>
+      'enjoy a seamless experience without interruptions';
+
+  @override
+  String creditsCount(int count) {
+    return '$count credits';
+  }
+
+  @override
+  String get popularBadge => 'popular';
+
+  @override
+  String get securePayment => 'secure payment via google play';
+
+  @override
+  String get perCredit => '/credit';
+
+  @override
+  String savePercent(int percent) {
+    return 'save ~$percent%';
+  }
+
+  @override
+  String get packageSmall => 'small';
+
+  @override
+  String get packageMedium => 'medium';
+
+  @override
+  String get packagePro => 'pro';
 }

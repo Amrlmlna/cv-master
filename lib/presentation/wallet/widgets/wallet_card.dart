@@ -74,7 +74,7 @@ class WalletCard extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(32.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -90,7 +90,6 @@ class WalletCard extends StatelessWidget {
                               letterSpacing: 1.2,
                             ),
                           ),
-                          // Simulating a card chip
                           Container(
                             width: 45,
                             height: 35,

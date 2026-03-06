@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../services/analytics_service.dart';
+import '../../presentation/wallet/widgets/credit_purchase_bottom_sheet.dart';
 
 class PaymentService {
   static String get _androidApiKey => dotenv.get('REVENUECAT_GOOGLE_KEY');
@@ -84,38 +85,60 @@ class PaymentService {
     return false;
   }
 
-  static Future<bool> presentPaywall() async {
+  static Future<bool> purchasePackage(String packageIdentifier) async {
     try {
-      _analytics.trackEvent('paywall_viewed');
-      final paywallResult = await RevenueCatUI.presentPaywall();
-      final success = paywallResult == PaywallResult.purchased;
+      Offerings offerings = await Purchases.getOfferings();
+      if (offerings.current != null &&
+          offerings.current!.availablePackages.isNotEmpty) {
+        final package = offerings.current!.availablePackages.firstWhere(
+          (pkg) => pkg.identifier.contains(packageIdentifier),
+          orElse: () => offerings.current!.availablePackages.first,
+        );
+
+        await Purchases.purchase(PurchaseParams.package(package));
+
+        _analytics.trackEvent(
+          'purchase_completed',
+          properties: {'package': package.identifier},
+        );
+        return true;
+      }
       _analytics.trackEvent(
-        'paywall_dismissed',
-        properties: {'purchased': success},
+        'purchase_failed',
+        properties: {'reason': 'no_packages'},
       );
-      return success;
     } on PlatformException catch (e) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+        _analytics.trackEvent(
+          'purchase_failed',
+          properties: {
+            'code': errorCode.toString(),
+            'message': e.message ?? '',
+          },
+        );
+        rethrow;
+      }
+      _analytics.trackEvent('purchase_cancelled');
+    } catch (e) {
       _analytics.trackEvent(
-        'paywall_error',
-        properties: {'error': e.toString()},
+        'purchase_failed',
+        properties: {'error': e.toString(), 'reason': 'generic'},
       );
-      return false;
     }
+    return false;
   }
 
-  static Future<bool> presentPaywallIfNeeded() async {
+  static Future<bool> presentPaywall(BuildContext context) async {
     try {
       _analytics.trackEvent('paywall_viewed');
-      final paywallResult = await RevenueCatUI.presentPaywallIfNeeded(
-        'premium',
-      );
-      final success = paywallResult == PaywallResult.purchased;
+      final success = await CreditPurchaseBottomSheet.show(context);
       _analytics.trackEvent(
         'paywall_dismissed',
         properties: {'purchased': success},
       );
       return success;
-    } on PlatformException catch (e) {
+    } catch (e) {
       _analytics.trackEvent(
         'paywall_error',
         properties: {'error': e.toString()},

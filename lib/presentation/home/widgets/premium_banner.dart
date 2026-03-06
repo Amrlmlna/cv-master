@@ -37,7 +37,7 @@ class PremiumBanner extends ConsumerWidget {
           onTap: AuthGuard.protected(
             context,
             () async {
-              final purchased = await PaymentService.presentPaywall();
+              final purchased = await PaymentService.presentPaywall(context);
               if (purchased) {
                 ref.invalidate(templatesProvider);
               }

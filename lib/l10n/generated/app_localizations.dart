@@ -2441,6 +2441,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'2 free cvs, no credit card.'**
   String get onboardingFreeLabel;
+
+  /// No description provided for @getCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'get credits'**
+  String get getCredits;
+
+  /// No description provided for @benefitRegularTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'2 credits for regular templates'**
+  String get benefitRegularTitle;
+
+  /// No description provided for @benefitRegularDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'access clean, professional layouts for everyday use'**
+  String get benefitRegularDesc;
+
+  /// No description provided for @benefitPremiumTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'4 credits for premium templates'**
+  String get benefitPremiumTitle;
+
+  /// No description provided for @benefitPremiumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'unlock exclusive designs that stand out to recruiters'**
+  String get benefitPremiumDesc;
+
+  /// No description provided for @benefitSkipAdsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'skip ads'**
+  String get benefitSkipAdsTitle;
+
+  /// No description provided for @benefitSkipAdsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'enjoy a seamless experience without interruptions'**
+  String get benefitSkipAdsDesc;
+
+  /// No description provided for @creditsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} credits'**
+  String creditsCount(int count);
+
+  /// No description provided for @popularBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'popular'**
+  String get popularBadge;
+
+  /// No description provided for @securePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'secure payment via google play'**
+  String get securePayment;
+
+  /// No description provided for @perCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'/credit'**
+  String get perCredit;
+
+  /// No description provided for @savePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'save ~{percent}%'**
+  String savePercent(int percent);
+
+  /// No description provided for @packageSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'small'**
+  String get packageSmall;
+
+  /// No description provided for @packageMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'medium'**
+  String get packageMedium;
+
+  /// No description provided for @packagePro.
+  ///
+  /// In en, this message translates to:
+  /// **'pro'**
+  String get packagePro;
 }
 
 class _AppLocalizationsDelegate

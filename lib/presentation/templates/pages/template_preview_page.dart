@@ -65,7 +65,7 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
         ))
           return;
 
-        final purchased = await PaymentService.presentPaywall();
+        final purchased = await PaymentService.presentPaywall(context);
         if (purchased) {
           ref.invalidate(templatesProvider);
         }
