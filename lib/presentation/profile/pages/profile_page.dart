@@ -9,6 +9,7 @@ import 'package:clever/l10n/generated/app_localizations.dart';
 import '../widgets/experience_list_form.dart';
 import '../widgets/education_list_form.dart';
 import '../widgets/skills_input_form.dart';
+import '../../common/widgets/unsaved_changes_dialog.dart';
 import '../widgets/certification_list_form.dart';
 import '../widgets/section_card.dart';
 import '../widgets/import_cv_button.dart';
@@ -127,25 +128,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   Future<bool> _showExitWarning() async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.saveChangesTitle),
-        content: Text(AppLocalizations.of(context)!.saveChangesMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(
-              AppLocalizations.of(context)!.exitWithoutSaving,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.stayHere),
-          ),
-        ],
-      ),
+    final profileState = ref.read(profileControllerProvider);
+    if (!profileState.hasChanges) return true;
+
+    final result = await UnsavedChangesDialog.show(
+      context,
+      onSave: () async {
+        await ref.read(profileControllerProvider.notifier).saveProfile();
+      },
+      onDiscard: () {
+        ref.read(profileControllerProvider.notifier).discardChanges();
+      },
     );
     return result ?? false;
   }

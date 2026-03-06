@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/user_profile.dart';
-import 'experience_dialog.dart';
+import 'experience_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 
@@ -22,9 +22,9 @@ class ExperienceListForm extends StatefulWidget {
 
 class _ExperienceListFormState extends State<ExperienceListForm> {
   void _editExperience({Experience? existing, int? index}) async {
-    final result = await showDialog<Experience>(
-      context: context,
-      builder: (context) => ExperienceDialog(existing: existing),
+    final result = await ExperienceBottomSheet.show(
+      context,
+      existing: existing,
     );
 
     if (result != null) {
@@ -34,7 +34,6 @@ class _ExperienceListFormState extends State<ExperienceListForm> {
         newList[index] = result;
         widget.onChanged(newList);
       } else {
-        // Checking for duplicates on new addition
         final isDuplicate = newList.any(
           (exp) =>
               exp.jobTitle.toLowerCase() == result.jobTitle.toLowerCase() &&

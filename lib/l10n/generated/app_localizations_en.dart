@@ -126,9 +126,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'cancel';
 
   @override
-  String get cancelAllCaps => 'cancel';
-
-  @override
   String get cantOpenEmail => 'could not open email app.';
 
   @override

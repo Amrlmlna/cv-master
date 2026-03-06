@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/custom_app_bar.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../profile/providers/profile_provider.dart';
+import '../../common/widgets/unsaved_changes_dialog.dart';
 
 import '../../auth/widgets/email_verification_bottom_sheet.dart';
 import '../../auth/providers/auth_state_provider.dart';
@@ -74,28 +75,14 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
             .hasChanges;
 
         if (hasUnsavedChanges) {
-          final shouldLeave = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(AppLocalizations.of(context)!.saveChangesTitle),
-              content: Text(AppLocalizations.of(context)!.saveChangesMessage),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: Text(AppLocalizations.of(context)!.stayHere),
-                ),
-                TextButton(
-                  onPressed: () {
-                    ref
-                        .read(profileControllerProvider.notifier)
-                        .discardChanges();
-                    Navigator.pop(context, true);
-                  },
-                  style: TextButton.styleFrom(foregroundColor: Colors.red),
-                  child: Text(AppLocalizations.of(context)!.exitWithoutSaving),
-                ),
-              ],
-            ),
+          final shouldLeave = await UnsavedChangesDialog.show(
+            context,
+            onSave: () async {
+              await ref.read(profileControllerProvider.notifier).saveProfile();
+            },
+            onDiscard: () {
+              ref.read(profileControllerProvider.notifier).discardChanges();
+            },
           );
 
           if (shouldLeave != true) return;

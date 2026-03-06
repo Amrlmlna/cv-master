@@ -314,12 +314,6 @@ abstract class AppLocalizations {
   /// **'cancel'**
   String get cancel;
 
-  /// No description provided for @cancelAllCaps.
-  ///
-  /// In en, this message translates to:
-  /// **'cancel'**
-  String get cancelAllCaps;
-
   /// No description provided for @cantOpenEmail.
   ///
   /// In en, this message translates to:

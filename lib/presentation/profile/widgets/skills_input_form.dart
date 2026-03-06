@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
-import '../../../../core/utils/custom_snackbar.dart';
+import 'skills_bottom_sheet.dart';
 
 class SkillsInputForm extends StatefulWidget {
   final List<String> skills;
@@ -17,26 +17,11 @@ class SkillsInputForm extends StatefulWidget {
 }
 
 class _SkillsInputFormState extends State<SkillsInputForm> {
-  final _controller = TextEditingController();
-
-  void _addSkill() {
-    final text = _controller.text.trim();
-    if (text.isNotEmpty) {
-      final isDuplicate = widget.skills.any(
-        (s) => s.toLowerCase() == text.toLowerCase(),
-      );
-      if (isDuplicate) {
-        if (mounted) {
-          CustomSnackBar.showWarning(
-            context,
-            AppLocalizations.of(context)!.cvDataExists,
-          );
-        }
-      } else {
-        final newList = List<String>.from(widget.skills)..add(text);
-        widget.onChanged(newList);
-        _controller.clear();
-      }
+  void _showAddSkill() async {
+    final result = await SkillsBottomSheet.show(context, widget.skills);
+    if (result != null && result.isNotEmpty) {
+      final newList = List<String>.from(widget.skills)..add(result);
+      widget.onChanged(newList);
     }
   }
 
@@ -47,33 +32,54 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.addSkill,
-                  hintText: AppLocalizations.of(context)!.skillHint,
-                ),
-                onSubmitted: (_) => _addSkill(),
+            Text(
+              l10n.skills,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: isDark ? Colors.white : Colors.black,
               ),
             ),
-            const SizedBox(width: 8),
-            IconButton.filled(
-              onPressed: _addSkill,
-              icon: const Icon(Icons.add),
+            TextButton.icon(
+              onPressed: _showAddSkill,
+              icon: Icon(
+                Icons.add,
+                color: isDark ? Colors.white : Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                l10n.add,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Theme.of(context).primaryColor,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: isDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
             ),
           ],
         ),
         const SizedBox(height: 16),
         if (widget.skills.isEmpty)
-          Text(
-            AppLocalizations.of(context)!.noSkills,
-            style: const TextStyle(color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              l10n.noSkills,
+              style: TextStyle(color: isDark ? Colors.white54 : Colors.grey),
+            ),
           )
         else
           Wrap(
@@ -82,8 +88,25 @@ class _SkillsInputFormState extends State<SkillsInputForm> {
             children: widget.skills
                 .map(
                   (skill) => Chip(
-                    label: Text(skill),
+                    label: Text(
+                      skill,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    backgroundColor: isDark
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : Colors.grey[200],
+                    side: BorderSide.none,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     onDeleted: () => _removeSkill(skill),
+                    deleteIcon: Icon(
+                      Icons.cancel,
+                      size: 18,
+                      color: isDark ? Colors.white38 : Colors.black38,
+                    ),
                   ),
                 )
                 .toList(),

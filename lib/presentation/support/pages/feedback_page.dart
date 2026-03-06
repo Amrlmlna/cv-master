@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../common/widgets/custom_text_form_field.dart';
+import '../../common/widgets/success_bottom_sheet.dart';
 import '../../../core/services/analytics_service.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 
@@ -68,21 +69,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     if (mounted) {
       setState(() => _isLoading = false);
-      showDialog(
+      SuccessBottomSheet.show(
         context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.thankYou),
-          content: Text(AppLocalizations.of(context)!.feedbackThanksMessage),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
+        title: AppLocalizations.of(context)!.thankYou,
+        message: AppLocalizations.of(context)!.feedbackThanksMessage,
+        onConfirm: () => Navigator.pop(context),
       );
     }
   }

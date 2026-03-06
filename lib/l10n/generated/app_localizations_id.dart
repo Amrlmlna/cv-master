@@ -127,9 +127,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get cancel => 'batal';
 
   @override
-  String get cancelAllCaps => 'batal';
-
-  @override
   String get cantOpenEmail => 'tidak bisa membuka aplikasi email.';
 
   @override

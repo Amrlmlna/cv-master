@@ -210,25 +210,39 @@ class _PersonalInfoFormState extends ConsumerState<PersonalInfoForm> {
                 initialValue: widget.genderController.text.isEmpty
                     ? null
                     : widget.genderController.text,
+                isExpanded: true,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.gender,
-                  prefixIcon: const Icon(Icons.person_search_outlined),
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  prefixIcon: Icon(
+                    Icons.person_search_outlined,
+                    color: Colors.grey[400],
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderSide: BorderSide.none,
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade300,
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                      color: Colors.white54,
+                      width: 1.5,
                     ),
                   ),
+                  filled: true,
+                  fillColor: const Color(0xFF2C2C2C),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
                 ),
-                dropdownColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey.shade900
-                    : Colors.white,
+                dropdownColor: const Color(0xFF1E1E1E),
+                style: const TextStyle(color: Colors.white),
+                iconEnabledColor: Colors.grey[400],
                 items: [
                   DropdownMenuItem(
                     value: 'Male',

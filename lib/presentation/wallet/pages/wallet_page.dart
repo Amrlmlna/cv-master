@@ -57,7 +57,6 @@ class WalletPage extends ConsumerWidget {
               ),
               const SizedBox(height: 32),
 
-              // Premium Wallet Card
               templatesAsync.when(
                 data: (templates) {
                   final totalCredits = templates.isNotEmpty
@@ -79,7 +78,6 @@ class WalletPage extends ConsumerWidget {
 
               const SizedBox(height: 32),
 
-              // Buy Credit Section
               const PremiumBanner()
                   .animate()
                   .fadeIn(delay: 200.ms)
@@ -92,7 +90,6 @@ class WalletPage extends ConsumerWidget {
 
               const SizedBox(height: 40),
 
-              // History Placeholder
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -113,7 +110,6 @@ class WalletPage extends ConsumerWidget {
                   ),
                 ],
               ),
-              // Transaction List
               transactionAsync.when(
                 data: (transactions) {
                   if (transactions.isEmpty) {

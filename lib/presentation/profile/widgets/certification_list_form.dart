@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/certification.dart';
-import 'certification_dialog.dart';
+import 'certification_bottom_sheet.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/custom_snackbar.dart';
 
@@ -22,9 +22,9 @@ class CertificationListForm extends StatefulWidget {
 
 class _CertificationListFormState extends State<CertificationListForm> {
   void _editCertification({Certification? existing, int? index}) async {
-    final result = await showDialog<Certification>(
-      context: context,
-      builder: (context) => CertificationDialog(existing: existing),
+    final result = await CertificationBottomSheet.show(
+      context,
+      existing: existing,
     );
 
     if (result != null) {
