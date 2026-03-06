@@ -21,6 +21,7 @@ class AppRoutes {
   static const String jobs = '/jobs';
   static const String stats = '/stats';
   static const String wallet = '/wallet';
+  static const String transactionHistory = '/wallet/history';
 
   // CV Creation Flow
   static const String createJobInput = '/create/job-input';

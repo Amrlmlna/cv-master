@@ -16,6 +16,7 @@ import '../../presentation/cv/pages/job_input_page.dart';
 import '../../presentation/cv/pages/user_data_form_page.dart';
 import '../../presentation/stats/pages/stats_page.dart';
 import '../../presentation/wallet/pages/wallet_page.dart';
+import '../../presentation/wallet/pages/transaction_history_page.dart';
 import '../../presentation/templates/pages/style_selection_page.dart';
 import '../../presentation/templates/pages/template_preview_page.dart';
 import '../../presentation/support/pages/help_page.dart';
@@ -121,9 +122,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
-      StatefulShellRoute.indexedStack(
+      StatefulShellRoute(
         builder: (context, state, navigationShell) {
           return MainWrapperPage(navigationShell: navigationShell);
+        },
+        navigatorContainerBuilder: (context, navigationShell, children) {
+          return AnimatedBranchContainer(
+            currentIndex: navigationShell.currentIndex,
+            children: children,
+          );
         },
         branches: [
           // Branch 0: Home
@@ -157,6 +164,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: AppRoutes.wallet,
                 builder: (context, state) => const WalletPage(),
+                routes: [
+                  GoRoute(
+                    path: 'history', // Relative to /wallet
+                    parentNavigatorKey: _rootNavigatorKey,
+                    pageBuilder: (context, state) => _buildPage(const TransactionHistoryPage(), state),
+                  ),
+                ],
               ),
             ],
           ),
@@ -240,3 +254,62 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+class AnimatedBranchContainer extends StatefulWidget {
+  final int currentIndex;
+  final List<Widget> children;
+
+  const AnimatedBranchContainer({
+    super.key,
+    required this.currentIndex,
+    required this.children,
+  });
+
+  @override
+  State<AnimatedBranchContainer> createState() =>
+      _AnimatedBranchContainerState();
+}
+
+class _AnimatedBranchContainerState extends State<AnimatedBranchContainer> {
+  int _previousIndex = 0;
+
+  @override
+  void didUpdateWidget(covariant AnimatedBranchContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentIndex != widget.currentIndex) {
+      _previousIndex = oldWidget.currentIndex;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final goingForward = widget.currentIndex >= _previousIndex;
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      transitionBuilder: (child, animation) {
+        final isIncoming = child.key == ValueKey(widget.currentIndex);
+        final beginOffset = isIncoming
+            ? Offset(goingForward ? 0.25 : -0.25, 0)
+            : Offset(goingForward ? -0.25 : 0.25, 0);
+
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: beginOffset,
+            end: Offset.zero,
+          ).animate(animation),
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+      child: KeyedSubtree(
+        key: ValueKey(widget.currentIndex),
+        child: widget.children[widget.currentIndex],
+      ),
+    );
+  }
+}

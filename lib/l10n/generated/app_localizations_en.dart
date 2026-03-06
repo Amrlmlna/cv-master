@@ -1313,4 +1313,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get packagePro => 'pro';
+
+  @override
+  String get noTransactionsYet => 'no transactions yet';
+
+  @override
+  String get topUp => 'top up';
+
+  @override
+  String get cvExport => 'cv export';
+
+  @override
+  String get failedToLoadTransactions => 'failed to load transactions';
+
+  @override
+  String freeExportsLeft(Object count) {
+    return '$count free exports left';
+  }
+
+  @override
+  String get transactionHistory => 'transaction history';
+
+  @override
+  String get exports => 'exports';
+
+  @override
+  String get topUps => 'top ups';
 }

@@ -91,8 +91,14 @@ class PaymentService {
       if (offerings.current != null &&
           offerings.current!.availablePackages.isNotEmpty) {
         final package = offerings.current!.availablePackages.firstWhere(
-          (pkg) => pkg.identifier.contains(packageIdentifier),
-          orElse: () => offerings.current!.availablePackages.first,
+          (pkg) => pkg.identifier.contains(packageIdentifier) ||
+              pkg.storeProduct.identifier.contains(packageIdentifier),
+          orElse: () {
+            debugPrint(
+              'Warning: Package $packageIdentifier not found among: ${offerings.current!.availablePackages.map((e) => '\n- pkgId: ${e.identifier}, prodId: ${e.storeProduct.identifier}').join()}',
+            );
+            return offerings.current!.availablePackages.first;
+          },
         );
 
         await Purchases.purchase(PurchaseParams.package(package));

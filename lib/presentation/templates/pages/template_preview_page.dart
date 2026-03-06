@@ -268,47 +268,67 @@ class _TemplatePreviewPageState extends ConsumerState<TemplatePreviewPage> {
                               ref.watch(cvCreationProvider).selectedStyle,
                           orElse: () => currentTemplates.first,
                         );
-                        return Row(
+
+                        return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              currentTemplate.hasFreeGeneration
-                                  ? AppLocalizations.of(context)!
-                                      .generateCvFree
-                                      .toUpperCase()
-                                  : AppLocalizations.of(context)!
-                                      .generateCvCost(0) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
-                                      .replaceAll(RegExp(r'\s*\(.*?\)'), '')
-                                      .toUpperCase(),
-                              style: GoogleFonts.inter(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 2.0,
-                                fontSize: 13,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  currentTemplate.hasFreeGeneration
+                                      ? AppLocalizations.of(context)!
+                                          .generateCvFree
+                                          .toUpperCase()
+                                      : AppLocalizations.of(context)!
+                                          .generateCvCost(0) // We only use this for baseline translation, bypassing the cost parser safely as it was removed from the arb payload.
+                                          .replaceAll(RegExp(r'\s*\(.*?\)'), '')
+                                          .toUpperCase(),
+                                  style: GoogleFonts.inter(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 2.0,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.05),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    currentTemplate.hasFreeGeneration
+                                        ? "FREE"
+                                        : "${currentTemplate.requiredCredits} CREDITS",
+                                    style: GoogleFonts.inter(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.05),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                currentTemplate.hasFreeGeneration
-                                    ? "FREE"
-                                    : "${currentTemplate.requiredCredits} CREDITS",
-                                style: GoogleFonts.inter(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.0,
-                                  fontSize: 11,
+                            if (currentTemplate.hasFreeGeneration)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Text(
+                                  AppLocalizations.of(context)!.freeExportsLeft(
+                                      2 - currentTemplate.currentUsage),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black.withValues(alpha: 0.6),
+                                    letterSpacing: 0.5,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         );
                       },

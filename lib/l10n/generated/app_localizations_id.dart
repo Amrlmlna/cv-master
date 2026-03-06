@@ -1319,4 +1319,30 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get packagePro => 'pro';
+
+  @override
+  String get noTransactionsYet => 'belum ada transaksi';
+
+  @override
+  String get topUp => 'isi ulang';
+
+  @override
+  String get cvExport => 'ekspor cv';
+
+  @override
+  String get failedToLoadTransactions => 'gagal memuat transaksi';
+
+  @override
+  String freeExportsLeft(Object count) {
+    return 'sisa $count ekspor gratis';
+  }
+
+  @override
+  String get transactionHistory => 'riwayat transaksi';
+
+  @override
+  String get exports => 'ekspor';
+
+  @override
+  String get topUps => 'top up';
 }

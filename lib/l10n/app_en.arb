@@ -483,5 +483,13 @@
   },
   "packageSmall": "small",
   "packageMedium": "medium",
-  "packagePro": "pro"
+  "packagePro": "pro",
+  "noTransactionsYet": "no transactions yet",
+  "topUp": "top up",
+  "cvExport": "cv export",
+  "failedToLoadTransactions": "failed to load transactions",
+  "freeExportsLeft": "{count} free exports left",
+  "transactionHistory": "transaction history",
+  "exports": "exports",
+  "topUps": "top ups"
 }

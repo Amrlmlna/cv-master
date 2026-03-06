@@ -2531,6 +2531,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'pro'**
   String get packagePro;
+
+  /// No description provided for @noTransactionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'no transactions yet'**
+  String get noTransactionsYet;
+
+  /// No description provided for @topUp.
+  ///
+  /// In en, this message translates to:
+  /// **'top up'**
+  String get topUp;
+
+  /// No description provided for @cvExport.
+  ///
+  /// In en, this message translates to:
+  /// **'cv export'**
+  String get cvExport;
+
+  /// No description provided for @failedToLoadTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'failed to load transactions'**
+  String get failedToLoadTransactions;
+
+  /// No description provided for @freeExportsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} free exports left'**
+  String freeExportsLeft(Object count);
+
+  /// No description provided for @transactionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'transaction history'**
+  String get transactionHistory;
+
+  /// No description provided for @exports.
+  ///
+  /// In en, this message translates to:
+  /// **'exports'**
+  String get exports;
+
+  /// No description provided for @topUps.
+  ///
+  /// In en, this message translates to:
+  /// **'top ups'**
+  String get topUps;
 }
 
 class _AppLocalizationsDelegate

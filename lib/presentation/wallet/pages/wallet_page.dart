@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:clever/l10n/generated/app_localizations.dart';
+import 'package:intl/intl.dart';
 import '../../templates/providers/template_provider.dart';
 import '../../profile/providers/profile_provider.dart';
 import '../../home/widgets/premium_banner.dart';
 import '../widgets/wallet_card.dart';
+import '../providers/transaction_provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class WalletPage extends ConsumerWidget {
   const WalletPage({super.key});
@@ -15,6 +18,7 @@ class WalletPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final templatesAsync = ref.watch(templatesProvider);
     final profile = ref.watch(masterProfileProvider);
+    final transactionAsync = ref.watch(transactionHistoryProvider);
     final cardHolder = profile?.fullName.toUpperCase() ?? "CLEVER MEMBER";
     final l10n = AppLocalizations.of(context)!;
 
@@ -38,36 +42,15 @@ class WalletPage extends ConsumerWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                  IconButton(
+                    onPressed: () => context.push('/wallet/history'),
+                    icon: Icon(
+                      Icons.history_rounded,
+                      color: Colors.white.withValues(alpha: 0.7),
+                      size: 24,
                     ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.1),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.verified_user_rounded,
-                          color: Colors.blueAccent,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.secure,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                      ],
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
                     ),
                   ),
                 ],
@@ -110,44 +93,143 @@ class WalletPage extends ConsumerWidget {
               const SizedBox(height: 40),
 
               // History Placeholder
-              Text(
-                l10n.recentTransactions,
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white.withValues(alpha: 0.95),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.03),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.05),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.receipt_long_rounded,
-                      size: 48,
-                      color: Colors.white.withValues(alpha: 0.1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.recentTransactions,
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white.withValues(alpha: 0.95),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.usageHistoryComingSoon,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.white.withValues(alpha: 0.4),
+                  ),
+                  IconButton(
+                    onPressed: () => context.push('/wallet/history'),
+                    icon: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Colors.white54,
+                    ),
+                  ),
+                ],
+              ),
+              // Transaction List
+              transactionAsync.when(
+                data: (transactions) {
+                  if (transactions.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(32),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.03),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.05),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.receipt_long_rounded,
+                            size: 48,
+                            color: Colors.white.withValues(alpha: 0.1),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.noTransactionsYet,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: Colors.white.withValues(alpha: 0.4),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  
+                  final latestTransactions = transactions.take(3).toList();
+                  
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: latestTransactions.length,
+                    separatorBuilder: (_, __) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(
+                        color: Colors.white.withValues(alpha: 0.05),
+                        height: 1,
                       ),
                     ),
-                  ],
+                    itemBuilder: (context, index) {
+                      final txn = latestTransactions[index];
+                      final isAdd = txn.isAddition;
+                      
+                      return Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isAdd
+                                  ? Colors.green.withValues(alpha: 0.1)
+                                  : Colors.red.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              isAdd ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+                              color: isAdd ? Colors.green : Colors.red,
+                              size: 16,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  txn.type == 'credit_add' ? l10n.topUp : l10n.cvExport,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  DateFormat('MMM d, yyyy • h:mm a').format(txn.timestamp),
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    color: Colors.white.withValues(alpha: 0.5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${isAdd ? '+' : '-'}${txn.amount}',
+                            style: GoogleFonts.inter(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: isAdd ? Colors.green : Colors.white,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                loading: () => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(color: Colors.amber),
+                  ),
+                ),
+                error: (err, _) => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(l10n.failedToLoadTransactions),
                 ),
               ),
+
               const SizedBox(height: 100),
             ],
           ),

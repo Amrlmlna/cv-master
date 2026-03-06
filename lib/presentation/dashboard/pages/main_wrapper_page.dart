@@ -120,37 +120,11 @@ class _MainWrapperPageState extends ConsumerState<MainWrapperPage>
     });
 
     final currentIndex = widget.navigationShell.currentIndex;
-    final goingForward = currentIndex >= _previousIndex;
 
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBodyBehindAppBar: true,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        switchInCurve: Curves.easeInOut,
-        switchOutCurve: Curves.easeInOut,
-        transitionBuilder: (child, animation) {
-          final isIncoming = child.key == ValueKey(currentIndex);
-          final beginOffset = isIncoming
-              ? Offset(goingForward ? 0.25 : -0.25, 0)
-              : Offset(goingForward ? -0.25 : 0.25, 0);
-
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: beginOffset,
-              end: Offset.zero,
-            ).animate(animation),
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-        child: KeyedSubtree(
-          key: ValueKey(currentIndex),
-          child: widget.navigationShell,
-        ),
-      ),
+      body: widget.navigationShell,
       floatingActionButton: _buildCenterFAB(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

@@ -483,5 +483,13 @@
   },
   "packageSmall": "kecil",
   "packageMedium": "sedang",
-  "packagePro": "pro"
+  "packagePro": "pro",
+  "noTransactionsYet": "belum ada transaksi",
+  "topUp": "isi ulang",
+  "cvExport": "ekspor cv",
+  "failedToLoadTransactions": "gagal memuat transaksi",
+  "freeExportsLeft": "sisa {count} ekspor gratis",
+  "transactionHistory": "riwayat transaksi",
+  "exports": "ekspor",
+  "topUps": "top up"
 }
